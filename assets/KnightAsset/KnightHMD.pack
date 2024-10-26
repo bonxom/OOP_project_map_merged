@@ -1,0 +1,54 @@
+
+KnightHMD.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Soldier-Attack03
+  rotate: false
+  xy: 1, 409
+  size: 900, 100
+  orig: 900, 100
+  offset: 0, 0
+  index: -1
+Soldier-Walk
+  rotate: false
+  xy: 1, 307
+  size: 800, 100
+  orig: 800, 100
+  offset: 0, 0
+  index: -1
+Soldier-Attack01
+  rotate: false
+  xy: 1, 205
+  size: 600, 100
+  orig: 600, 100
+  offset: 0, 0
+  index: -1
+Soldier-Attack02
+  rotate: false
+  xy: 1, 103
+  size: 600, 100
+  orig: 600, 100
+  offset: 0, 0
+  index: -1
+Soldier-Idle
+  rotate: false
+  xy: 1, 1
+  size: 600, 100
+  orig: 600, 100
+  offset: 0, 0
+  index: -1
+Soldier-Death
+  rotate: false
+  xy: 603, 205
+  size: 400, 100
+  orig: 400, 100
+  offset: 0, 0
+  index: -1
+Soldier-Hurt
+  rotate: false
+  xy: 603, 103
+  size: 400, 100
+  orig: 400, 100
+  offset: 0, 0
+  index: -1
