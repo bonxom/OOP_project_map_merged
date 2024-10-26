@@ -1,6 +1,5 @@
 package com.projectoop.game.sprites;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -62,7 +61,7 @@ public class Knight extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(6/GameWorld.PPM);
         fdef.filter.categoryBits = GameWorld.KNIGHT_BIT;
-        fdef.filter.maskBits = GameWorld.DEFAULT_BIT | GameWorld.SPIKE_BIT | GameWorld.LAVA_BIT;
+        fdef.filter.maskBits = GameWorld.GROUND_BIT | GameWorld.SPIKE_BIT | GameWorld.LAVA_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);

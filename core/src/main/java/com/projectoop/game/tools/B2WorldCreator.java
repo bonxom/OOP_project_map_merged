@@ -31,6 +31,7 @@ public class B2WorldCreator {
 
             shape.setAsBox(rect.getWidth()/2/GameWorld.PPM, rect.getHeight()/2/GameWorld.PPM);
             fdef.shape = shape;
+            fdef.filter.categoryBits = GameWorld.OBJECT_BIT;//if (automatic) enemy collide with object, then change direction
             body.createFixture(fdef);
         }
         //trap
