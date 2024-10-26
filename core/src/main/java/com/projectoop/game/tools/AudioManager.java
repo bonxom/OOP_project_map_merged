@@ -9,7 +9,7 @@ public class AudioManager {
 
     public static String backgroundMusic = "Audio/GameMusic/Map2Music.mp3";
     public static String knightRunAudio = "Audio/SoundEffect/HeroRun.mp3";
-    public static String knightHurtAudio = "Audio/SoundEffect/heroHurt.wav";
+    public static String knightHurtAudio = "Audio/SoundEffect/oizoioi.mp3";
     public static String knightJumpAudio = "Audio/SoundEffect/Jump.wav";
 
     public static void setUp(){

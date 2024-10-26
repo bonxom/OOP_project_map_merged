@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.scences.Hud;
+import com.projectoop.game.sprites.Goomba;
 import com.projectoop.game.sprites.Knight;
 import com.projectoop.game.tools.AudioManager;
 import com.projectoop.game.tools.B2WorldCreator;
@@ -45,6 +46,7 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer b2dr;
 
     private Knight player;
+    private Goomba goomba;
 
     private Music music;
 
@@ -70,6 +72,7 @@ public class PlayScreen implements Screen {
 
         new B2WorldCreator(this);
         player = new Knight(this);
+        goomba = new Goomba(this, .32f, .32f);
 
         world.setContactListener(new WorldContactListener());
 
@@ -98,7 +101,10 @@ public class PlayScreen implements Screen {
     public void update(float dt){//dt = data time
         handleInput(dt);
         world.step(1/60f, 6, 2);
+
         player.update(dt);
+        goomba.update(dt);
+
         hud.update(dt);
         gameCam.position.x = player.b2body.getPosition().x;
         gameCam.update();
@@ -123,6 +129,7 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
+        goomba.draw(game.batch);
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);//select camera position

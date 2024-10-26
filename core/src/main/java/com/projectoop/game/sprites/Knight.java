@@ -61,7 +61,8 @@ public class Knight extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(6/GameWorld.PPM);
         fdef.filter.categoryBits = GameWorld.KNIGHT_BIT;
-        fdef.filter.maskBits = GameWorld.GROUND_BIT | GameWorld.SPIKE_BIT | GameWorld.LAVA_BIT;
+        fdef.filter.maskBits = GameWorld.GROUND_BIT | GameWorld.SPIKE_BIT |
+            GameWorld.LAVA_BIT | GameWorld.ENEMY_BIT | GameWorld.OBJECT_BIT| GameWorld.ENEMY_HEAD_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
