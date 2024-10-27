@@ -1,22 +1,14 @@
-package com.projectoop.game.sprites;
+package com.projectoop.game.sprites.trap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.projectoop.game.GameWorld;
 import com.badlogic.gdx.math.Rectangle;
 import com.projectoop.game.scences.Hud;
 import com.projectoop.game.screens.PlayScreen;
 import com.projectoop.game.tools.AudioManager;
 
-
-import java.awt.*;
-
-public class Spike extends InteractiveTileObject{
+public class Spike extends InteractiveTileObject {
     public Spike (PlayScreen screen, Rectangle bounds){
         super(screen, bounds);
         fixture.setUserData(this);

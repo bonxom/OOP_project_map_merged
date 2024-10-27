@@ -1,6 +1,7 @@
-package com.projectoop.game.sprites;
+package com.projectoop.game.sprites.enemy;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -11,21 +12,20 @@ import com.badlogic.gdx.utils.Array;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
 
-public class Goomba extends Enemy{
+public class Goomba extends Enemy {
     private float stateTime;
     private Animation<TextureRegion> walkAnimation;
-    private Array<TextureRegion> frames;
 
     private boolean setToDestroy;
     private boolean destroyed;
 
     public Goomba(PlayScreen screen, float x, float y) {
         super(screen, x, y);
-        frames = new Array<>();
+        Array<TextureRegion> frames = new Array<>();
         for (int i = 0; i < 2; i++){
             frames.add(new TextureRegion(screen.getAtlas().findRegion("goomba"), i * 16, 0, 16, 16));
         }
-        walkAnimation = new Animation(0.4f, frames);
+        walkAnimation = new Animation<TextureRegion>(0.4f, frames);
         stateTime = 0;
         setBounds(getX(), getY(), 16/GameWorld.PPM, 16/GameWorld.PPM);
         setToDestroy = false;
@@ -37,9 +37,11 @@ public class Goomba extends Enemy{
         if (setToDestroy && !destroyed){
             world.destroyBody(b2body);
             destroyed = true;
-            setRegion(new TextureRegion(screen.getAtlas().findRegion("goomba"), 32, 0, 16, 16));
+            setRegion(new TextureRegion(screen.getAtlas().findRegion("goomba"), 32, 0, 16, 16));//smashed texture
+            stateTime = 0;
         }
         else if (!destroyed){
+            b2body.setLinearVelocity(velocity);
             setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight()/2);
             setRegion(walkAnimation.getKeyFrame(stateTime, true));
         }
@@ -47,7 +49,7 @@ public class Goomba extends Enemy{
     @Override
     protected void defineEnemy() {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(60/ GameWorld.PPM, 100/GameWorld.PPM);
+        bdef.position.set(60/ GameWorld.PPM, 70/GameWorld.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
 
         b2body = world.createBody(bdef);
@@ -55,12 +57,12 @@ public class Goomba extends Enemy{
         CircleShape shape = new CircleShape();
         shape.setRadius(6/GameWorld.PPM);
         fdef.filter.categoryBits = GameWorld.ENEMY_BIT;
-        fdef.filter.maskBits = GameWorld.GROUND_BIT | //this Goomba also collide with others enemies or objects
+        fdef.filter.maskBits = GameWorld.GROUND_BIT | //collide list
                 GameWorld.SPIKE_BIT | GameWorld.LAVA_BIT | GameWorld.ENEMY_BIT |
                 GameWorld.OBJECT_BIT | GameWorld.KNIGHT_BIT;
 
         fdef.shape = shape;
-        b2body.createFixture(fdef);
+        b2body.createFixture(fdef).setUserData(this);
 
         //goomba's head
         PolygonShape head = new PolygonShape();
@@ -77,6 +79,11 @@ public class Goomba extends Enemy{
         b2body.createFixture(fdef).setUserData(this);
     }
 
+    public void draw (Batch batch){
+        if (!destroyed || stateTime < 1){
+            super.draw(batch);
+        }
+    }
     @Override
     public void hitOnHead() {
         setToDestroy = true;

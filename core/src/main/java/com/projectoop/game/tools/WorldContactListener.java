@@ -3,8 +3,8 @@ package com.projectoop.game.tools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.projectoop.game.GameWorld;
-import com.projectoop.game.sprites.Enemy;
-import com.projectoop.game.sprites.InteractiveTileObject;
+import com.projectoop.game.sprites.enemy.Enemy;
+import com.projectoop.game.sprites.trap.InteractiveTileObject;
 
 public class WorldContactListener implements ContactListener {
 //    public boolean isContact(short id1, short id2, Contact contact) {
@@ -58,9 +58,21 @@ public class WorldContactListener implements ContactListener {
                 if (fixA.getFilterData().categoryBits == GameWorld.ENEMY_HEAD_BIT) {//A is enemy
                     ((Enemy) fixA.getUserData()).hitOnHead();
                 }
-                else if (fixB.getFilterData().categoryBits == GameWorld.ENEMY_HEAD_BIT) {//B is enemy
+                else{//B is enemy
                     ((Enemy) fixB.getUserData()).hitOnHead();
                 }
+                 break;
+            case GameWorld.ENEMY_BIT | GameWorld.OBJECT_BIT://enemy collide with object -> reverse velocity
+                System.out.println("Goomba hit the pilar");
+                if (fixA.getFilterData().categoryBits == GameWorld.ENEMY_BIT){
+                    ((Enemy) fixA.getUserData()).reverseVelocity(true, false);
+                }
+                else{
+                    ((Enemy) fixB.getUserData()).reverseVelocity(true, false);
+                }
+                break;
+            case GameWorld.KNIGHT_BIT | GameWorld.ENEMY_BIT:
+                Gdx.app.log("Knight", "die");
         }
     }
 

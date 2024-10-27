@@ -1,4 +1,4 @@
-package com.projectoop.game.sprites;
+package com.projectoop.game.sprites.trap;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;

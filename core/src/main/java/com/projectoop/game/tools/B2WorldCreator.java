@@ -7,8 +7,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
-import com.projectoop.game.sprites.Lava;
-import com.projectoop.game.sprites.Spike;
+import com.projectoop.game.sprites.trap.Lava;
+import com.projectoop.game.sprites.trap.Pilar;
+import com.projectoop.game.sprites.trap.Spike;
 
 public class B2WorldCreator {
     public B2WorldCreator(PlayScreen screen){
@@ -31,20 +32,23 @@ public class B2WorldCreator {
 
             shape.setAsBox(rect.getWidth()/2/GameWorld.PPM, rect.getHeight()/2/GameWorld.PPM);
             fdef.shape = shape;
-            fdef.filter.categoryBits = GameWorld.OBJECT_BIT;//if (automatic) enemy collide with object, then change direction
+            fdef.filter.categoryBits = GameWorld.GROUND_BIT;//if (automatic) enemy collide with object, then change direction
             body.createFixture(fdef);
         }
         //trap
         for (MapObject object : map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject)object).getRectangle();
-
             new Spike(screen, rect);
         }
         //lava
         for (MapObject object : map.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject)object).getRectangle();
-
             new Lava(screen, rect);
+        }
+        //pilar
+        for (MapObject object : map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject)object).getRectangle();
+            new Pilar(screen, rect);
         }
     }
 }
