@@ -1,12 +1,22 @@
 package com.projectoop.game.sprites.enemy;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.projectoop.game.screens.PlayScreen;
 
 public abstract class Enemy extends Sprite {
+    protected TextureAtlas atlasWalking;
+    protected Animation<TextureRegion> walkAnimation;
+    protected float stateTime;
+    protected boolean setToDestroy;
+    protected boolean destroyed;
+    protected boolean runningRight;
+
     protected World world;
     protected PlayScreen screen;
     public Body b2body;
@@ -18,15 +28,15 @@ public abstract class Enemy extends Sprite {
         setPosition(x, y);
         defineEnemy();
         velocity = new Vector2(1, 0);
+        runningRight = true;
     }
 
     protected abstract void defineEnemy();
+    protected abstract void prepareAnimation();
     public abstract void hitOnHead();
 
     public void reverseVelocity(boolean x, boolean y){
-        System.out.println("reverse Velocity");
         if (x){
-            System.out.println("change X velo");
             velocity.x = -velocity.x;
         }
         if (y){

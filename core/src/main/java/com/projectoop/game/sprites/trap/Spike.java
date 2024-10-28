@@ -27,7 +27,7 @@ public class Spike extends InteractiveTileObject {
     @Override
     public void onFootHit() {
         Gdx.app.log("Spike", "Collision");
-        System.out.println("Spike");
         AudioManager.manager.get(AudioManager.knightHurtAudio, Sound.class).play();
+        screen.getPlayer().setDie();
     }
 }

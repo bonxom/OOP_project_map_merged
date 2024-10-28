@@ -3,6 +3,7 @@ package com.projectoop.game.tools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.projectoop.game.GameWorld;
+import com.projectoop.game.sprites.Knight;
 import com.projectoop.game.sprites.enemy.Enemy;
 import com.projectoop.game.sprites.trap.InteractiveTileObject;
 
@@ -48,6 +49,7 @@ public class WorldContactListener implements ContactListener {
 
             if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
                 ((InteractiveTileObject) object.getUserData()).onFootHit();
+
             }
         }
 //        if(isContact(GameWorld.KNIGHT_BIT,GameWorld.SPIKE_BIT,contact)){
@@ -55,24 +57,23 @@ public class WorldContactListener implements ContactListener {
 //        }
         switch (cDef){
             case GameWorld.ENEMY_HEAD_BIT | GameWorld.KNIGHT_BIT://knight collide with enemy's head
-                if (fixA.getFilterData().categoryBits == GameWorld.ENEMY_HEAD_BIT) {//A is enemy
-                    ((Enemy) fixA.getUserData()).hitOnHead();
-                }
-                else{//B is enemy
-                    ((Enemy) fixB.getUserData()).hitOnHead();
-                }
-                 break;
-            case GameWorld.ENEMY_BIT | GameWorld.OBJECT_BIT://enemy collide with object -> reverse velocity
-                System.out.println("Goomba hit the pilar");
-                if (fixA.getFilterData().categoryBits == GameWorld.ENEMY_BIT){
-                    ((Enemy) fixA.getUserData()).reverseVelocity(true, false);
-                }
-                else{
-                    ((Enemy) fixB.getUserData()).reverseVelocity(true, false);
-                }
+                Enemy enemy1 = (Enemy) ((fixA.getFilterData().categoryBits == GameWorld.ENEMY_BIT) ? fixA.getUserData() : fixB.getUserData());
+                enemy1.hitOnHead();
+//                if (fixA.getFilterData().categoryBits == GameWorld.ENEMY_HEAD_BIT) {//A is enemy
+//                    ((Enemy) fixA.getUserData()).hitOnHead();
+//                }
+//                else{//B is enemy
+//                    ((Enemy) fixB.getUserData()).hitOnHead();
+//                }
+                break;
+            case GameWorld.ENEMY_BIT | GameWorld.OBJECT_BIT://enemy collide with object -> reverse
+                Gdx.app.log("Enemy", "Pilar");
+                Enemy enemy = (Enemy) ((fixA.getFilterData().categoryBits == GameWorld.ENEMY_BIT) ? fixA.getUserData() : fixB.getUserData());
+                enemy.reverseVelocity(true, false);
                 break;
             case GameWorld.KNIGHT_BIT | GameWorld.ENEMY_BIT:
-                Gdx.app.log("Knight", "die");
+                Gdx.app.log("Knight", "hurt_enemy");
+                break;
         }
     }
 

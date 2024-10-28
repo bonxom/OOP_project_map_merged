@@ -18,6 +18,7 @@ import com.projectoop.game.GameWorld;
 import com.projectoop.game.scences.Hud;
 import com.projectoop.game.sprites.enemy.Goomba;
 import com.projectoop.game.sprites.Knight;
+import com.projectoop.game.sprites.enemy.Orc;
 import com.projectoop.game.tools.AudioManager;
 import com.projectoop.game.tools.B2WorldCreator;
 import com.projectoop.game.tools.WorldContactListener;
@@ -37,7 +38,8 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer b2dr;
 
     private Knight player;
-    private Goomba goomba;
+    //private Goomba goomba;
+    private Orc orc;
 
     private Music music;
 
@@ -63,7 +65,9 @@ public class PlayScreen implements Screen {
 
         new B2WorldCreator(this);
         player = new Knight(this);
-        goomba = new Goomba(this, .32f, .32f);
+        //goomba = new Goomba(this, .32f, .32f);
+        orc = new Orc(this, .40f, .32f);
+
 
         world.setContactListener(new WorldContactListener());
 
@@ -78,14 +82,20 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float dt){
-        if (Gdx.input.isKeyJustPressed(Input.Keys.W)){
-            player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.D) && player.b2body.getLinearVelocity().x <= 2){
-            player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A) && player.b2body.getLinearVelocity().x >= -2){
-            player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+        if (player.moveable()) {
+            //test
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+                player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.D) && player.b2body.getLinearVelocity().x <= 2) {
+                player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.A) && player.b2body.getLinearVelocity().x >= -2) {
+                player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+            }
+
+
         }
     }
 
@@ -94,7 +104,8 @@ public class PlayScreen implements Screen {
         world.step(1/60f, 6, 2);
 
         player.update(dt);
-        goomba.update(dt);
+        //goomba.update(dt);
+        orc.update(dt);
 
         hud.update(dt);
         gameCam.position.x = player.b2body.getPosition().x;
@@ -120,7 +131,8 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        goomba.draw(game.batch);
+        //goomba.draw(game.batch);
+        orc.draw(game.batch);
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);//select camera position
@@ -161,5 +173,9 @@ public class PlayScreen implements Screen {
         world.dispose();
         b2dr.dispose();
         hud.dispose();
+    }
+
+    public Knight getPlayer() {
+        return player;
     }
 }

@@ -45,7 +45,10 @@ public class Knight extends Sprite {
 
     private float stateTimer;
     private boolean runningRight;
-
+    private boolean isHurt;
+    private boolean isAttacking;
+    private boolean isDie;
+    private boolean canMove;
 
     public Knight(PlayScreen screen){
         super(screen.getAtlas().findRegion("little_mario"));
@@ -122,6 +125,11 @@ public class Knight extends Sprite {
         fdef.isSensor = true;
 
         b2body.createFixture(fdef).setUserData("foot");
+
+        isAttacking = false;
+        isDie = false;
+        isHurt = false;
+        canMove = true;
     }
 
     public void update(float dt){
@@ -184,7 +192,30 @@ public class Knight extends Sprite {
         return region;
     }
 
+    public void hurtingCallBack(){
+        isHurt = true;
+    }
+
+    public void setDie(){
+        isDie = true;
+        canMove = false;
+    }
+
+    public boolean moveable(){
+        return canMove;
+    }
+
     public State getState(){
+        if (isDie){//test
+            if (!knightDie.isAnimationFinished(stateTimer)) return State.DIEING;
+            isDie = false; canMove = true;
+        }
+        if(isHurt) {//test
+            if(!knightHurt.isAnimationFinished(stateTimer)) {
+                return State.HURTING;
+            }
+            else isHurt = false;
+        }
         if (b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING)){
             return State.JUMPING;
         }

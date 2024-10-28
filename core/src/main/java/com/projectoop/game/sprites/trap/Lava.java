@@ -9,6 +9,7 @@ import com.projectoop.game.tools.AudioManager;
 import jdk.jshell.Snippet;
 
 public class Lava extends InteractiveTileObject {
+
     public Lava(PlayScreen screen, Rectangle bounds) {
         super(screen, bounds);
         fixture.setUserData(this);
@@ -24,5 +25,6 @@ public class Lava extends InteractiveTileObject {
     public void onFootHit() {
         Gdx.app.log("Lava", "Collision");
         AudioManager.manager.get(AudioManager.knightHurtAudio, Sound.class).play();
+        screen.getPlayer().setDie();
     }
 }

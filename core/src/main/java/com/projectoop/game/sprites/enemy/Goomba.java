@@ -13,11 +13,6 @@ import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
 
 public class Goomba extends Enemy {
-    private float stateTime;
-    private Animation<TextureRegion> walkAnimation;
-
-    private boolean setToDestroy;
-    private boolean destroyed;
 
     public Goomba(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -77,6 +72,11 @@ public class Goomba extends Enemy {
         fdef.restitution = 0.5f;//the Character is bounded up
         fdef.filter.categoryBits = GameWorld.ENEMY_HEAD_BIT;
         b2body.createFixture(fdef).setUserData(this);
+    }
+
+    @Override
+    protected void prepareAnimation() {
+
     }
 
     public void draw (Batch batch){
