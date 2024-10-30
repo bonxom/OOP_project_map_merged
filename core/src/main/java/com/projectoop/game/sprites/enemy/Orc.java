@@ -4,11 +4,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
 
@@ -31,7 +29,7 @@ public class Orc extends Enemy{
     @Override
     protected void defineEnemy() {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(60/ GameWorld.PPM, 60/GameWorld.PPM);
+        bdef.position.set(getX(), getY());
         bdef.type = BodyDef.BodyType.DynamicBody;
 
         b2body = world.createBody(bdef);
@@ -41,7 +39,7 @@ public class Orc extends Enemy{
         fdef.filter.categoryBits = GameWorld.ENEMY_BIT;
         fdef.filter.maskBits = GameWorld.GROUND_BIT | //collide list
             GameWorld.SPIKE_BIT | GameWorld.LAVA_BIT | GameWorld.ENEMY_BIT |
-            GameWorld.OBJECT_BIT | GameWorld.KNIGHT_BIT;
+            GameWorld.PILAR_BIT | GameWorld.KNIGHT_BIT | GameWorld.OBJECT_BIT;
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
     }

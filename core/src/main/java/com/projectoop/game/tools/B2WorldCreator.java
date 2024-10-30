@@ -5,13 +5,17 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
+import com.projectoop.game.sprites.enemy.Orc;
 import com.projectoop.game.sprites.trap.Lava;
 import com.projectoop.game.sprites.trap.Pilar;
 import com.projectoop.game.sprites.trap.Spike;
 
 public class B2WorldCreator {
+    private Array<Orc> orcs;
+
     public B2WorldCreator(PlayScreen screen){
         World world = screen.getWorld();
         TiledMap map = screen.getMap();
@@ -50,5 +54,15 @@ public class B2WorldCreator {
             Rectangle rect = ((RectangleMapObject)object).getRectangle();
             new Pilar(screen, rect);
         }
+        //create all orcs
+        orcs = new Array<>();
+        for (MapObject object : map.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject)object).getRectangle();
+            orcs.add(new Orc(screen, rect.getX() / GameWorld.PPM, rect.y/GameWorld.PPM));
+        }
+    }
+
+    public Array<Orc> getOrcs() {
+        return orcs;
     }
 }

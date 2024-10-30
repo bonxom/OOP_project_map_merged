@@ -150,11 +150,11 @@
             "scaleInDock": 1
         },
         "map3.tmx": {
-            "scale": 2,
+            "scale": 0.75,
             "selectedLayer": 12,
             "viewCenter": {
-                "x": 295.5,
-                "y": 366.75
+                "x": 1206.6666666666667,
+                "y": 507.33333333333326
             }
         }
     },
@@ -177,7 +177,6 @@
         "TileConvert/tl5.tsx",
         "TileConvert/tl6.tsx",
         "TileConvert/lava.tsx",
-        "D:/Coder/oop-master/assets/map2.tmx",
         "map3.tmx"
     ],
     "project": "Map3.tiled-project",
@@ -193,7 +192,7 @@
         "TileConvert/tl5.tsx",
         "TileConvert/tl6.tsx",
         "TileConvert/lava.tsx",
-        "D:/Coder/oop-master/assets/map2.tmx"
+        "map3.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.margin": 2,

@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.scences.Hud;
+import com.projectoop.game.sprites.enemy.Enemy;
 import com.projectoop.game.sprites.enemy.Goomba;
 import com.projectoop.game.sprites.Knight;
 import com.projectoop.game.sprites.enemy.Orc;
@@ -36,10 +37,11 @@ public class PlayScreen implements Screen {
 
     private World world;
     private Box2DDebugRenderer b2dr;
+    private B2WorldCreator creator;
 
     private Knight player;
     //private Goomba goomba;
-    private Orc orc;
+    //private Orc orc;
 
     private Music music;
 
@@ -63,10 +65,11 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, -10), true);//vector gravity
         b2dr = new Box2DDebugRenderer();
 
-        new B2WorldCreator(this);
+        creator = new B2WorldCreator(this);
+
         player = new Knight(this);
         //goomba = new Goomba(this, .32f, .32f);
-        orc = new Orc(this, .40f, .32f);
+        //orc = new Orc(this, .40f, .32f);
 
 
         world.setContactListener(new WorldContactListener());
@@ -104,8 +107,11 @@ public class PlayScreen implements Screen {
         world.step(1/60f, 6, 2);
 
         player.update(dt);
+        for (Enemy enemy : creator.getOrcs()){
+            enemy.update(dt);
+        }
         //goomba.update(dt);
-        orc.update(dt);
+        //orc.update(dt);
 
         hud.update(dt);
         gameCam.position.x = player.b2body.getPosition().x;
@@ -131,8 +137,11 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
+        for (Enemy enemy : creator.getOrcs()){
+            enemy.draw(game.batch);
+        }
         //goomba.draw(game.batch);
-        orc.draw(game.batch);
+        //orc.draw(game.batch);
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);//select camera position

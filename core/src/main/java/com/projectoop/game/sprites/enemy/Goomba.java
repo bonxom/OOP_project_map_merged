@@ -54,7 +54,7 @@ public class Goomba extends Enemy {
         fdef.filter.categoryBits = GameWorld.ENEMY_BIT;
         fdef.filter.maskBits = GameWorld.GROUND_BIT | //collide list
                 GameWorld.SPIKE_BIT | GameWorld.LAVA_BIT | GameWorld.ENEMY_BIT |
-                GameWorld.OBJECT_BIT | GameWorld.KNIGHT_BIT;
+                GameWorld.PILAR_BIT | GameWorld.KNIGHT_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);

@@ -8,7 +8,7 @@ public class Pilar extends InteractiveTileObject {
     public Pilar(PlayScreen screen, Rectangle bounds) {
         super(screen, bounds);
         fixture.setUserData(this);
-        setCategoryFilter(GameWorld.OBJECT_BIT);
+        setCategoryFilter(GameWorld.PILAR_BIT);
     }
 
     @Override

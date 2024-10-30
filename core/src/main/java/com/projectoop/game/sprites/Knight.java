@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.Array;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
 import com.projectoop.game.tools.AudioManager;
@@ -51,8 +50,7 @@ public class Knight extends Sprite {
     private boolean canMove;
 
     public Knight(PlayScreen screen){
-        super(screen.getAtlas().findRegion("little_mario"));
-        System.out.println("Hello baby");
+
         this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;
@@ -68,7 +66,7 @@ public class Knight extends Sprite {
 
     private void prepareAnimation(){
         atlasRunning = new TextureAtlas("KnightAsset/Pack/Run.pack");
-        atlasJumping = new TextureAtlas("KnightAsset/Pack/Attack02.pack");
+        atlasJumping = new TextureAtlas("KnightAsset/Pack/Jump.pack");
         atlasAttacking1 = new TextureAtlas("KnightAsset/Pack/Attack01.pack");
         atlasAttacking2 = new TextureAtlas("KnightAsset/Pack/Attack02.pack");
         atlasAttacking3 = new TextureAtlas("KnightAsset/Pack/Attack03.pack");
@@ -83,6 +81,26 @@ public class Knight extends Sprite {
         knightAttack1 = new Animation<TextureRegion>(0.5f, atlasAttacking1.getRegions());
         knightAttack2 = new Animation<TextureRegion>(0.05f, atlasAttacking2.getRegions());
         knightAttack3 = new Animation<TextureRegion>(0.05f, atlasAttacking3.getRegions());
+        knightHurt = new Animation<TextureRegion>(0.5f, atlasBeingHurt.getRegions());
+    }
+
+    private void prepareAnimation1(){//anim của nguyễn bá
+        atlasRunning = new TextureAtlas("KnightAsset2/Pack/Run.pack");
+        atlasJumping = new TextureAtlas("KnightAsset2/Pack/Jump.pack");
+        atlasAttacking1 = new TextureAtlas("KnightAsset2/Pack/Attack01.pack");
+        //atlasAttacking2 = new TextureAtlas("KnightAsset/Pack/Attack02.pack");
+        //atlasAttacking3 = new TextureAtlas("KnightAsset/Pack/Attack03.pack");
+        atlasDieing = new TextureAtlas("KnightAsset2/Pack/Die.pack");
+        atlasBeingHurt = new TextureAtlas("KnightAsset2/Pack/Hurt.pack");
+        atlasStanding = new TextureAtlas("KnightAsset2/Pack/Idle.pack");
+
+        knightRun = new Animation<TextureRegion>(0.05f, atlasRunning.getRegions());
+        knightJump = new Animation<TextureRegion>(0.05f, atlasJumping.getRegions());
+        knightStand = new Animation<TextureRegion>(0.1f, atlasStanding.getRegions());
+        knightDie = new Animation<TextureRegion>(0.5f, atlasDieing.getRegions());
+        knightAttack1 = new Animation<TextureRegion>(0.5f, atlasAttacking1.getRegions());
+        //knightAttack2 = new Animation<TextureRegion>(0.05f, atlasAttacking2.getRegions());
+        //knightAttack3 = new Animation<TextureRegion>(0.05f, atlasAttacking3.getRegions());
         knightHurt = new Animation<TextureRegion>(0.5f, atlasBeingHurt.getRegions());
     }
 
@@ -103,7 +121,7 @@ public class Knight extends Sprite {
         shape.setRadius(6/GameWorld.PPM);
         fdef.filter.categoryBits = GameWorld.KNIGHT_BIT;
         fdef.filter.maskBits = GameWorld.GROUND_BIT | GameWorld.SPIKE_BIT |
-            GameWorld.LAVA_BIT | GameWorld.ENEMY_BIT | GameWorld.OBJECT_BIT| GameWorld.ENEMY_HEAD_BIT;
+            GameWorld.LAVA_BIT | GameWorld.ENEMY_BIT | GameWorld.OBJECT_BIT | GameWorld.ENEMY_HEAD_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
@@ -208,6 +226,7 @@ public class Knight extends Sprite {
     public State getState(){
         if (isDie){//test
             if (!knightDie.isAnimationFinished(stateTimer)) return State.DIEING;
+            b2body.setTransform(32/GameWorld.PPM, 100/GameWorld.PPM, 0);
             isDie = false; canMove = true;
         }
         if(isHurt) {//test
