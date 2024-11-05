@@ -12,6 +12,9 @@ import com.projectoop.game.screens.PlayScreen;
 
 public class Orc extends Enemy{
 
+    private static final float scaleX = 1.5f;
+    private static final float scaleY = 1.5f;
+
     public Orc(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         stateTime = 0;
@@ -35,11 +38,11 @@ public class Orc extends Enemy{
         b2body = world.createBody(bdef);
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(6/GameWorld.PPM);
+        shape.setRadius(9/GameWorld.PPM);
         fdef.filter.categoryBits = GameWorld.ENEMY_BIT;
         fdef.filter.maskBits = GameWorld.GROUND_BIT | //collide list
             GameWorld.SPIKE_BIT | GameWorld.LAVA_BIT | GameWorld.ENEMY_BIT |
-            GameWorld.PILAR_BIT | GameWorld.KNIGHT_BIT | GameWorld.OBJECT_BIT;
+            GameWorld.PILAR_BIT | GameWorld.KNIGHT_BIT | GameWorld.OBJECT_BIT | GameWorld.ARROW_BIT;
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
     }
@@ -65,7 +68,8 @@ public class Orc extends Enemy{
                 runningRight = true;
             }
 
-            setBounds(getX(), getY(), frame.getRegionWidth() / GameWorld.PPM * 1.5f, frame.getRegionHeight() / GameWorld.PPM * 1.5f);
+            setBounds(getX(), getY(), frame.getRegionWidth() / GameWorld.PPM * scaleX,
+                                    frame.getRegionHeight() / GameWorld.PPM * scaleY);
             setRegion(frame);
         }
     }

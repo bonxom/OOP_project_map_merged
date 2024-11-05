@@ -12,6 +12,7 @@ import com.projectoop.game.screens.PlayScreen;
 public abstract class Enemy extends Sprite {
     protected TextureAtlas atlasWalking;
     protected Animation<TextureRegion> walkAnimation;
+
     protected float stateTime;
     protected boolean setToDestroy;
     protected boolean destroyed;

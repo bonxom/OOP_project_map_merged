@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.sprites.enemy.Enemy;
 import com.projectoop.game.sprites.trap.InteractiveTileObject;
+import com.projectoop.game.sprites.weapons.Arrow;
 
 public class WorldContactListener implements ContactListener {
 //    public boolean isContact(short id1, short id2, Contact contact) {
@@ -71,6 +72,19 @@ public class WorldContactListener implements ContactListener {
                 Gdx.app.log("Orc", "Orc");
                 ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
                 ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
+                break;
+            case GameWorld.ENEMY_BIT | GameWorld.ARROW_BIT://test
+                Gdx.app.log("Arrow", "Enemy");
+                Arrow arrow = (Arrow) ((fixA.getFilterData().categoryBits == GameWorld.ARROW_BIT) ? fixA.getUserData() : fixB.getUserData());
+                arrow.setToDestroy = true;
+                break;
+            case GameWorld.GROUND_BIT | GameWorld.ARROW_BIT:
+            case GameWorld.SPIKE_BIT | GameWorld.ARROW_BIT:
+            case GameWorld.LAVA_BIT | GameWorld.ARROW_BIT:
+            case GameWorld.OBJECT_BIT | GameWorld.ARROW_BIT:
+                Gdx.app.log("Arrow", "Object");
+                Arrow arrow1 = (Arrow) ((fixA.getFilterData().categoryBits == GameWorld.ARROW_BIT) ? fixA.getUserData() : fixB.getUserData());
+                arrow1.setToDestroy = true;
         }
     }
 

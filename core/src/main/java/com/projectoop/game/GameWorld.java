@@ -20,6 +20,7 @@ public class GameWorld extends Game {
     public static final short ENEMY_BIT = 64;
     public static final short ENEMY_HEAD_BIT = 128;
     public static final short OBJECT_BIT = 256;
+    public static final short ARROW_BIT = 512;
 
     public SpriteBatch batch;//container hold all images or texture for rendering
 

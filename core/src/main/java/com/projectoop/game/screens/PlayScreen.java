@@ -20,6 +20,7 @@ import com.projectoop.game.sprites.enemy.Enemy;
 import com.projectoop.game.sprites.enemy.Goomba;
 import com.projectoop.game.sprites.Knight;
 import com.projectoop.game.sprites.enemy.Orc;
+import com.projectoop.game.sprites.weapons.BulletManager;
 import com.projectoop.game.tools.AudioManager;
 import com.projectoop.game.tools.B2WorldCreator;
 import com.projectoop.game.tools.WorldContactListener;
@@ -45,8 +46,9 @@ public class PlayScreen implements Screen {
 
     private Music music;
 
+    public static BulletManager bulletManager;
+
     public PlayScreen(GameWorld gameWorld){
-        atlas = new TextureAtlas("KnightAsset/Mario_and_Enemies.pack");
 
         this.game = gameWorld;
 
@@ -70,9 +72,9 @@ public class PlayScreen implements Screen {
         player = new Knight(this);
         //goomba = new Goomba(this, .32f, .32f);
         //orc = new Orc(this, .40f, .32f);
-
-
         world.setContactListener(new WorldContactListener());
+
+        bulletManager = new BulletManager(this);
 
         music = AudioManager.manager.get(AudioManager.backgroundMusic, Music.class);
         music.setVolume(music.getVolume() - 0.7f);
@@ -98,7 +100,20 @@ public class PlayScreen implements Screen {
                 player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
             }
 
-
+            //attacking code
+            if (Gdx.input.isKeyPressed(Input.Keys.J)){
+                player.attack1CallBack();
+            }
+            else if (Gdx.input.isKeyPressed(Input.Keys.K)){
+                player.attack2CallBack();
+            }
+            else if (Gdx.input.isKeyJustPressed(Input.Keys.L)){
+                player.attack3CallBack();
+//                if (player.getState() == Knight.State.ATTACKING3){
+//                    bulletManager.addBullet(player.b2body.getPosition().x, player.b2body.getPosition().y - 0.15f, 1);
+//                }
+//                bulletManager.debug();
+            }
         }
     }
 
@@ -107,6 +122,7 @@ public class PlayScreen implements Screen {
         world.step(1/60f, 6, 2);
 
         player.update(dt);
+        bulletManager.update(dt);
         for (Enemy enemy : creator.getOrcs()){
             enemy.update(dt);
         }
@@ -137,6 +153,8 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
+        bulletManager.draw(game.batch);
+
         for (Enemy enemy : creator.getOrcs()){
             enemy.draw(game.batch);
         }
@@ -182,6 +200,7 @@ public class PlayScreen implements Screen {
         world.dispose();
         b2dr.dispose();
         hud.dispose();
+        bulletManager.dispose();
     }
 
     public Knight getPlayer() {

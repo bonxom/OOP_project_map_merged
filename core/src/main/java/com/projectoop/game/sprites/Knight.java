@@ -1,10 +1,7 @@
 package com.projectoop.game.sprites;
 
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.projectoop.game.GameWorld;
@@ -17,6 +14,9 @@ public class Knight extends Sprite {
     public State previousState;
     public World world;
     public Body b2body;
+
+    private static float scaleX = 1.5f;
+    private static float scaleY = 1.5f;
 
     private TextureAtlas atlasRunning;
     private TextureAtlas atlasJumping;
@@ -42,12 +42,18 @@ public class Knight extends Sprite {
     private Sound knightHurtSound;
     private Sound knightDieSound;
 
+//    private BulletManager bulletManager;
+
     private float stateTimer;
-    private boolean runningRight;
+    private boolean isRunningRight;
     private boolean isHurt;
-    private boolean isAttacking;
+    private boolean isAttacking1;
+    private boolean isAttacking2;
+    private boolean isAttacking3;
     private boolean isDie;
+    public boolean isJumping;
     private boolean canMove;
+    public boolean createArrow;
 
     public Knight(PlayScreen screen){
 
@@ -55,11 +61,13 @@ public class Knight extends Sprite {
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
-        runningRight = true;
+        isRunningRight = true;
 
         prepareAnimation();
         prepareSound();
         defineKnight();
+
+//        this.bulletManager = screen.bulletManager;
 
         setBounds(0, 0, 16/GameWorld.PPM, 16/GameWorld.PPM);
     }
@@ -78,9 +86,9 @@ public class Knight extends Sprite {
         knightJump = new Animation<TextureRegion>(0.05f, atlasJumping.getRegions());
         knightStand = new Animation<TextureRegion>(0.1f, atlasStanding.getRegions());
         knightDie = new Animation<TextureRegion>(0.5f, atlasDieing.getRegions());
-        knightAttack1 = new Animation<TextureRegion>(0.5f, atlasAttacking1.getRegions());
+        knightAttack1 = new Animation<TextureRegion>(0.05f, atlasAttacking1.getRegions());
         knightAttack2 = new Animation<TextureRegion>(0.05f, atlasAttacking2.getRegions());
-        knightAttack3 = new Animation<TextureRegion>(0.05f, atlasAttacking3.getRegions());
+        knightAttack3 = new Animation<TextureRegion>(0.1f, atlasAttacking3.getRegions());
         knightHurt = new Animation<TextureRegion>(0.5f, atlasBeingHurt.getRegions());
     }
 
@@ -98,7 +106,7 @@ public class Knight extends Sprite {
         knightJump = new Animation<TextureRegion>(0.05f, atlasJumping.getRegions());
         knightStand = new Animation<TextureRegion>(0.1f, atlasStanding.getRegions());
         knightDie = new Animation<TextureRegion>(0.5f, atlasDieing.getRegions());
-        knightAttack1 = new Animation<TextureRegion>(0.5f, atlasAttacking1.getRegions());
+        knightAttack1 = new Animation<TextureRegion>(0.05f, atlasAttacking1.getRegions());
         //knightAttack2 = new Animation<TextureRegion>(0.05f, atlasAttacking2.getRegions());
         //knightAttack3 = new Animation<TextureRegion>(0.05f, atlasAttacking3.getRegions());
         knightHurt = new Animation<TextureRegion>(0.5f, atlasBeingHurt.getRegions());
@@ -131,7 +139,7 @@ public class Knight extends Sprite {
         head.set(new Vector2(-2/GameWorld.PPM, 6/GameWorld.PPM),
                 new Vector2(2/GameWorld.PPM, 6/GameWorld.PPM));
         fdef.shape = head;
-        fdef.isSensor = true;
+        fdef.isSensor = true;//head is a sensor
 
         b2body.createFixture(fdef).setUserData("head");
 
@@ -140,26 +148,16 @@ public class Knight extends Sprite {
         foot.set(new Vector2(-2/GameWorld.PPM, -6/GameWorld.PPM),
                 new Vector2(2/GameWorld.PPM, -6/GameWorld.PPM));
         fdef.shape = foot;
-        fdef.isSensor = true;
+        fdef.isSensor = true;//foot is a sensor
 
         b2body.createFixture(fdef).setUserData("foot");
 
-        isAttacking = false;
+        isAttacking1 = false; isAttacking2 = false; isAttacking3 = false;
         isDie = false;
         isHurt = false;
         canMove = true;
-    }
-
-    public void update(float dt){
-        setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight()/2);
-        TextureRegion frame = getFrame(dt);
-        //this also scale Knight 1.5 time bigger
-        if (currentState == State.RUNNING) {
-            setBounds(getX(), getY(), frame.getRegionWidth() / GameWorld.PPM * 1.5f, frame.getRegionHeight() / GameWorld.PPM * 1.5f);
-        } else {
-            setBounds(getX(), getY(), frame.getRegionWidth() * 1.5f/ GameWorld.PPM, frame.getRegionHeight() / GameWorld.PPM * 1.5f);
-        }
-        setRegion(frame);
+        createArrow = false;
+        isJumping = false;
     }
 
     public TextureRegion getFrame(float dt){
@@ -180,7 +178,7 @@ public class Knight extends Sprite {
             case ATTACKING2:
                 region = (TextureRegion) knightAttack2.getKeyFrame(stateTimer, true);
                 break;
-            case ATTACKING3:
+            case ATTACKING3://test
                 region = (TextureRegion) knightAttack3.getKeyFrame(stateTimer, true);
                 break;
             case DIEING:
@@ -196,13 +194,13 @@ public class Knight extends Sprite {
                 break;
         }
 
-        if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()){
+        if ((b2body.getLinearVelocity().x < 0 || !isRunningRight) && !region.isFlipX()){
             region.flip(true, false);
-            runningRight = false;
+            isRunningRight = false;
         }
-        else if ((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()){
+        else if ((b2body.getLinearVelocity().x > 0 || isRunningRight) && region.isFlipX()){
             region.flip(true, false);
-            runningRight = true;
+            isRunningRight = true;
         }
 
         stateTimer = (currentState == previousState) ? stateTimer + dt : 0;
@@ -223,7 +221,18 @@ public class Knight extends Sprite {
         return canMove;
     }
 
+    public void attack1CallBack(){
+        isAttacking1 = true;
+    }
+    public void attack2CallBack(){
+        isAttacking2 = true;
+    }
+    public void attack3CallBack(){
+        isAttacking3 = true;
+    }
+
     public State getState(){
+        //die and hurt code
         if (isDie){//test
             if (!knightDie.isAnimationFinished(stateTimer)) return State.DIEING;
             b2body.setTransform(32/GameWorld.PPM, 100/GameWorld.PPM, 0);
@@ -235,7 +244,34 @@ public class Knight extends Sprite {
             }
             else isHurt = false;
         }
+        //attack code
+        if (isAttacking1){//test
+            if (!knightAttack1.isAnimationFinished(stateTimer)){
+                return State.ATTACKING1;
+            }
+            else isAttacking1 = false;
+        }
+        else if (isAttacking2){
+            if (!knightAttack2.isAnimationFinished(stateTimer)){
+                return State.ATTACKING2;
+            }
+            else isAttacking2 = false;
+        }
+        else if (isAttacking3){//TEST O DAY
+            if (!knightAttack3.isAnimationFinished(stateTimer)){
+                return State.ATTACKING3;
+            }
+            else {//create arrow
+                int arrowDirection = (isRunningRight) ? 1 : -1;
+                //y + 0.1 to avoid colliding with ground
+                PlayScreen.bulletManager.addBullet(b2body.getPosition().x, b2body.getPosition().y, arrowDirection);
+                isAttacking3 = false;
+            }
+        }
+        //movement code
+        isJumping = false;
         if (b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING)){
+            isJumping = true;
             return State.JUMPING;
         }
         else if (b2body.getLinearVelocity().y < 0){
@@ -248,5 +284,16 @@ public class Knight extends Sprite {
             return State.RUNNING;
         }
         else return State.STANDING;
+    }
+
+
+    public void update(float dt){
+        setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight()/2);
+        TextureRegion frame = getFrame(dt);
+
+        //this scale Knight 1.5 time bigger
+        setBounds(getX(), getY(), frame.getRegionWidth()/GameWorld.PPM*scaleX,
+            frame.getRegionHeight()/GameWorld.PPM*scaleY);
+        setRegion(frame);
     }
 }
