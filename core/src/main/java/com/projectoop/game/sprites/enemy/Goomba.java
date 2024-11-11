@@ -18,7 +18,7 @@ public class Goomba extends Enemy {
         super(screen, x, y);
         Array<TextureRegion> frames = new Array<>();
         for (int i = 0; i < 2; i++){
-            frames.add(new TextureRegion(screen.getAtlas().findRegion("goomba"), i * 16, 0, 16, 16));
+            //frames.add(new TextureRegion(screen.getAtlas().findRegion("goomba"), i * 16, 0, 16, 16));
         }
         walkAnimation = new Animation<TextureRegion>(0.4f, frames);
         stateTime = 0;
@@ -32,7 +32,7 @@ public class Goomba extends Enemy {
         if (setToDestroy && !destroyed){
             world.destroyBody(b2body);
             destroyed = true;
-            setRegion(new TextureRegion(screen.getAtlas().findRegion("goomba"), 32, 0, 16, 16));//smashed texture
+            //setRegion(new TextureRegion(screen.getAtlas().findRegion("goomba"), 32, 0, 16, 16));//smashed texture
             stateTime = 0;
         }
         else if (!destroyed){

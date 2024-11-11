@@ -3,8 +3,10 @@ package com.projectoop.game.tools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.projectoop.game.GameWorld;
+import com.projectoop.game.sprites.effectedObject.Chest;
 import com.projectoop.game.sprites.enemy.Enemy;
 import com.projectoop.game.sprites.trap.InteractiveTileObject;
+import com.projectoop.game.sprites.trap.Spike;
 import com.projectoop.game.sprites.weapons.Arrow;
 
 public class WorldContactListener implements ContactListener {
@@ -73,6 +75,7 @@ public class WorldContactListener implements ContactListener {
                 ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
                 ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
                 break;
+            //arrow collision
             case GameWorld.ENEMY_BIT | GameWorld.ARROW_BIT://test
                 Gdx.app.log("Arrow", "Enemy");
                 Arrow arrow = (Arrow) ((fixA.getFilterData().categoryBits == GameWorld.ARROW_BIT) ? fixA.getUserData() : fixB.getUserData());
@@ -85,6 +88,12 @@ public class WorldContactListener implements ContactListener {
                 Gdx.app.log("Arrow", "Object");
                 Arrow arrow1 = (Arrow) ((fixA.getFilterData().categoryBits == GameWorld.ARROW_BIT) ? fixA.getUserData() : fixB.getUserData());
                 arrow1.setToDestroy = true;
+                break;
+            case GameWorld.CHEST_BIT | GameWorld.KNIGHT_BIT:
+                Gdx.app.log("Knight", "Open Chest");
+                Chest chest = (Chest)((fixA.getFilterData().categoryBits == GameWorld.CHEST_BIT) ? fixA.getUserData() : fixB.getUserData());
+                chest.usingCallBack();
+                break;
         }
     }
 

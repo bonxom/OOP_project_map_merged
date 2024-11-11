@@ -9,12 +9,14 @@ import com.badlogic.gdx.utils.Array;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
 import com.projectoop.game.sprites.enemy.Orc;
+import com.projectoop.game.sprites.effectedObject.Chest;
 import com.projectoop.game.sprites.trap.Lava;
 import com.projectoop.game.sprites.trap.Pilar;
 import com.projectoop.game.sprites.trap.Spike;
 
 public class B2WorldCreator {
     private Array<Orc> orcs;
+    private Array<Chest> chests;
 
     public B2WorldCreator(PlayScreen screen){
         World world = screen.getWorld();
@@ -58,11 +60,21 @@ public class B2WorldCreator {
         orcs = new Array<>();
         for (MapObject object : map.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject)object).getRectangle();
-            orcs.add(new Orc(screen, rect.getX() / GameWorld.PPM, rect.y/GameWorld.PPM));
+            orcs.add(new Orc(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
+        }
+//        create all chests
+        chests = new Array<>();
+        for (MapObject object : map.getLayers().get(14).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject)object).getRectangle();
+            chests.add(new Chest(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
         }
     }
 
     public Array<Orc> getOrcs() {
         return orcs;
+    }
+
+    public Array<Chest> getChests(){
+        return chests;
     }
 }

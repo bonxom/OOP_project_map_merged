@@ -1,4 +1,4 @@
-package com.projectoop.game.sprites.enemy;
+package com.projectoop.game.sprites.effectedObject;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -7,43 +7,40 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
 
-public abstract class Enemy extends Sprite {
-    protected TextureAtlas atlasWalking;
-    protected Animation<TextureRegion> walkAnimation;
+public abstract class EffectedObject extends Sprite {
+    public enum State {NOTUSE, USING, USED};
+    public State currentState;
+    public State previousState;
 
     protected float stateTime;
     protected boolean setToDestroy;
     protected boolean destroyed;
-    protected boolean runningRight;
+    protected boolean used;
+    protected boolean using;
 
     protected World world;
     protected PlayScreen screen;
     public Body b2body;
     public Vector2 velocity;
 
-    public Enemy(PlayScreen screen, float x, float y){
+    public EffectedObject(PlayScreen screen, float x, float y){
         this.world = screen.getWorld();
         this.screen = screen;
-        setPosition(x, y);
-        defineEnemy();
-        velocity = new Vector2(1, 0);
-        runningRight = true;
+        currentState = State.NOTUSE;
+        currentState = State.NOTUSE;
+        setPosition(x, y + 8/ GameWorld.PPM);
+        defineObject();
+        velocity = new Vector2(0, 0);
         b2body.setActive(false);
     }
 
-    protected abstract void defineEnemy();
+    protected abstract void defineObject();
     protected abstract void prepareAnimation();
+    protected abstract void prepareAudio();
     public abstract void update(float dt);
     public abstract void hitOnHead();
-
-    public void reverseVelocity(boolean x, boolean y){
-        if (x){
-            velocity.x = -velocity.x;
-        }
-        if (y){
-            velocity.y = -velocity.y;
-        }
-    }
+    public abstract void usingCallBack();
 }

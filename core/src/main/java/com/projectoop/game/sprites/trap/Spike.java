@@ -2,6 +2,10 @@ package com.projectoop.game.sprites.trap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.physics.box2d.*;
 import com.projectoop.game.GameWorld;
 import com.badlogic.gdx.math.Rectangle;
 import com.projectoop.game.scences.Hud;
@@ -30,4 +34,5 @@ public class Spike extends InteractiveTileObject {
         AudioManager.manager.get(AudioManager.knightHurtAudio, Sound.class).play();
         screen.getPlayer().setDie();
     }
+
 }

@@ -1,5 +1,6 @@
 package com.projectoop.game.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -12,22 +13,29 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.scences.Hud;
+import com.projectoop.game.sprites.effectedObject.EffectedObject;
 import com.projectoop.game.sprites.enemy.Enemy;
-import com.projectoop.game.sprites.enemy.Goomba;
 import com.projectoop.game.sprites.Knight;
 import com.projectoop.game.sprites.enemy.Orc;
+import com.projectoop.game.sprites.items.Item;
+import com.projectoop.game.sprites.items.ItemDef;
+import com.projectoop.game.sprites.items.Potion;
 import com.projectoop.game.sprites.weapons.BulletManager;
 import com.projectoop.game.tools.AudioManager;
 import com.projectoop.game.tools.B2WorldCreator;
 import com.projectoop.game.tools.WorldContactListener;
 
+import java.util.PriorityQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 public class PlayScreen implements Screen {
     private GameWorld game;
-    private TextureAtlas atlas;
+
     private OrthographicCamera gameCam;
     private Viewport gamePort;//resize screen
     private Hud hud;
@@ -43,6 +51,8 @@ public class PlayScreen implements Screen {
     private Knight player;
     //private Goomba goomba;
     //private Orc orc;
+    private Array<Item> items;
+    private LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
     private Music music;
 
@@ -80,14 +90,26 @@ public class PlayScreen implements Screen {
         music.setVolume(music.getVolume() - 0.7f);
         music.setLooping(true);
         music.play();
+
+        items = new Array<Item>();
+        itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
     }
 
-    public TextureAtlas getAtlas() {
-        return atlas;
+    public void spawnItem(ItemDef idef){
+        itemsToSpawn.add(idef);
+    }
+
+    public void handleSpawningItems(){
+        if(!itemsToSpawn.isEmpty()){
+            ItemDef idef = itemsToSpawn.poll();
+            if(idef.type == Potion.class){
+                items.add(new Potion(this, idef.position.x, idef.position.y));
+            }
+        }
     }
 
     public void handleInput(float dt){
-        if (player.moveable()) {
+        if (player.currentState != Knight.State.DIEING) {
             //test
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
@@ -119,18 +141,38 @@ public class PlayScreen implements Screen {
 
     public void update(float dt){//dt = data time
         handleInput(dt);
+        handleSpawningItems();
+
+        //FPS = 60
         world.step(1/60f, 6, 2);
 
         player.update(dt);
         bulletManager.update(dt);
         for (Enemy enemy : creator.getOrcs()){
             enemy.update(dt);
+            if (enemy.getX() < player.getX() + (GameWorld.V_WIDTH/2 + 4 * 16)/GameWorld.PPM){
+                enemy.b2body.setActive(true);//optimize to avoid lagging
+            }
         }
-        //goomba.update(dt);
-        //orc.update(dt);
+
+        for (EffectedObject eobj : creator.getChests()){
+            eobj.update(dt);
+            if (eobj.getX() < player.getX() + (GameWorld.V_WIDTH/2 + 4 * 16)/GameWorld.PPM){
+                eobj.b2body.setActive(true);
+            }
+        }
+
+        for (Item item : items){
+            item.update(dt);
+        }
 
         hud.update(dt);
+
+        //attack gamecam to x coordinate of player
         gameCam.position.x = player.b2body.getPosition().x;
+        //gameCam.position.y = player.b2body.getPosition().y + GameWorld.V_HEIGHT/4/GameWorld.PPM;
+
+        //update with correct coordinate
         gameCam.update();
         renderer.setView(gameCam);
     }
@@ -158,8 +200,12 @@ public class PlayScreen implements Screen {
         for (Enemy enemy : creator.getOrcs()){
             enemy.draw(game.batch);
         }
-        //goomba.draw(game.batch);
-        //orc.draw(game.batch);
+        for (EffectedObject eobj : creator.getChests()){
+            eobj.draw(game.batch);
+        }
+        for (Item item : items){
+            item.draw(game.batch);
+        }
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);//select camera position

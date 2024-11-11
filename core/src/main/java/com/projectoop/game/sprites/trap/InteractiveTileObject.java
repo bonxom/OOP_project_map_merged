@@ -3,11 +3,10 @@ package com.projectoop.game.sprites.trap;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.projectoop.game.GameWorld;
-import com.badlogic.gdx.math.Rectangle;
 import com.projectoop.game.screens.PlayScreen;
-
 
 public abstract class InteractiveTileObject {
     protected World world;
@@ -30,12 +29,12 @@ public abstract class InteractiveTileObject {
 
         bdef.type = BodyDef.BodyType.StaticBody;
         bdef.position.set(((bounds.getX() + bounds.getWidth()/2)/ GameWorld.PPM),
-                ((bounds.getY() + bounds.getHeight()/2)/GameWorld.PPM));
+            ((bounds.getY() + bounds.getHeight()/2)/GameWorld.PPM));
 
         body = world.createBody(bdef);
 
         shape.setAsBox((bounds.getWidth()/2/GameWorld.PPM),
-                (bounds.getHeight()/2/GameWorld.PPM));
+            (bounds.getHeight()/2/GameWorld.PPM));
         fdef.shape = shape;
         fixture = body.createFixture(fdef);
     }

@@ -25,7 +25,6 @@ public class Orc extends Enemy{
 
     protected void prepareAnimation(){
         atlasWalking = new TextureAtlas("OrcAsset/Pack/Walk.pack");
-
         walkAnimation = new Animation<TextureRegion>(0.1f, atlasWalking.getRegions());
     }
 
@@ -41,7 +40,7 @@ public class Orc extends Enemy{
         shape.setRadius(9/GameWorld.PPM);
         fdef.filter.categoryBits = GameWorld.ENEMY_BIT;
         fdef.filter.maskBits = GameWorld.GROUND_BIT | //collide list
-            GameWorld.SPIKE_BIT | GameWorld.LAVA_BIT | GameWorld.ENEMY_BIT |
+            GameWorld.SPIKE_BIT | GameWorld.LAVA_BIT | GameWorld.ENEMY_BIT | GameWorld.CHEST_BIT |
             GameWorld.PILAR_BIT | GameWorld.KNIGHT_BIT | GameWorld.OBJECT_BIT | GameWorld.ARROW_BIT;
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);

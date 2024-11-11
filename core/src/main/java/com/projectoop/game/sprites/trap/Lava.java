@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
 import com.projectoop.game.tools.AudioManager;
-import jdk.jshell.Snippet;
 
 public class Lava extends InteractiveTileObject {
 

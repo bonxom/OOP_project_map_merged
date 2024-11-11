@@ -13,11 +13,7 @@ public class AudioManager {
     public static String knightRunAudio = "Audio/SoundEffect/HeroRun.mp3";
     public static String knightHurtAudio = "Audio/SoundEffect/oizoioi.mp3";
     public static String knightJumpAudio = "Audio/SoundEffect/Jump.wav";
-    //animation
-    public static Animation<TextureRegion> knightRun;
-    public static Animation<TextureRegion> knightJump;
-    public static Animation<TextureRegion> goombaWalk;
-
+    public static String chestOpenAudio = "Audio/SoundEffect/chest_opening.mp3";
 
     public static void setUp(){
         manager = new AssetManager();
@@ -26,6 +22,8 @@ public class AudioManager {
         manager.load(knightHurtAudio, Sound.class);
         manager.load(knightJumpAudio, Sound.class);
         manager.load(knightRunAudio, Sound.class);
+
+        manager.load(chestOpenAudio, Sound.class);
         manager.finishLoading();
     }
 }
