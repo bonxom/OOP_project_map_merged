@@ -41,7 +41,8 @@ public class Knight extends Sprite {
 
     private Sound knightRunSound;
     private Sound knightJumpSound;
-    private Sound knightAttackSound;
+    private Sound knightSwordSound;
+    private Sound knightArrowSound;
     private Sound knightHurtSound;
     private Sound knightDieSound;
 
@@ -56,6 +57,9 @@ public class Knight extends Sprite {
     private boolean isDie;
     public boolean isJumping;
     private boolean endGame;
+
+    private boolean playSound1;
+    private boolean playSound2;
 
     public Knight(PlayScreen screen){
 
@@ -123,6 +127,11 @@ public class Knight extends Sprite {
         knightRunSound = AudioManager.manager.get(AudioManager.knightRunAudio, Sound.class);
         knightHurtSound = AudioManager.manager.get(AudioManager.knightHurtAudio, Sound.class);
         knightDieSound = AudioManager.manager.get(AudioManager.knightDieAudio, Sound.class);
+        knightSwordSound = AudioManager.manager.get(AudioManager.knightSwordAudio, Sound.class);
+        knightArrowSound = AudioManager.manager.get(AudioManager.knightArrowAudio, Sound.class);
+
+        playSound1 = false;
+        playSound2 = false;
     }
 
     public void defineKnight(){
@@ -176,9 +185,17 @@ public class Knight extends Sprite {
                 region = (TextureRegion) knightRun.getKeyFrame(stateTimer, true);
                 break;
             case ATTACKING1:
+                if (!playSound1){
+                    playSound1 = true;
+                    knightSwordSound.play();
+                }
                 region = (TextureRegion) knightAttack1.getKeyFrame(stateTimer, true);
                 break;
             case ATTACKING2:
+                if (!playSound2){
+                    playSound2 = true;
+                    knightSwordSound.play();
+                }
                 region = (TextureRegion) knightAttack2.getKeyFrame(stateTimer, true);
                 break;
             case ATTACKING3://test
@@ -264,13 +281,19 @@ public class Knight extends Sprite {
             if (!knightAttack1.isAnimationFinished(stateTimer)){
                 return State.ATTACKING1;
             }
-            else isAttacking1 = false;
+            else {
+                isAttacking1 = false;
+                playSound1 = false;
+            }
         }
         else if (isAttacking2){
             if (!knightAttack2.isAnimationFinished(stateTimer)){
                 return State.ATTACKING2;
             }
-            else isAttacking2 = false;
+            else {
+                isAttacking2 = false;
+                playSound2 = false;
+            }
         }
         else if (isAttacking3){//TEST O DAY
             if (!knightAttack3.isAnimationFinished(stateTimer)){
@@ -281,6 +304,7 @@ public class Knight extends Sprite {
                 //y + 0.1 to avoid colliding with ground
                 PlayScreen.bulletManager.addBullet(b2body.getPosition().x, b2body.getPosition().y, arrowDirection);
                 isAttacking3 = false;
+                knightArrowSound.play();
             }
         }
         //movement code
