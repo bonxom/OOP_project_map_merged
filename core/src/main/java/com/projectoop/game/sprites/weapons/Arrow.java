@@ -41,6 +41,10 @@ public class Arrow extends Bullet {
         b2body.createFixture(fdef).setUserData(this);
     }
 
+    @Override
+    public void destroy() {
+        setToDestroy = true;
+    }
 
     public void update (float dt){
         stateTime += dt;
@@ -51,7 +55,6 @@ public class Arrow extends Bullet {
         }
         else if (!destroyed){
             setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight()/2);
-
             setBounds(getX(), getY(), frame.getRegionWidth() / GameWorld.PPM * scaleX,
                 frame.getRegionHeight() / GameWorld.PPM * scaleY);
             if ((b2body.getLinearVelocity().x < 0 || !isShootingRight) && !frame.isFlipX()){

@@ -7,11 +7,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
 
 public class Orc extends Enemy{
-
     private static final float scaleX = 1.5f;
     private static final float scaleY = 1.5f;
 
@@ -20,12 +20,21 @@ public class Orc extends Enemy{
         stateTime = 0;
         setToDestroy = false;
         destroyed = false;
-        prepareAnimation();
     }
 
     protected void prepareAnimation(){
         atlasWalking = new TextureAtlas("OrcAsset/Pack/Walk.pack");
+        atlasAttacking = new TextureAtlas("OrcAsset/Pack/Attack.pack");
+        atlasDieing = new TextureAtlas("OrcAsset/Pack/Die.pack");
+        atlasHurting = new TextureAtlas("OrcAsset/Pack/Hurt.pack");
+
         walkAnimation = new Animation<TextureRegion>(0.1f, atlasWalking.getRegions());
+        attackAnimation = new Animation<TextureRegion>(0.1f, atlasAttacking.getRegions());
+        dieAnimation = new Animation<TextureRegion>(0.2f, atlasDieing.getRegions());
+        hurtAnimation = new Animation<TextureRegion>(0.3f, atlasHurting.getRegions());
+    }
+    protected void prepareAudio(){
+
     }
 
     @Override
@@ -33,13 +42,15 @@ public class Orc extends Enemy{
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX(), getY());
         bdef.type = BodyDef.BodyType.DynamicBody;
-
         b2body = world.createBody(bdef);
+
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(9/GameWorld.PPM);
+        //type bit
         fdef.filter.categoryBits = GameWorld.ENEMY_BIT;
-        fdef.filter.maskBits = GameWorld.GROUND_BIT | //collide list
+        //Collision bit list
+        fdef.filter.maskBits = GameWorld.GROUND_BIT |
             GameWorld.SPIKE_BIT | GameWorld.LAVA_BIT | GameWorld.ENEMY_BIT | GameWorld.CHEST_BIT |
             GameWorld.PILAR_BIT | GameWorld.KNIGHT_BIT | GameWorld.OBJECT_BIT | GameWorld.ARROW_BIT;
         fdef.shape = shape;

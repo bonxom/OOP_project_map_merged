@@ -95,10 +95,12 @@ public class PlayScreen implements Screen {
         itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
     }
 
+    //add item that need to be spawned to a Queue
     public void spawnItem(ItemDef idef){
         itemsToSpawn.add(idef);
     }
 
+    //spawn all item in Queue
     public void handleSpawningItems(){
         if(!itemsToSpawn.isEmpty()){
             ItemDef idef = itemsToSpawn.poll();
@@ -108,8 +110,9 @@ public class PlayScreen implements Screen {
         }
     }
 
+    //Input manager
     public void handleInput(float dt){
-        if (player.currentState != Knight.State.DIEING) {
+        if (player.currentState != Knight.State.DEAD) {
             //test
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
@@ -131,10 +134,6 @@ public class PlayScreen implements Screen {
             }
             else if (Gdx.input.isKeyJustPressed(Input.Keys.L)){
                 player.attack3CallBack();
-//                if (player.getState() == Knight.State.ATTACKING3){
-//                    bulletManager.addBullet(player.b2body.getPosition().x, player.b2body.getPosition().y - 0.15f, 1);
-//                }
-//                bulletManager.debug();
             }
         }
     }
@@ -192,11 +191,11 @@ public class PlayScreen implements Screen {
 
         b2dr.render(world, gameCam.combined);//box2d
 
+        //draw all sprite
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
         bulletManager.draw(game.batch);
-
         for (Enemy enemy : creator.getOrcs()){
             enemy.draw(game.batch);
         }
@@ -208,8 +207,19 @@ public class PlayScreen implements Screen {
         }
         game.batch.end();
 
+        //draw head of display
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);//select camera position
         hud.stage.draw();
+
+        if (gameOver()) {
+            game.setScreen(new GameOverScreen(game));
+            dispose();
+        }
+    }
+
+    public boolean gameOver(){
+        if (player.isEndGame() && player.getStateTimer() > 0.5) return true;
+        return false;
     }
 
     @Override

@@ -32,6 +32,8 @@ public class Chest extends EffectedObject {
 
     private Sound chestOpeningSound;
 
+    private boolean spawnItem;
+
     public Chest(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         this.screen = screen;
@@ -40,6 +42,7 @@ public class Chest extends EffectedObject {
         destroyed = false;
         used = false;
         using = false;
+        spawnItem = false;
         prepareAnimation();
         prepareAudio();
     }
@@ -54,6 +57,7 @@ public class Chest extends EffectedObject {
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(10/GameWorld.PPM, 10/GameWorld.PPM);
+
         fdef.filter.categoryBits = GameWorld.CHEST_BIT;
         fdef.filter.maskBits = GameWorld.GROUND_BIT | //collide list
             GameWorld.ENEMY_BIT | GameWorld.KNIGHT_BIT |GameWorld.ARROW_BIT;
@@ -78,8 +82,11 @@ public class Chest extends EffectedObject {
     public void usingCallBack() {
         using = true;
         chestOpeningSound.play();
-        screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x,
-            b2body.getPosition().y + 16/GameWorld.PPM), Potion.class));
+        if (!spawnItem) {
+            screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x,
+                b2body.getPosition().y + 16 / GameWorld.PPM), Potion.class));
+            spawnItem = true;
+        }
     }
 
     @Override
@@ -99,10 +106,6 @@ public class Chest extends EffectedObject {
         }
     }
 
-    @Override
-    public void hitOnHead() {
-
-    }
 
     public State getState(){
         if (!used && !using){
@@ -140,4 +143,7 @@ public class Chest extends EffectedObject {
         return region;
     }
 
+    public void hitOnHead() {
+
+    }
 }

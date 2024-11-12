@@ -9,7 +9,7 @@ import com.projectoop.game.screens.PlayScreen;
 import com.projectoop.game.tools.AudioManager;
 
 public class Knight extends Sprite {
-    public enum State {FALLING, HURTING, ATTACKING1, ATTACKING2, ATTACKING3, DIEING, JUMPING, STANDING, RUNNING};
+    public enum State {FALLING, HURTING, ATTACKING1, ATTACKING2, ATTACKING3, DEAD, JUMPING, STANDING, RUNNING};
     public State currentState;
     public State previousState;
     public World world;
@@ -17,6 +17,9 @@ public class Knight extends Sprite {
 
     private static float scaleX = 1.5f;
     private static float scaleY = 1.5f;
+
+    //test
+    private static int deathCount = 3;
 
     private TextureAtlas atlasRunning;
     private TextureAtlas atlasJumping;
@@ -52,8 +55,7 @@ public class Knight extends Sprite {
     private boolean isAttacking3;
     private boolean isDie;
     public boolean isJumping;
-    private boolean canMove;
-    public boolean createArrow;
+    private boolean endGame;
 
     public Knight(PlayScreen screen){
 
@@ -67,9 +69,13 @@ public class Knight extends Sprite {
         prepareSound();
         defineKnight();
 
-//        this.bulletManager = screen.bulletManager;
-
         setBounds(0, 0, 16/GameWorld.PPM, 16/GameWorld.PPM);
+
+        isAttacking1 = false; isAttacking2 = false; isAttacking3 = false;
+        isDie = false;
+        isHurt = false;
+        isJumping = false;
+        endGame = false;
     }
 
     private void prepareAnimation(){
@@ -116,6 +122,7 @@ public class Knight extends Sprite {
         knightJumpSound = AudioManager.manager.get(AudioManager.knightJumpAudio, Sound.class);
         knightRunSound = AudioManager.manager.get(AudioManager.knightRunAudio, Sound.class);
         knightHurtSound = AudioManager.manager.get(AudioManager.knightHurtAudio, Sound.class);
+        knightDieSound = AudioManager.manager.get(AudioManager.knightDieAudio, Sound.class);
     }
 
     public void defineKnight(){
@@ -128,36 +135,32 @@ public class Knight extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(6/GameWorld.PPM);
         fdef.filter.categoryBits = GameWorld.KNIGHT_BIT;
-        fdef.filter.maskBits = GameWorld.GROUND_BIT | GameWorld.SPIKE_BIT | GameWorld.CHEST_BIT |
-            GameWorld.LAVA_BIT | GameWorld.ENEMY_BIT | GameWorld.OBJECT_BIT | GameWorld.ENEMY_HEAD_BIT;
+        fdef.filter.maskBits = GameWorld.GROUND_BIT |
+            GameWorld.SPIKE_BIT | GameWorld.CHEST_BIT |
+            GameWorld.LAVA_BIT | GameWorld.ENEMY_BIT |
+            GameWorld.OBJECT_BIT | GameWorld.ITEM_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
 
         //make EdgeShape for checking head-collision
-        EdgeShape head = new EdgeShape();
-        head.set(new Vector2(-2/GameWorld.PPM, 6/GameWorld.PPM),
-                new Vector2(2/GameWorld.PPM, 6/GameWorld.PPM));
-        fdef.shape = head;
-        fdef.isSensor = true;//head is a sensor
-
-        b2body.createFixture(fdef).setUserData("head");
+//        EdgeShape head = new EdgeShape();
+//        head.set(new Vector2(-2/GameWorld.PPM, 6/GameWorld.PPM),
+//                new Vector2(2/GameWorld.PPM, 6/GameWorld.PPM));
+//        fdef.shape = head;
+//        fdef.isSensor = true;//head is a sensor
+//
+//        b2body.createFixture(fdef).setUserData("head");
 
         //make EdgeShape for checking foot-collision
         EdgeShape foot = new EdgeShape();
         foot.set(new Vector2(-2/GameWorld.PPM, -6/GameWorld.PPM),
                 new Vector2(2/GameWorld.PPM, -6/GameWorld.PPM));
+        fdef.filter.categoryBits = GameWorld.KNIGHT_FOOT_BIT;
         fdef.shape = foot;
         fdef.isSensor = true;//foot is a sensor
 
-        b2body.createFixture(fdef).setUserData("foot");
-
-        isAttacking1 = false; isAttacking2 = false; isAttacking3 = false;
-        isDie = false;
-        isHurt = false;
-        canMove = true;
-        createArrow = false;
-        isJumping = false;
+        b2body.createFixture(fdef).setUserData(this);
     }
 
     public TextureRegion getFrame(float dt){
@@ -181,7 +184,7 @@ public class Knight extends Sprite {
             case ATTACKING3://test
                 region = (TextureRegion) knightAttack3.getKeyFrame(stateTimer, true);
                 break;
-            case DIEING:
+            case DEAD:
                 region = (TextureRegion) knightDie.getKeyFrame(stateTimer, true);
                 break;
             case HURTING:
@@ -212,13 +215,22 @@ public class Knight extends Sprite {
         isHurt = true;
     }
 
-    public void setDie(){
-        isDie = true;
-        canMove = false;
+    public boolean isEndGame(){
+        return endGame;
     }
 
-    public boolean moveable(){
-        return canMove;
+    public float getStateTimer(){
+        return stateTimer;
+    }
+
+    public void setDie(){
+        deathCount--;
+        isDie = true;
+        knightDieSound.play();
+    }
+
+    public void buff(){
+        System.out.println("Bufffffffffff");
     }
 
     public void attack1CallBack(){
@@ -234,9 +246,12 @@ public class Knight extends Sprite {
     public State getState(){
         //die and hurt code
         if (isDie){//test
-            if (!knightDie.isAnimationFinished(stateTimer)) return State.DIEING;
-            b2body.setTransform(32/GameWorld.PPM, 100/GameWorld.PPM, 0);
-            isDie = false; canMove = true;
+            if (!knightDie.isAnimationFinished(stateTimer)) return State.DEAD;
+            if (deathCount <= 0) endGame = true;
+            else {
+                b2body.setTransform(32 / GameWorld.PPM, 100 / GameWorld.PPM, 0);
+                isDie = false;
+            }
         }
         if(isHurt) {//test
             if(!knightHurt.isAnimationFinished(stateTimer)) {

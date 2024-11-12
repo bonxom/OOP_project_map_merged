@@ -1,5 +1,6 @@
 package com.projectoop.game.sprites.items;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -8,16 +9,24 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
+import com.projectoop.game.sprites.Knight;
+import com.projectoop.game.tools.AudioManager;
 
 public class Potion extends Item{
     private Texture texture;
     private TextureRegion frame;
 
+    private Sound potionCollectSound;
+
     public Potion(PlayScreen screen, float x, float y) {
         super(screen, x, y);
-        prepareAnimation();
+        toDestroy = false;
+        destroyed = false;
+        stateTime = 0;
         //the chest throw a potion with this velocity
         velocity = new Vector2(1.5f, 0.5f);
+
+        potionCollectSound = AudioManager.manager.get(AudioManager.potionCollectAudio, Sound.class);
     }
 
     @Override
@@ -30,11 +39,12 @@ public class Potion extends Item{
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(6 / GameWorld.PPM);
+        //type bit
         fdef.filter.categoryBits = GameWorld.ITEM_BIT;
-        fdef.filter.maskBits = GameWorld.KNIGHT_BIT |
-            GameWorld.OBJECT_BIT |
-            GameWorld.GROUND_BIT |
-            GameWorld.CHEST_BIT;
+        //collision bit list
+        fdef.filter.maskBits = GameWorld.GROUND_BIT |
+            GameWorld.SPIKE_BIT | GameWorld.LAVA_BIT | GameWorld.ENEMY_BIT | GameWorld.CHEST_BIT |
+            GameWorld.PILAR_BIT | GameWorld.KNIGHT_BIT | GameWorld.OBJECT_BIT | GameWorld.ARROW_BIT;
 
         fdef.shape = shape;
         body.createFixture(fdef).setUserData(this);
@@ -48,17 +58,27 @@ public class Potion extends Item{
     }
 
     @Override
-    public void use() {
+    public void use(Knight knight) {
         destroy();
+        potionCollectSound.play();
+        //buff player (code later)
+        screen.getPlayer().buff();
     }
 
     @Override
     public void update(float dt){
-        super.update(dt);
-        setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
-        velocity.y = body.getLinearVelocity().y;
-        body.setLinearVelocity(velocity);
-        //when y = 0, set the potion stop
-        if (velocity.y == 0) body.setLinearVelocity(0, 0);
+        stateTime += dt;
+        if (toDestroy && !destroyed){
+            world.destroyBody(body);
+            destroyed = true;
+            stateTime = 0;
+        }
+        else {
+            setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
+            velocity.y = body.getLinearVelocity().y;
+            body.setLinearVelocity(velocity);
+            //when y = 0, set the potion stop
+            if (velocity.y == 0) body.setLinearVelocity(0, 0);
+        }
     }
 }

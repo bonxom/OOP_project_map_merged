@@ -27,7 +27,7 @@ public class B2WorldCreator {
         FixtureDef fdef = new FixtureDef();
         Body body;
 
-        //ground
+        //ground_ however if we need to make it short
         for (MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject)object).getRectangle();
 
@@ -43,18 +43,15 @@ public class B2WorldCreator {
         }
         //trap
         for (MapObject object : map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject)object).getRectangle();
-            new Spike(screen, rect);
+            new Spike(screen, object);
         }
         //lava
         for (MapObject object : map.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject)object).getRectangle();
-            new Lava(screen, rect);
+            new Lava(screen, object);
         }
         //pilar
         for (MapObject object : map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject)object).getRectangle();
-            new Pilar(screen, rect);
+            new Pilar(screen, object);
         }
         //create all orcs
         orcs = new Array<>();
@@ -62,7 +59,7 @@ public class B2WorldCreator {
             Rectangle rect = ((RectangleMapObject)object).getRectangle();
             orcs.add(new Orc(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
         }
-//        create all chests
+        //create all chests
         chests = new Array<>();
         for (MapObject object : map.getLayers().get(14).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject)object).getRectangle();

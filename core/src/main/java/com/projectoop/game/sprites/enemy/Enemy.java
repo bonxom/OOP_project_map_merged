@@ -8,10 +8,22 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.projectoop.game.screens.PlayScreen;
+import com.projectoop.game.sprites.effectedObject.EffectedObject;
 
 public abstract class Enemy extends Sprite {
+    public enum State {HURTING, ATTACKING, DIEING, WALKING};
+    public State currentState;
+    public State previousState;
+
     protected TextureAtlas atlasWalking;
+    protected TextureAtlas atlasAttacking;
+    protected TextureAtlas atlasHurting;
+    protected TextureAtlas atlasDieing;
+
     protected Animation<TextureRegion> walkAnimation;
+    protected Animation<TextureRegion> attackAnimation;
+    protected Animation<TextureRegion> hurtAnimation;
+    protected Animation<TextureRegion> dieAnimation;
 
     protected float stateTime;
     protected boolean setToDestroy;
@@ -28,6 +40,8 @@ public abstract class Enemy extends Sprite {
         this.screen = screen;
         setPosition(x, y);
         defineEnemy();
+        prepareAnimation();
+        prepareAudio();
         velocity = new Vector2(1, 0);
         runningRight = true;
         b2body.setActive(false);
@@ -35,6 +49,7 @@ public abstract class Enemy extends Sprite {
 
     protected abstract void defineEnemy();
     protected abstract void prepareAnimation();
+    protected abstract void prepareAudio();
     public abstract void update(float dt);
     public abstract void hitOnHead();
 

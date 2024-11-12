@@ -15,8 +15,8 @@ public abstract class Bullet extends Sprite {
     public Body b2body;
     public Vector2 velocity;
 
-    public boolean setToDestroy;
-    public boolean destroyed;
+    protected boolean setToDestroy;
+    protected boolean destroyed;
     protected boolean isShootingRight;
 
     public Bullet(PlayScreen screen, float x, float y, int direction) {
@@ -36,6 +36,7 @@ public abstract class Bullet extends Sprite {
 
     protected abstract void prepareAnimation();
     protected abstract void defineBullet();
+    public abstract void destroy();
     public abstract void update(float dt);
     public abstract void dispose();
 }

@@ -41,6 +41,7 @@ public abstract class EffectedObject extends Sprite {
     protected abstract void prepareAnimation();
     protected abstract void prepareAudio();
     public abstract void update(float dt);
-    public abstract void hitOnHead();
     public abstract void usingCallBack();
+    public abstract void hitOnHead();
+
 }

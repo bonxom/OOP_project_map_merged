@@ -102,7 +102,7 @@
             "scaleInEditor": 1
         },
         "TileConvert/Night.tsx": {
-            "scaleInDock": 0.5,
+            "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "TileConvert/Trap_Spike.tsx": {
@@ -150,11 +150,11 @@
             "scaleInDock": 1
         },
         "map3.tmx": {
-            "scale": 2,
-            "selectedLayer": 14,
+            "scale": 1.5,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 2612,
-                "y": 392.25
+                "x": 1676,
+                "y": 409.66666666666663
             }
         }
     },
