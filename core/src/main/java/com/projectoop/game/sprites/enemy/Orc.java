@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
 
@@ -17,6 +16,8 @@ public class Orc extends Enemy{
 
     public Orc(PlayScreen screen, float x, float y) {
         super(screen, x, y);
+        currentState = State.WALKING;
+        previousState = State.WALKING;
         stateTime = 0;
         setToDestroy = false;
         destroyed = false;
@@ -51,10 +52,37 @@ public class Orc extends Enemy{
         fdef.filter.categoryBits = GameWorld.ENEMY_BIT;
         //Collision bit list
         fdef.filter.maskBits = GameWorld.GROUND_BIT |
-            GameWorld.SPIKE_BIT | GameWorld.LAVA_BIT | GameWorld.ENEMY_BIT | GameWorld.CHEST_BIT |
+            GameWorld.TRAP_BIT | GameWorld.ENEMY_BIT | GameWorld.CHEST_BIT |
             GameWorld.PILAR_BIT | GameWorld.KNIGHT_BIT | GameWorld.OBJECT_BIT | GameWorld.ARROW_BIT;
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
+    }
+
+    public TextureRegion getFrame(float dt){
+        TextureRegion frame;
+
+        switch (currentState){
+            case DEAD:
+            case HURTING:
+            case ATTACKING:
+            case WALKING:
+            default:
+                frame = walkAnimation.getKeyFrame(stateTime, true);
+                break;
+        }
+
+        if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !frame.isFlipX()){
+            frame.flip(true, false);
+            runningRight = false;
+        }
+        else if ((b2body.getLinearVelocity().x > 0 || runningRight) && frame.isFlipX()){
+            frame.flip(true, false);
+            runningRight = true;
+        }
+
+        stateTime = currentState == previousState ? stateTime + dt : 0;
+        previousState = currentState;
+        return frame;
     }
 
     public void update(float dt){
@@ -65,19 +93,9 @@ public class Orc extends Enemy{
             stateTime = 0;
         }
         else if (!destroyed){
+            TextureRegion frame = getFrame(dt);
             b2body.setLinearVelocity(velocity);
             setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight()/2);
-            TextureRegion frame = (TextureRegion)walkAnimation.getKeyFrame(stateTime, true);
-
-            if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !frame.isFlipX()){
-                frame.flip(true, false);
-                runningRight = false;
-            }
-            else if ((b2body.getLinearVelocity().x > 0 || runningRight) && frame.isFlipX()){
-                frame.flip(true, false);
-                runningRight = true;
-            }
-
             setBounds(getX(), getY(), frame.getRegionWidth() / GameWorld.PPM * scaleX,
                                     frame.getRegionHeight() / GameWorld.PPM * scaleY);
             setRegion(frame);

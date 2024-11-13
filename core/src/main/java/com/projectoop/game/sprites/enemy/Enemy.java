@@ -11,9 +11,9 @@ import com.projectoop.game.screens.PlayScreen;
 import com.projectoop.game.sprites.effectedObject.EffectedObject;
 
 public abstract class Enemy extends Sprite {
-    public enum State {HURTING, ATTACKING, DIEING, WALKING};
-    public State currentState;
-    public State previousState;
+    public enum State {HURTING, ATTACKING, DEAD, WALKING};
+    protected State currentState;
+    protected State previousState;
 
     protected TextureAtlas atlasWalking;
     protected TextureAtlas atlasAttacking;

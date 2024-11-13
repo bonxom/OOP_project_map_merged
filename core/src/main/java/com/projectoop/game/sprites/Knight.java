@@ -145,9 +145,8 @@ public class Knight extends Sprite {
         shape.setRadius(6/GameWorld.PPM);
         fdef.filter.categoryBits = GameWorld.KNIGHT_BIT;
         fdef.filter.maskBits = GameWorld.GROUND_BIT |
-            GameWorld.SPIKE_BIT | GameWorld.CHEST_BIT |
-            GameWorld.LAVA_BIT | GameWorld.ENEMY_BIT |
-            GameWorld.OBJECT_BIT | GameWorld.ITEM_BIT;
+            GameWorld.TRAP_BIT | GameWorld.CHEST_BIT |
+            GameWorld.ENEMY_BIT | GameWorld.OBJECT_BIT | GameWorld.ITEM_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
@@ -250,6 +249,10 @@ public class Knight extends Sprite {
         System.out.println("Bufffffffffff");
     }
 
+    public boolean isMovable(){
+        return (currentState != State.DEAD && currentState != State.ATTACKING3);
+    }
+
     public void attack1CallBack(){
         isAttacking1 = true;
     }
@@ -263,7 +266,9 @@ public class Knight extends Sprite {
     public State getState(){
         //die and hurt code
         if (isDie){//test
-            if (!knightDie.isAnimationFinished(stateTimer)) return State.DEAD;
+            if (!knightDie.isAnimationFinished(stateTimer)) {
+                return State.DEAD;
+            }
             if (deathCount <= 0) endGame = true;
             else {
                 b2body.setTransform(32 / GameWorld.PPM, 100 / GameWorld.PPM, 0);

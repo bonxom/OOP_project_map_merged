@@ -43,7 +43,7 @@ public class Potion extends Item{
         fdef.filter.categoryBits = GameWorld.ITEM_BIT;
         //collision bit list
         fdef.filter.maskBits = GameWorld.GROUND_BIT |
-            GameWorld.SPIKE_BIT | GameWorld.LAVA_BIT | GameWorld.ENEMY_BIT | GameWorld.CHEST_BIT |
+            GameWorld.TRAP_BIT | GameWorld.ENEMY_BIT | GameWorld.CHEST_BIT |
             GameWorld.PILAR_BIT | GameWorld.KNIGHT_BIT | GameWorld.OBJECT_BIT | GameWorld.ARROW_BIT;
 
         fdef.shape = shape;

@@ -112,7 +112,7 @@ public class PlayScreen implements Screen {
 
     //Input manager
     public void handleInput(float dt){
-        if (player.currentState != Knight.State.DEAD) {
+        if (player.isMovable()) {
             //test
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {

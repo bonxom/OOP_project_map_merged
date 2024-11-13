@@ -3,15 +3,11 @@ package com.projectoop.game.tools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.projectoop.game.GameWorld;
-import com.projectoop.game.screens.PlayScreen;
 import com.projectoop.game.sprites.Knight;
 import com.projectoop.game.sprites.effectedObject.Chest;
 import com.projectoop.game.sprites.enemy.Enemy;
 import com.projectoop.game.sprites.items.Item;
-import com.projectoop.game.sprites.items.ItemDef;
-import com.projectoop.game.sprites.items.Potion;
 import com.projectoop.game.sprites.trap.InteractiveTileObject;
-import com.projectoop.game.sprites.trap.Spike;
 import com.projectoop.game.sprites.weapons.Arrow;
 
 public class WorldContactListener implements ContactListener {
@@ -48,8 +44,7 @@ public class WorldContactListener implements ContactListener {
 
         switch (cDef){
             //trap collision
-            case GameWorld.KNIGHT_FOOT_BIT | GameWorld.LAVA_BIT:
-            case GameWorld.KNIGHT_FOOT_BIT | GameWorld.SPIKE_BIT:
+            case GameWorld.KNIGHT_FOOT_BIT | GameWorld.TRAP_BIT:
                 if (fixA.getFilterData().categoryBits == GameWorld.KNIGHT_FOOT_BIT){
                     ((InteractiveTileObject) fixB.getUserData()).onFootHit((Knight) fixA.getUserData());
                 }
@@ -75,8 +70,7 @@ public class WorldContactListener implements ContactListener {
                 arrow.destroy();
                 break;
             case GameWorld.GROUND_BIT | GameWorld.ARROW_BIT:
-            case GameWorld.SPIKE_BIT | GameWorld.ARROW_BIT:
-            case GameWorld.LAVA_BIT | GameWorld.ARROW_BIT:
+            case GameWorld.TRAP_BIT | GameWorld.ARROW_BIT:
             case GameWorld.OBJECT_BIT | GameWorld.ARROW_BIT:
                 Gdx.app.log("Arrow", "Object");
                 Arrow arrow1 = (Arrow) ((fixA.getFilterData().categoryBits == GameWorld.ARROW_BIT) ? fixA.getUserData() : fixB.getUserData());

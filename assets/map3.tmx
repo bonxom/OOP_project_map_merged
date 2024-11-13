@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="160" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="127">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="160" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="144">
  <tileset firstgid="1" source="TileConvert/Castle -Background  Layer 2.tsx"/>
  <tileset firstgid="7057" source="TileConvert/Night.tsx"/>
  <tileset firstgid="7266" source="TileConvert/Dark Tree.tsx"/>
@@ -82,24 +82,22 @@
   <object id="98" x="0" y="160" height="288"/>
   <object id="99" x="2560" y="160" height="192"/>
  </objectgroup>
- <objectgroup id="11" name="Spike">
+ <objectgroup id="11" name="Trap">
   <object id="40" x="368" y="464" width="32" height="48"/>
   <object id="41" x="400" y="480" width="16" height="16"/>
   <object id="42" x="896" y="464" width="32" height="48"/>
   <object id="43" x="928" y="480" width="16" height="32"/>
   <object id="81" x="416" y="464" width="16" height="16"/>
   <object id="82" x="416" y="480" width="16" height="16"/>
- </objectgroup>
- <objectgroup id="13" name="Lava">
-  <object id="69" x="1296" y="480" width="112" height="16"/>
-  <object id="71" x="1296" y="448" width="16" height="32"/>
-  <object id="72" x="1392" y="448" width="16" height="32"/>
-  <object id="73" x="1568" y="480" width="112" height="16"/>
-  <object id="74" x="1664" y="448" width="16" height="32"/>
-  <object id="75" x="1568" y="464" width="16" height="16"/>
-  <object id="76" x="1456" y="464" width="16" height="32"/>
-  <object id="77" x="1472" y="480" width="64" height="16"/>
-  <object id="78" x="1536" y="464" width="16" height="32"/>
+  <object id="128" x="1296" y="448" width="16" height="48"/>
+  <object id="129" x="1312" y="480" width="80" height="16"/>
+  <object id="131" x="1392" y="448" width="16" height="48"/>
+  <object id="133" x="1456" y="464" width="16" height="32"/>
+  <object id="134" x="1472" y="480" width="80" height="16"/>
+  <object id="135" x="1536" y="464" width="16" height="16"/>
+  <object id="137" x="1568" y="464" width="16" height="32"/>
+  <object id="138" x="1584" y="480" width="96" height="16"/>
+  <object id="139" x="1664" y="448" width="16" height="32"/>
  </objectgroup>
  <objectgroup id="14" name="Pilar">
   <object id="84" x="352" y="416" width="16" height="32"/>
@@ -122,5 +120,6 @@
  </objectgroup>
  <objectgroup id="16" name="Chest">
   <object id="125" x="480" y="432" width="16" height="16"/>
+  <object id="142" x="1248" y="384" width="16" height="16"/>
  </objectgroup>
 </map>

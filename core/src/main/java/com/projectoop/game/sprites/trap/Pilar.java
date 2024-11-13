@@ -17,7 +17,5 @@ public class Pilar extends InteractiveTileObject {
 
     @Override
     public void onFootHit(Knight knight) {
-        AudioManager.manager.get(AudioManager.knightDieAudio, Sound.class).play();
-        screen.getPlayer().setDie();
     }
 }
