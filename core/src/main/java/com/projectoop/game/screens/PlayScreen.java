@@ -146,7 +146,8 @@ public class PlayScreen implements Screen {
 
         player.update(dt);
         bulletManager.update(dt);
-        for (Enemy enemy : creator.getOrcs()){
+
+        for (Enemy enemy : creator.getGroundEnemies()){
             enemy.update(dt);
             if (enemy.getX() < player.getX() + (GameWorld.V_WIDTH/2 + 4 * 16)/GameWorld.PPM){
                 enemy.b2body.setActive(true);//optimize to avoid lagging
@@ -195,9 +196,10 @@ public class PlayScreen implements Screen {
         game.batch.begin();
         player.draw(game.batch);
         bulletManager.draw(game.batch);
-        for (Enemy enemy : creator.getOrcs()){
+        for (Enemy enemy : creator.getGroundEnemies()){
             enemy.draw(game.batch);
         }
+
         for (EffectedObject eobj : creator.getChests()){
             eobj.draw(game.batch);
         }

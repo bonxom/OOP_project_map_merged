@@ -8,13 +8,15 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
+import com.projectoop.game.sprites.enemy.Goblin;
+import com.projectoop.game.sprites.enemy.GroundEnemy;
 import com.projectoop.game.sprites.enemy.Orc;
 import com.projectoop.game.sprites.effectedObject.Chest;
 import com.projectoop.game.sprites.trap.Pilar;
 import com.projectoop.game.sprites.trap.Trap;
 
 public class B2WorldCreator {
-    private Array<Orc> orcs;
+    private Array<GroundEnemy> groundEnemies;
     private Array<Chest> chests;
 
     public B2WorldCreator(PlayScreen screen){
@@ -49,21 +51,31 @@ public class B2WorldCreator {
             new Pilar(screen, object);
         }
         //create all orcs
-        orcs = new Array<>();
+//        orcs = new Array<>();
+//        for (MapObject object : map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)){
+//            Rectangle rect = ((RectangleMapObject)object).getRectangle();
+//            orcs.add(new Orc(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
+//        }
+        groundEnemies = new Array<>();
         for (MapObject object : map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject)object).getRectangle();
-            orcs.add(new Orc(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
+            groundEnemies.add(new Orc(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
+        }
+        //create all goblins
+        for (MapObject object : map.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject)object).getRectangle();
+            groundEnemies.add(new Goblin(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
         }
         //create all chests
         chests = new Array<>();
-        for (MapObject object : map.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)){
+        for (MapObject object : map.getLayers().get(14).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject)object).getRectangle();
             chests.add(new Chest(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
         }
     }
 
-    public Array<Orc> getOrcs() {
-        return orcs;
+    public Array<GroundEnemy> getGroundEnemies() {
+        return groundEnemies;
     }
 
     public Array<Chest> getChests(){

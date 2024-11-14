@@ -70,12 +70,12 @@ public class WorldContactListener implements ContactListener {
                 if(fixA.getFilterData().categoryBits == GameWorld.ARROW_BIT) {
                     Gdx.app.log("Enemy hit", "");
                     ((Arrow)(fixA.getUserData())).destroy();
-                    ((Orc)(fixB.getUserData())).hurtingCallBack();
+                    ((Enemy)(fixB.getUserData())).hurtingCallBack();
                 }
                 else {
                     Gdx.app.log("Enemy hit", "");
                     ((Arrow)(fixB.getUserData())).destroy();
-                    ((Orc)(fixA.getUserData())).hurtingCallBack();
+                    ((Enemy)(fixA.getUserData())).hurtingCallBack();
                 }
                 break;
             case GameWorld.GROUND_BIT | GameWorld.ARROW_BIT:
@@ -102,12 +102,12 @@ public class WorldContactListener implements ContactListener {
             case GameWorld.KNIGHT_BIT | GameWorld.ENEMY_BIT:
                 if(fixA.getFilterData().categoryBits == GameWorld.ENEMY_BIT) {
                     Gdx.app.log("Enemy hit", "");
-                    ((Orc) fixA.getUserData()).attackingCallBack();
+                    ((Enemy) fixA.getUserData()).attackingCallBack();
                     //((Knight) fixB.getUserData()).hurtingCallBack();
                 }
                 else {
                     Gdx.app.log("Enemy hit", "");
-                    ((Orc) fixB.getUserData()).attackingCallBack();
+                    ((Enemy) fixB.getUserData()).attackingCallBack();
                     //((Knight) fixA.getUserData()).hurtingCallBack();
                 }
                 break;
