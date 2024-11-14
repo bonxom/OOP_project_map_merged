@@ -20,8 +20,8 @@ public class Orc extends Enemy{
     private State currentState;
     private State previousState;
 
-    private static final float scaleX = 1.5f;
-    private static final float scaleY = 1.5f;
+    private static final float scaleX = 1.0f;
+    private static final float scaleY = 1.0f;
 
     private TextureAtlas atlasWalking;
     private TextureAtlas atlasAttacking;
@@ -57,13 +57,18 @@ public class Orc extends Enemy{
     }
 
     protected void prepareAnimation(){
-        atlasWalking = new TextureAtlas("OrcAsset/Pack/Walk.pack");
-        atlasAttacking = new TextureAtlas("OrcAsset/Pack/Attack.pack");
-        atlasDieing = new TextureAtlas("OrcAsset/Pack/Die.pack");
-        atlasHurting = new TextureAtlas("OrcAsset/Pack/Hurt.pack");
+        //scale 1.5
+//        atlasWalking = new TextureAtlas("OrcAsset/Pack/Walk.pack");
+//        atlasAttacking = new TextureAtlas("OrcAsset/Pack/Attack.pack");
+//        atlasDieing = new TextureAtlas("OrcAsset/Pack/Die.pack");
+//        atlasHurting = new TextureAtlas("OrcAsset/Pack/Hurt.pack");
+        atlasWalking = new TextureAtlas("Goblin/Pack/Walk.pack");
+        atlasAttacking = new TextureAtlas("Goblin/Pack/Attack.pack");
+        atlasDieing = new TextureAtlas("Goblin/Pack/Death.pack");
+        atlasHurting = new TextureAtlas("Goblin/Pack/Hurt.pack");
 
         walkAnimation = new Animation<TextureRegion>(0.3f, atlasWalking.getRegions());
-        attackAnimation = new Animation<TextureRegion>(0.4f, atlasAttacking.getRegions());
+        attackAnimation = new Animation<TextureRegion>(0.2f, atlasAttacking.getRegions());
         dieAnimation = new Animation<TextureRegion>(0.2f, atlasDieing.getRegions());
         hurtAnimation = new Animation<TextureRegion>(0.3f, atlasHurting.getRegions());
     }
@@ -95,6 +100,20 @@ public class Orc extends Enemy{
         b2body.createFixture(fdef).setUserData(this);
     }
 
+    public void hurtKnockBack() {
+        double crTime = System.currentTimeMillis();
+
+
+        double t = 200;
+        if(System.currentTimeMillis()-crTime <t) {
+            if(screen.getPlayer().b2body.getPosition().x < b2body.getPosition().x)
+                b2body.applyLinearImpulse(new Vector2(20,5), b2body.getWorldCenter(),true);
+            else
+                b2body.applyLinearImpulse(new Vector2(-20,5), b2body.getWorldCenter(),true);
+        }
+
+    }
+
     @Override
     public void destroy() {
         setToDestroy = true;
@@ -102,12 +121,16 @@ public class Orc extends Enemy{
 
     @Override
     public void attackingCallBack() {
+        attackSound.play();
         isAttack = true;
         System.out.println("Chem chem chem");
+        screen.getPlayer().hurtingCallBack();
     }
 
     @Override
     public void hurtingCallBack() {
+        hurtSound.play();
+        hurtKnockBack();
         isHurt = true;
     }
 
@@ -211,7 +234,8 @@ public class Orc extends Enemy{
             TextureRegion frame = getFrame(dt);
             b2body.setLinearVelocity(velocity);
             setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight()/2);
-            setBounds(getX(), getY(), frame.getRegionWidth() / GameWorld.PPM * scaleX,
+            //this y + 10 to move the animation stand on the ground
+            setBounds(getX(), getY()+ 10/GameWorld.PPM, frame.getRegionWidth() / GameWorld.PPM * scaleX,
                                     frame.getRegionHeight() / GameWorld.PPM * scaleY);
             setRegion(frame);
         }

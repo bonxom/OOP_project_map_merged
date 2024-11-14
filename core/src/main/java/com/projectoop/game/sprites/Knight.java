@@ -101,7 +101,7 @@ public class Knight extends Sprite {
         knightAttack1 = new Animation<TextureRegion>(0.05f, atlasAttacking1.getRegions());
         knightAttack2 = new Animation<TextureRegion>(0.05f, atlasAttacking2.getRegions());
         knightAttack3 = new Animation<TextureRegion>(0.1f, atlasAttacking3.getRegions());
-        knightHurt = new Animation<TextureRegion>(0.5f, atlasBeingHurt.getRegions());
+        knightHurt = new Animation<TextureRegion>(0.1f, atlasBeingHurt.getRegions());
     }
 
     private void prepareAnimation1(){//anim của nguyễn bá
@@ -121,7 +121,7 @@ public class Knight extends Sprite {
         knightAttack1 = new Animation<TextureRegion>(0.05f, atlasAttacking1.getRegions());
         //knightAttack2 = new Animation<TextureRegion>(0.05f, atlasAttacking2.getRegions());
         //knightAttack3 = new Animation<TextureRegion>(0.05f, atlasAttacking3.getRegions());
-        knightHurt = new Animation<TextureRegion>(0.5f, atlasBeingHurt.getRegions());
+        knightHurt = new Animation<TextureRegion>(0.01f, atlasBeingHurt.getRegions());
     }
 
     private void prepareSound(){
@@ -177,6 +177,7 @@ public class Knight extends Sprite {
 
     public void hurtingCallBack(){
         isHurt = true;
+        knightHurtSound.play();
     }
 
     public boolean isEndGame(){
@@ -198,7 +199,7 @@ public class Knight extends Sprite {
     }
 
     public boolean isMovable(){
-        return (currentState != State.DEAD && currentState != State.ATTACKING3 && currentState != State.HURTING);
+        return (currentState != State.DEAD && currentState != State.ATTACKING3);
     }
 
     public boolean isJumping(){
