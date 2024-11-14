@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
 
 public abstract class Bullet extends Sprite {
@@ -22,7 +23,7 @@ public abstract class Bullet extends Sprite {
     public Bullet(PlayScreen screen, float x, float y, int direction) {
         this.screen = screen;
         this.world = screen.getWorld();
-        setPosition(x, y);
+        setPosition(x + 15 * direction/ GameWorld.PPM, y);
         this.direction = direction;
         velocity = new Vector2(2.5f * direction, 0);
         stateTime = 0;

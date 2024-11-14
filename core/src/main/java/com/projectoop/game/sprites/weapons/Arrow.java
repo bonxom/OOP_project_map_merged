@@ -1,5 +1,6 @@
 package com.projectoop.game.sprites.weapons;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
@@ -29,12 +30,11 @@ public class Arrow extends Bullet {
         bdef.gravityScale = 0;
         b2body = world.createBody(bdef);
         CircleShape shape = new CircleShape();
-        shape.setRadius(4/GameWorld.PPM);
+        shape.setRadius(2/GameWorld.PPM);
         FixtureDef fdef = new FixtureDef();
         fdef.filter.categoryBits = GameWorld.ARROW_BIT;
-        fdef.filter.maskBits = GameWorld.GROUND_BIT | //collide list
-            GameWorld.TRAP_BIT | GameWorld.ENEMY_BIT |
-            GameWorld.OBJECT_BIT;
+        fdef.filter.maskBits = GameWorld.GROUND_BIT | GameWorld.ENEMY_BIT |
+            GameWorld.CHEST_BIT | GameWorld.ITEM_BIT;
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
     }
@@ -55,11 +55,11 @@ public class Arrow extends Bullet {
             setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight()/2);
             setBounds(getX(), getY(), frame.getRegionWidth() / GameWorld.PPM * scaleX,
                 frame.getRegionHeight() / GameWorld.PPM * scaleY);
-            if ((b2body.getLinearVelocity().x < 0 || !isShootingRight) && !frame.isFlipX()){
+            if ((!isShootingRight) && !frame.isFlipX()){
                 frame.flip(true, false);
                 isShootingRight = false;
             }
-            else if ((b2body.getLinearVelocity().x > 0 || isShootingRight) && frame.isFlipX()){
+            else if ((isShootingRight) && frame.isFlipX()){
                 frame.flip(true, false);
                 isShootingRight = true;
             }

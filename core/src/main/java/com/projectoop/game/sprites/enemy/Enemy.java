@@ -11,24 +11,16 @@ import com.projectoop.game.screens.PlayScreen;
 import com.projectoop.game.sprites.effectedObject.EffectedObject;
 
 public abstract class Enemy extends Sprite {
-    public enum State {HURTING, ATTACKING, DEAD, WALKING};
-    protected State currentState;
-    protected State previousState;
-
-    protected TextureAtlas atlasWalking;
-    protected TextureAtlas atlasAttacking;
-    protected TextureAtlas atlasHurting;
-    protected TextureAtlas atlasDieing;
-
-    protected Animation<TextureRegion> walkAnimation;
-    protected Animation<TextureRegion> attackAnimation;
-    protected Animation<TextureRegion> hurtAnimation;
-    protected Animation<TextureRegion> dieAnimation;
 
     protected float stateTime;
     protected boolean setToDestroy;
     protected boolean destroyed;
     protected boolean runningRight;
+    protected boolean isAttacking;
+    protected boolean isHurt;
+    protected boolean isDie;
+    protected boolean isHurting;
+    protected boolean isAttack;
 
     protected World world;
     protected PlayScreen screen;
@@ -52,6 +44,9 @@ public abstract class Enemy extends Sprite {
     protected abstract void prepareAudio();
     public abstract void update(float dt);
     public abstract void hitOnHead();
+    public abstract void destroy();
+    public abstract void attackingCallBack();
+    public abstract void hurtingCallBack();
 
     public void reverseVelocity(boolean x, boolean y){
         if (x){

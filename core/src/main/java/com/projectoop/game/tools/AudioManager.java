@@ -23,6 +23,7 @@ public class AudioManager {
 
     public static String orgDieAudio = "Audio/SoundEffect/org_die.mp3";
     public static String orgHurtAudio = "Audio/SoundEffect/org_hurt.mp3";
+    public static String orgAttackAudio = "Audio/SoundEffect/org_attack.mp3";
 
     public static void setUp(){
         manager = new AssetManager();
@@ -39,6 +40,9 @@ public class AudioManager {
         manager.load(potionCollectAudio, Sound.class);
 
         manager.load(orgDieAudio, Sound.class);
+        manager.load(orgHurtAudio, Sound.class);
+        manager.load(orgAttackAudio, Sound.class);
+
         manager.finishLoading();
     }
 }

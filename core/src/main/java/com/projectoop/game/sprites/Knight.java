@@ -51,11 +51,12 @@ public class Knight extends Sprite {
     private float stateTimer;
     private boolean isRunningRight;
     private boolean isHurt;
+    private boolean isHurting;
     private boolean isAttacking1;
     private boolean isAttacking2;
     private boolean isAttacking3;
     private boolean isDie;
-    public boolean isJumping;
+    private boolean isJumping;
     private boolean endGame;
 
     private boolean playSound1;
@@ -78,6 +79,7 @@ public class Knight extends Sprite {
         isAttacking1 = false; isAttacking2 = false; isAttacking3 = false;
         isDie = false;
         isHurt = false;
+        isHurting = false;
         isJumping = false;
         endGame = false;
     }
@@ -144,9 +146,10 @@ public class Knight extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(6/GameWorld.PPM);
         fdef.filter.categoryBits = GameWorld.KNIGHT_BIT;
-        fdef.filter.maskBits = GameWorld.GROUND_BIT |
+        fdef.filter.maskBits =
+            GameWorld.GROUND_BIT |
             GameWorld.TRAP_BIT | GameWorld.CHEST_BIT |
-            GameWorld.ENEMY_BIT | GameWorld.OBJECT_BIT | GameWorld.ITEM_BIT;
+            GameWorld.ENEMY_BIT | GameWorld.ITEM_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
@@ -166,66 +169,11 @@ public class Knight extends Sprite {
                 new Vector2(2/GameWorld.PPM, -6/GameWorld.PPM));
         fdef.filter.categoryBits = GameWorld.KNIGHT_FOOT_BIT;
         fdef.shape = foot;
-        fdef.isSensor = true;//foot is a sensor
+        //fdef.isSensor = true;//foot is a sensor
 
         b2body.createFixture(fdef).setUserData(this);
     }
 
-    public TextureRegion getFrame(float dt){
-        currentState = getState();
-        TextureRegion region;
-        switch (currentState){
-            case JUMPING:
-                knightJumpSound.play();
-                region = (TextureRegion) knightJump.getKeyFrame(stateTimer);
-                break;
-            case RUNNING:
-                knightRunSound.play();
-                region = (TextureRegion) knightRun.getKeyFrame(stateTimer, true);
-                break;
-            case ATTACKING1:
-                if (!playSound1){
-                    playSound1 = true;
-                    knightSwordSound.play();
-                }
-                region = (TextureRegion) knightAttack1.getKeyFrame(stateTimer, true);
-                break;
-            case ATTACKING2:
-                if (!playSound2){
-                    playSound2 = true;
-                    knightSwordSound.play();
-                }
-                region = (TextureRegion) knightAttack2.getKeyFrame(stateTimer, true);
-                break;
-            case ATTACKING3://test
-                region = (TextureRegion) knightAttack3.getKeyFrame(stateTimer, true);
-                break;
-            case DEAD:
-                region = (TextureRegion) knightDie.getKeyFrame(stateTimer, true);
-                break;
-            case HURTING:
-                region = (TextureRegion) knightHurt.getKeyFrame(stateTimer, true);
-                break;
-            case FALLING:
-            case STANDING:
-            default:
-                region = (TextureRegion) knightStand.getKeyFrame(stateTimer, true);
-                break;
-        }
-
-        if ((b2body.getLinearVelocity().x < 0 || !isRunningRight) && !region.isFlipX()){
-            region.flip(true, false);
-            isRunningRight = false;
-        }
-        else if ((b2body.getLinearVelocity().x > 0 || isRunningRight) && region.isFlipX()){
-            region.flip(true, false);
-            isRunningRight = true;
-        }
-
-        stateTimer = (currentState == previousState) ? stateTimer + dt : 0;
-        previousState = currentState;
-        return region;
-    }
 
     public void hurtingCallBack(){
         isHurt = true;
@@ -250,7 +198,11 @@ public class Knight extends Sprite {
     }
 
     public boolean isMovable(){
-        return (currentState != State.DEAD && currentState != State.ATTACKING3);
+        return (currentState != State.DEAD && currentState != State.ATTACKING3 && currentState != State.HURTING);
+    }
+
+    public boolean isJumping(){
+        return isJumping;
     }
 
     public void attack1CallBack(){
@@ -263,9 +215,65 @@ public class Knight extends Sprite {
         isAttacking3 = true;
     }
 
+    public TextureRegion getFrame(float dt){
+        currentState = getState();
+        TextureRegion region;
+        switch (currentState){
+            case JUMPING:
+                knightJumpSound.play();
+                region = (TextureRegion) knightJump.getKeyFrame(stateTimer,false);
+                break;
+            case RUNNING:
+                knightRunSound.play();
+                region = (TextureRegion) knightRun.getKeyFrame(stateTimer, true);
+                break;
+            case ATTACKING1:
+                if (!playSound1){
+                    playSound1 = true;
+                    knightSwordSound.play();
+                }
+                region = (TextureRegion) knightAttack1.getKeyFrame(stateTimer, false);
+                break;
+            case ATTACKING2:
+                if (!playSound2){
+                    playSound2 = true;
+                    knightSwordSound.play();
+                }
+                region = (TextureRegion) knightAttack2.getKeyFrame(stateTimer, false);
+                break;
+            case ATTACKING3://test
+                region = (TextureRegion) knightAttack3.getKeyFrame(stateTimer, false);
+                break;
+            case DEAD:
+                region = (TextureRegion) knightDie.getKeyFrame(stateTimer, false);
+                break;
+            case HURTING:
+                region = (TextureRegion) knightHurt.getKeyFrame(stateTimer, false);
+                break;
+            case FALLING:
+            case STANDING:
+            default:
+                region = (TextureRegion) knightStand.getKeyFrame(stateTimer, true);
+                break;
+        }
+
+        if ((b2body.getLinearVelocity().x < 0 || !isRunningRight) && !region.isFlipX()){
+            region.flip(true, false);
+            isRunningRight = false;
+        }
+        else if ((b2body.getLinearVelocity().x > 0 || isRunningRight) && region.isFlipX()){
+            region.flip(true, false);
+            isRunningRight = true;
+        }
+
+        stateTimer = (currentState == previousState) ? stateTimer + dt : 0;
+        previousState = currentState;
+        return region;
+    }
+
     public State getState(){
         //die and hurt code
-        if (isDie){//test
+        if (isDie) {//test
             if (!knightDie.isAnimationFinished(stateTimer)) {
                 return State.DEAD;
             }
@@ -275,12 +283,22 @@ public class Knight extends Sprite {
                 isDie = false;
             }
         }
-        if(isHurt) {//test
-            if(!knightHurt.isAnimationFinished(stateTimer)) {
-                return State.HURTING;
-            }
-            else isHurt = false;
+
+        if (isHurt) {
+            isHurting = true;
+            isAttacking1 = isAttacking2 = isAttacking3 = false;
+            isHurt = false;
+            System.out.println("KNIGHT HURTTTTTTTT");
+            return State.HURTING;
         }
+
+        if (isHurting) {
+            if (!knightHurt.isAnimationFinished(stateTimer)) {
+                System.out.println("KKKKKKKKKKKKKKKK");
+                return State.HURTING;
+            } else isHurting = false;
+        }
+
         //attack code
         if (isAttacking1){//test
             if (!knightAttack1.isAnimationFinished(stateTimer)){
@@ -301,12 +319,12 @@ public class Knight extends Sprite {
             }
         }
         else if (isAttacking3){//TEST O DAY
+            if (!isJumping) b2body.setLinearVelocity(0, 0);
             if (!knightAttack3.isAnimationFinished(stateTimer)){
                 return State.ATTACKING3;
             }
             else {//create arrow
                 int arrowDirection = (isRunningRight) ? 1 : -1;
-                //y + 0.1 to avoid colliding with ground
                 PlayScreen.bulletManager.addBullet(b2body.getPosition().x, b2body.getPosition().y, arrowDirection);
                 isAttacking3 = false;
                 knightArrowSound.play();
@@ -314,6 +332,9 @@ public class Knight extends Sprite {
         }
         //movement code
         isJumping = false;
+        if (b2body.getLinearVelocity().y == 0 && previousState == State.JUMPING){
+            b2body.setLinearVelocity(0, 0);
+        }
         if (b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING)){
             isJumping = true;
             return State.JUMPING;

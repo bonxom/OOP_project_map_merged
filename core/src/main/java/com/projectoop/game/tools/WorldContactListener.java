@@ -6,6 +6,7 @@ import com.projectoop.game.GameWorld;
 import com.projectoop.game.sprites.Knight;
 import com.projectoop.game.sprites.effectedObject.Chest;
 import com.projectoop.game.sprites.enemy.Enemy;
+import com.projectoop.game.sprites.enemy.Orc;
 import com.projectoop.game.sprites.items.Item;
 import com.projectoop.game.sprites.trap.InteractiveTileObject;
 import com.projectoop.game.sprites.weapons.Arrow;
@@ -54,37 +55,44 @@ public class WorldContactListener implements ContactListener {
                 break;
             //enemy collision
             case GameWorld.ENEMY_BIT | GameWorld.PILAR_BIT://enemy collide with object -> reverse
-                Gdx.app.log("Enemy", "Pilar");
+                //Gdx.app.log("Enemy", "Pilar");
                 Enemy enemy = (Enemy) ((fixA.getFilterData().categoryBits == GameWorld.ENEMY_BIT) ? fixA.getUserData() : fixB.getUserData());
                 enemy.reverseVelocity(true, false);
                 break;
             case GameWorld.ENEMY_BIT | GameWorld.ENEMY_BIT:
-                Gdx.app.log("Orc", "Orc");
+                //Gdx.app.log("Orc", "Orc");
                 ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
                 ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
                 break;
             //arrow collision
             case GameWorld.ENEMY_BIT | GameWorld.ARROW_BIT://test
-                Gdx.app.log("Arrow", "Enemy");
-                Arrow arrow = (Arrow) ((fixA.getFilterData().categoryBits == GameWorld.ARROW_BIT) ? fixA.getUserData() : fixB.getUserData());
-                arrow.destroy();
+                //Gdx.app.log("Arrow", "Enemy");
+                if(fixA.getFilterData().categoryBits == GameWorld.ARROW_BIT) {
+                    Gdx.app.log("Enemy hit", "");
+                    ((Arrow)(fixA.getUserData())).destroy();
+                    ((Orc)(fixB.getUserData())).hurtingCallBack();
+                }
+                else {
+                    Gdx.app.log("Enemy hit", "");
+                    ((Arrow)(fixB.getUserData())).destroy();
+                    ((Orc)(fixA.getUserData())).hurtingCallBack();
+                }
                 break;
             case GameWorld.GROUND_BIT | GameWorld.ARROW_BIT:
-            case GameWorld.TRAP_BIT | GameWorld.ARROW_BIT:
-            case GameWorld.OBJECT_BIT | GameWorld.ARROW_BIT:
-                Gdx.app.log("Arrow", "Object");
+            case GameWorld.CHEST_BIT | GameWorld.ARROW_BIT:
+                //Gdx.app.log("Arrow", "Object");
                 Arrow arrow1 = (Arrow) ((fixA.getFilterData().categoryBits == GameWorld.ARROW_BIT) ? fixA.getUserData() : fixB.getUserData());
                 arrow1.destroy();
                 break;
             //chest collision
             case GameWorld.CHEST_BIT | GameWorld.KNIGHT_FOOT_BIT:
             case GameWorld.CHEST_BIT | GameWorld.KNIGHT_BIT:
-                Gdx.app.log("Knight", "Open Chest");
+                //Gdx.app.log("Knight", "Open Chest");
                 Chest chest = (Chest)((fixA.getFilterData().categoryBits == GameWorld.CHEST_BIT) ? fixA.getUserData() : fixB.getUserData());
                 chest.usingCallBack();
                 break;
             case GameWorld.ITEM_BIT | GameWorld.KNIGHT_BIT:
-                Gdx.app.log("Knight", "Buff");
+                //Gdx.app.log("Knight", "Buff");
                 if(fixA.getFilterData().categoryBits == GameWorld.ITEM_BIT)
                     ((Item)fixA.getUserData()).use((Knight) fixB.getUserData());
                 else
@@ -92,9 +100,16 @@ public class WorldContactListener implements ContactListener {
                 break;
             //knight and enemy
             case GameWorld.KNIGHT_BIT | GameWorld.ENEMY_BIT:
-                Gdx.app.log("Knight", "hurt_enemy");
-                Knight knight = (Knight)((fixA.getFilterData().categoryBits == GameWorld.KNIGHT_BIT) ? fixA.getUserData() : fixB.getUserData());
-                //enemy.hit();
+                if(fixA.getFilterData().categoryBits == GameWorld.ENEMY_BIT) {
+                    Gdx.app.log("Enemy hit", "");
+                    ((Orc) fixA.getUserData()).attackingCallBack();
+                    //((Knight) fixB.getUserData()).hurtingCallBack();
+                }
+                else {
+                    Gdx.app.log("Enemy hit", "");
+                    ((Orc) fixB.getUserData()).attackingCallBack();
+                    //((Knight) fixA.getUserData()).hurtingCallBack();
+                }
                 break;
         }
     }

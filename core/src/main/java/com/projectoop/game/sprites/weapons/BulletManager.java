@@ -2,12 +2,13 @@ package com.projectoop.game.sprites.weapons;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.projectoop.game.screens.PlayScreen;
 
 import java.util.ArrayList;
 
 public class BulletManager {
-    public ArrayList<Arrow> bullets;
+    public Array<Arrow> bullets;
 
     public World world;
     private PlayScreen screen;
@@ -16,7 +17,7 @@ public class BulletManager {
         this.world = screen.getWorld();
         this.screen = screen;
 
-        bullets = new ArrayList<>();
+        bullets = new Array<>();
     }
 
     public void addBullet(float x, float y, int direction){
@@ -25,14 +26,15 @@ public class BulletManager {
     }
 
     public void update(float dt){
-        ArrayList<Arrow> removeBullets = new ArrayList<>();
+        Array<Arrow> removeBullets = new Array<>();
         for (Arrow bullet : bullets){
             bullet.update(dt);
             if (bullet.setToDestroy){//mark for removal
                 removeBullets.add(bullet);
             }
         }
-        bullets.removeAll(removeBullets); //remove all marked bullet
+        //debug();
+        bullets.removeAll(removeBullets, true); //remove all marked bullet
     }
 
     public void draw(Batch batch){
@@ -42,9 +44,9 @@ public class BulletManager {
     }
 
     public void debug(){
-        System.out.println(bullets.size());
+        System.out.println(bullets.size);
         for (Arrow bullet : bullets){
-            System.out.println("posX: " + bullet.getX());
+            System.out.println("posX: " + bullet.getX() + " speed: " + bullet.velocity.x);
         }
     }
 
