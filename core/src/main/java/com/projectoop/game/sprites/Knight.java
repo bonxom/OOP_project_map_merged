@@ -100,7 +100,7 @@ public class Knight extends Sprite {
         knightDie = new Animation<TextureRegion>(0.5f, atlasDieing.getRegions());
         knightAttack1 = new Animation<TextureRegion>(0.05f, atlasAttacking1.getRegions());
         knightAttack2 = new Animation<TextureRegion>(0.05f, atlasAttacking2.getRegions());
-        knightAttack3 = new Animation<TextureRegion>(0.1f, atlasAttacking3.getRegions());
+        knightAttack3 = new Animation<TextureRegion>(0.05f, atlasAttacking3.getRegions());
         knightHurt = new Animation<TextureRegion>(0.1f, atlasBeingHurt.getRegions());
     }
 
