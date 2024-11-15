@@ -5,10 +5,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.projectoop.game.screens.PlayScreen;
 
-import java.util.ArrayList;
 
 public class BulletManager {
-    public Array<Arrow> bullets;
+    public Array<Bullet> bullets;
 
     public World world;
     private PlayScreen screen;
@@ -20,14 +19,25 @@ public class BulletManager {
         bullets = new Array<>();
     }
 
-    public void addBullet(float x, float y, int direction){
-        Arrow bullet = new Arrow(screen, x, y, direction);
+    public void addBullet(float x, float y, int direction, String name){
+        Bullet bullet;
+        switch (name){
+            case "Arrow":
+                bullet = new Arrow(screen, x, y, direction);
+                break;
+            case "FireBall":
+                bullet = new FireBall(screen, x, y, direction);
+                break;
+            default:
+                bullet = null;
+                break;
+        }
         bullets.add(bullet);
     }
 
     public void update(float dt){
-        Array<Arrow> removeBullets = new Array<>();
-        for (Arrow bullet : bullets){
+        Array<Bullet> removeBullets = new Array<>();
+        for (Bullet bullet : bullets){
             bullet.update(dt);
             if (bullet.setToDestroy){//mark for removal
                 removeBullets.add(bullet);
@@ -38,20 +48,20 @@ public class BulletManager {
     }
 
     public void draw(Batch batch){
-        for (Arrow bullet : bullets){
+        for (Bullet bullet : bullets){
             bullet.draw(batch);
         }
     }
 
     public void debug(){
         System.out.println(bullets.size);
-        for (Arrow bullet : bullets){
+        for (Bullet bullet : bullets){
             System.out.println("posX: " + bullet.getX() + " speed: " + bullet.velocity.x);
         }
     }
 
     public void dispose() {
-        for (Arrow bullet : bullets) {
+        for (Bullet bullet : bullets) {
             bullet.dispose();
         }
         bullets.clear();

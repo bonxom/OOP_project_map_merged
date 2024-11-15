@@ -57,7 +57,7 @@ public class B2WorldCreator {
         groundEnemies = new Array<>();
         for (MapObject object : map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject)object).getRectangle();
-            groundEnemies.add(new Orc(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
+            groundEnemies.add(new FlyEnemy(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
         }
         //create all goblins
         for (MapObject object : map.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)){

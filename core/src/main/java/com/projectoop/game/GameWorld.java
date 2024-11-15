@@ -19,7 +19,7 @@ public class GameWorld extends Game {
     public static final short PILAR_BIT = 32;
     public static final short ENEMY_BIT = 64;
     public static final short KNIGHT_FOOT_BIT = 128;
-//    public static final short OBJECT_BIT = 256;
+    public static final short FIREBALL_BIT = 256;
     public static final short ARROW_BIT = 512;
     public static final short CHEST_BIT = 1024;
     public static final short ITEM_BIT = 2048;

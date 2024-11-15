@@ -10,6 +10,7 @@ import com.projectoop.game.sprites.enemy.Orc;
 import com.projectoop.game.sprites.items.Item;
 import com.projectoop.game.sprites.trap.InteractiveTileObject;
 import com.projectoop.game.sprites.weapons.Arrow;
+import com.projectoop.game.sprites.weapons.FireBall;
 
 public class WorldContactListener implements ContactListener {
 
@@ -83,6 +84,26 @@ public class WorldContactListener implements ContactListener {
                 //Gdx.app.log("Arrow", "Object");
                 Arrow arrow1 = (Arrow) ((fixA.getFilterData().categoryBits == GameWorld.ARROW_BIT) ? fixA.getUserData() : fixB.getUserData());
                 arrow1.destroy();
+                break;
+            //fireball collision
+            case GameWorld.KNIGHT_BIT | GameWorld.FIREBALL_BIT://test
+                //Gdx.app.log("Arrow", "Enemy");
+                if(fixA.getFilterData().categoryBits == GameWorld.FIREBALL_BIT) {
+                    Gdx.app.log("Enemy hit", "");
+                    ((FireBall)(fixA.getUserData())).destroy();
+                    //((Knight)(fixB.getUserData())).hurtingCallBack();
+                }
+                else {
+                    Gdx.app.log("Enemy hit", "");
+                    ((FireBall)(fixB.getUserData())).destroy();
+                    //((Knight)(fixA.getUserData())).hurtingCallBack();
+                }
+                break;
+            case GameWorld.GROUND_BIT | GameWorld.FIREBALL_BIT:
+            case GameWorld.CHEST_BIT | GameWorld.FIREBALL_BIT:
+                //Gdx.app.log("Arrow", "Object");
+                FireBall fireBall = (FireBall) ((fixA.getFilterData().categoryBits == GameWorld.FIREBALL_BIT) ? fixA.getUserData() : fixB.getUserData());
+                fireBall.destroy();
                 break;
             //chest collision
             case GameWorld.CHEST_BIT | GameWorld.KNIGHT_FOOT_BIT:
