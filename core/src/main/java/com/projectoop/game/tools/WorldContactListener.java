@@ -116,10 +116,14 @@ public class WorldContactListener implements ContactListener {
                 break;
             case GameWorld.ITEM_BIT | GameWorld.KNIGHT_BIT:
                 //Gdx.app.log("Knight", "Buff");
-                if(fixA.getFilterData().categoryBits == GameWorld.ITEM_BIT)
-                    ((Item)fixA.getUserData()).use((Knight) fixB.getUserData());
-                else
-                    ((Item)fixB.getUserData()).use((Knight) fixA.getUserData());
+                if(fixA.getFilterData().categoryBits == GameWorld.ITEM_BIT) {
+                    ((Item) fixA.getUserData()).use((Knight) fixB.getUserData());
+                    screen.itemsToRemove.add((Item) fixA.getUserData());
+                }
+                else {
+                    ((Item) fixB.getUserData()).use((Knight) fixA.getUserData());
+                    screen.itemsToRemove.add((Item) fixB.getUserData());
+                }
                 break;
             //knight and enemy
             case GameWorld.KNIGHT_BIT | GameWorld.ENEMY_BIT:
