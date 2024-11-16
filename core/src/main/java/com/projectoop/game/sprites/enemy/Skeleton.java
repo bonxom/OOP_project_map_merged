@@ -7,7 +7,7 @@ import com.projectoop.game.screens.PlayScreen;
 
 public class Skeleton extends GroundEnemy{
     public Skeleton(PlayScreen screen, float x, float y) {
-        super(screen, x, y, 13, 0.9f);
+        super(screen, x, y, 2, 0.9f);
     }
 
     @Override

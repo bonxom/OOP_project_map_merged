@@ -3,6 +3,7 @@ package com.projectoop.game.tools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.projectoop.game.GameWorld;
+import com.projectoop.game.screens.PlayScreen;
 import com.projectoop.game.sprites.Knight;
 import com.projectoop.game.sprites.effectedObject.Chest;
 import com.projectoop.game.sprites.enemy.Enemy;
@@ -13,6 +14,11 @@ import com.projectoop.game.sprites.weapons.Arrow;
 import com.projectoop.game.sprites.weapons.FireBall;
 
 public class WorldContactListener implements ContactListener {
+    private PlayScreen screen;
+
+    public WorldContactListener(PlayScreen playScreen) {
+        this.screen = playScreen;
+    }
 
     @Override
     public void beginContact(Contact contact) {
@@ -60,11 +66,6 @@ public class WorldContactListener implements ContactListener {
                 Enemy enemy = (Enemy) ((fixA.getFilterData().categoryBits == GameWorld.ENEMY_BIT) ? fixA.getUserData() : fixB.getUserData());
                 enemy.reverseVelocity(true, false);
                 break;
-            case GameWorld.ENEMY_BIT | GameWorld.ENEMY_BIT:
-                //Gdx.app.log("Orc", "Orc");
-                ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
-                ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
-                break;
             //arrow collision
             case GameWorld.ENEMY_BIT | GameWorld.ARROW_BIT://test
                 //Gdx.app.log("Arrow", "Enemy");
@@ -91,11 +92,13 @@ public class WorldContactListener implements ContactListener {
                 if(fixA.getFilterData().categoryBits == GameWorld.FIREBALL_BIT) {
                     Gdx.app.log("Enemy hit", "");
                     ((FireBall)(fixA.getUserData())).destroy();
+                    screen.getPlayer().hurtingCallBack();
                     //((Knight)(fixB.getUserData())).hurtingCallBack();
                 }
                 else {
                     Gdx.app.log("Enemy hit", "");
                     ((FireBall)(fixB.getUserData())).destroy();
+                    screen.getPlayer().hurtingCallBack();
                     //((Knight)(fixA.getUserData())).hurtingCallBack();
                 }
                 break;
@@ -106,7 +109,6 @@ public class WorldContactListener implements ContactListener {
                 fireBall.destroy();
                 break;
             //chest collision
-            case GameWorld.CHEST_BIT | GameWorld.KNIGHT_FOOT_BIT:
             case GameWorld.CHEST_BIT | GameWorld.KNIGHT_BIT:
                 //Gdx.app.log("Knight", "Open Chest");
                 Chest chest = (Chest)((fixA.getFilterData().categoryBits == GameWorld.CHEST_BIT) ? fixA.getUserData() : fixB.getUserData());

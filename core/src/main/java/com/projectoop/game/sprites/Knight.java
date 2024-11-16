@@ -6,14 +6,16 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
+import com.projectoop.game.sprites.weapons.BulletManager;
 import com.projectoop.game.tools.AudioManager;
 
 public class Knight extends Sprite {
-    public enum State {FALLING, HURTING, ATTACKING1, ATTACKING2, ATTACKING3, DEAD, JUMPING, STANDING, RUNNING};
+    public enum State {HURTING, ATTACKING1, ATTACKING2, ATTACKING3, DEAD, JUMPING, STANDING, RUNNING};
     public State currentState;
     public State previousState;
-    public World world;
+    private World world;
     public Body b2body;
+    private BulletManager bulletManager;
 
     private static float scaleX = 1.5f;
     private static float scaleY = 1.5f;
@@ -46,9 +48,11 @@ public class Knight extends Sprite {
     private Sound knightHurtSound;
     private Sound knightDieSound;
 
-//    private BulletManager bulletManager;
-
     private float stateTimer;
+    private float lastTimeShoot;
+    private float timeCount;
+    private final float COOL_DOWN = 2;
+
     private boolean isRunningRight;
     private boolean isHurt;
     private boolean isHurting;
@@ -58,6 +62,7 @@ public class Knight extends Sprite {
     private boolean isDie;
     private boolean isJumping;
     private boolean endGame;
+    private boolean shoot;
 
     private boolean playSound1;
     private boolean playSound2;
@@ -65,9 +70,13 @@ public class Knight extends Sprite {
     public Knight(PlayScreen screen){
 
         this.world = screen.getWorld();
+        bulletManager = new BulletManager(screen);
         currentState = State.STANDING;
         previousState = State.STANDING;
+
         stateTimer = 0;
+        lastTimeShoot = 0;
+        timeCount = 2;
         isRunningRight = true;
 
         prepareAnimation();
@@ -82,6 +91,7 @@ public class Knight extends Sprite {
         isHurting = false;
         isJumping = false;
         endGame = false;
+        shoot = false;
     }
 
     private void prepareAnimation(){
@@ -147,7 +157,7 @@ public class Knight extends Sprite {
         shape.setRadius(6/GameWorld.PPM);
         fdef.filter.categoryBits = GameWorld.KNIGHT_BIT;
         fdef.filter.maskBits =
-            GameWorld.GROUND_BIT |
+            GameWorld.GROUND_BIT | GameWorld.FIREBALL_BIT |
             GameWorld.TRAP_BIT | GameWorld.CHEST_BIT |
             GameWorld.ENEMY_BIT | GameWorld.ITEM_BIT;
 
@@ -198,10 +208,6 @@ public class Knight extends Sprite {
         System.out.println("Bufffffffffff");
     }
 
-    public boolean isMovable(){
-        return (currentState != State.DEAD && currentState != State.ATTACKING3);
-    }
-
     public boolean isJumping(){
         return isJumping;
     }
@@ -213,10 +219,15 @@ public class Knight extends Sprite {
         isAttacking2 = true;
     }
     public void attack3CallBack(){
-        isAttacking3 = true;
+        if (timeCount > COOL_DOWN) {
+            isAttacking3 = true;
+            shoot = false;
+            timeCount = 0;
+        }
     }
 
     public TextureRegion getFrame(float dt){
+        timeCount += dt;
         currentState = getState();
         TextureRegion region;
         switch (currentState){
@@ -251,7 +262,6 @@ public class Knight extends Sprite {
             case HURTING:
                 region = (TextureRegion) knightHurt.getKeyFrame(stateTimer, false);
                 break;
-            case FALLING:
             case STANDING:
             default:
                 region = (TextureRegion) knightStand.getKeyFrame(stateTimer, true);
@@ -289,13 +299,13 @@ public class Knight extends Sprite {
             isHurting = true;
             isAttacking1 = isAttacking2 = isAttacking3 = false;
             isHurt = false;
-            System.out.println("KNIGHT HURTTTTTTTT");
+            //System.out.println("KNIGHT HURTTTTTTTT");
             return State.HURTING;
         }
 
         if (isHurting) {
             if (!knightHurt.isAnimationFinished(stateTimer)) {
-                System.out.println("KKKKKKKKKKKKKKKK");
+                //System.out.println("KKKKKKKKKKKKKKKK");
                 return State.HURTING;
             } else isHurting = false;
         }
@@ -320,13 +330,12 @@ public class Knight extends Sprite {
             }
         }
         else if (isAttacking3){//TEST O DAY
-            if (!isJumping) b2body.setLinearVelocity(0, 0);
             if (!knightAttack3.isAnimationFinished(stateTimer)){
                 return State.ATTACKING3;
             }
             else {//create arrow
                 int arrowDirection = (isRunningRight) ? 1 : -1;
-                PlayScreen.bulletManager.addBullet(b2body.getPosition().x, b2body.getPosition().y, arrowDirection, "Arrow");
+                bulletManager.addBullet(b2body.getPosition().x, b2body.getPosition().y, arrowDirection, "Arrow");
                 isAttacking3 = false;
                 knightArrowSound.play();
             }
@@ -334,16 +343,10 @@ public class Knight extends Sprite {
         //movement code
         isJumping = false;
         if (b2body.getLinearVelocity().y == 0 && previousState == State.JUMPING){
-            b2body.setLinearVelocity(0, 0);
+            b2body.setLinearVelocity(0, 0);//avoid sliding after jumping down
         }
-        if (b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING)){
+        if (b2body.getLinearVelocity().y != 0){
             isJumping = true;
-            return State.JUMPING;
-        }
-        else if (b2body.getLinearVelocity().y < 0){
-            return State.FALLING;
-        }
-        else if (b2body.getLinearVelocity().y < 0){
             return State.JUMPING;
         }
         else if (b2body.getLinearVelocity().x != 0){
@@ -351,7 +354,6 @@ public class Knight extends Sprite {
         }
         else return State.STANDING;
     }
-
 
     public void update(float dt){
         setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight()/2);
@@ -361,5 +363,12 @@ public class Knight extends Sprite {
         setBounds(getX(), getY(), frame.getRegionWidth()/GameWorld.PPM*scaleX,
             frame.getRegionHeight()/GameWorld.PPM*scaleY);
         setRegion(frame);
+        bulletManager.update(dt);
+    }
+
+    @Override
+    public void draw(Batch batch) {
+        super.draw(batch);
+        bulletManager.draw(batch);
     }
 }

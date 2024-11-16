@@ -1,6 +1,7 @@
 package com.projectoop.game.sprites.enemy;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -10,10 +11,18 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
+import com.projectoop.game.sprites.weapons.BulletManager;
 
 public class FlyEnemy extends GroundEnemy{//test th, code sau
+    private final float COOL_DOWN = 2;
+    private float timeCount;
+    private float lastTimeShoot;
+    private BulletManager bulletManager;
     public FlyEnemy(PlayScreen screen, float x, float y) {
-        super(screen, x, y + 30/GameWorld.PPM, 0, 1);
+        super(screen, x, y, 0, 1);
+        lastTimeShoot = 0;
+        timeCount = 2;
+        bulletManager = new BulletManager(screen);
     }
 
     @Override
@@ -50,55 +59,28 @@ public class FlyEnemy extends GroundEnemy{//test th, code sau
         hurtAnimation = new Animation<TextureRegion>(0.3f, atlasHurting.getRegions());
     }
 
-    public State getState(){
-        //die and hurt code
-        if (isDie){//test
-            if (dieAnimation.isAnimationFinished(stateTime)) {
-                destroy();
-            }
-            //call destroy
-            return State.DEAD;
+    @Override
+    public TextureRegion getFrame(float dt) {
+        timeCount += dt;
+        System.out.println("TimeCount: " + timeCount);
+        if(timeCount > COOL_DOWN) {
+            System.out.println("dcmmm");
+            int direction = (runningRight) ? 1 : -1;
+            bulletManager.addBullet(b2body.getPosition().x, b2body.getPosition().y, direction, "FireBall");
+            timeCount = 0;
         }
+        return super.getFrame(dt);
+    }
 
-        if (isHurt){
-            isHurt = false;
-            isHurting = true;
-            lastDirectionIsRight = runningRight;
-            this.velocity = new Vector2(0, 0);
-            return State.HURTING;
-        }
-        if(isHurting) {//test
-            if(!hurtAnimation.isAnimationFinished(stateTime)) {
-                System.out.println("hihihihihihihh");
-                return State.HURTING;
-            }
-            else {
-                isHurting = false;
-                this.velocity = lastDirectionIsRight ? new Vector2(1, 0) : new Vector2(-1, 0);
-            }
-        }
-        //attack code
-        if (isAttack){
-            isAttacking = true;
-            isAttack = false;
-            lastDirectionIsRight = runningRight;
-            this.velocity = new Vector2(0, 0);
-            return State.ATTACKING;
-        }
-        if (isAttacking){//test
-            if (!attackAnimation.isAnimationFinished(stateTime)){
-                System.out.println("attacking");
-                return State.ATTACKING;
-            }
-            else {
-//                int dir = (runningRight) ? 1 : -1;
-//                PlayScreen.bulletManager.addBullet(b2body.getPosition().x, b2body.getPosition().y, dir, "FireBall");
-                isAttacking = false;
-                this.velocity = lastDirectionIsRight ? new Vector2(1, 0) : new Vector2(-1, 0);
-                //playSound1 = false;
-            }
-        }
+    @Override
+    public void update(float dt) {
+        super.update(dt);
+        bulletManager.update(dt);
+    }
 
-        return State.WALKING;
+    @Override
+    public void draw(Batch batch) {
+        super.draw(batch);
+        bulletManager.draw(batch);
     }
 }

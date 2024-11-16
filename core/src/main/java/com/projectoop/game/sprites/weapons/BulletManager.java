@@ -32,14 +32,14 @@ public class BulletManager {
                 bullet = null;
                 break;
         }
-        bullets.add(bullet);
+        if (bullet != null) bullets.add(bullet);
     }
 
     public void update(float dt){
         Array<Bullet> removeBullets = new Array<>();
         for (Bullet bullet : bullets){
             bullet.update(dt);
-            if (bullet.setToDestroy){//mark for removal
+            if (bullet.setToDestroy) {//mark for removal
                 removeBullets.add(bullet);
             }
         }

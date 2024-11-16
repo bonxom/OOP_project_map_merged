@@ -30,6 +30,7 @@ import com.projectoop.game.tools.AudioManager;
 import com.projectoop.game.tools.B2WorldCreator;
 import com.projectoop.game.tools.WorldContactListener;
 
+import java.awt.desktop.SystemSleepEvent;
 import java.util.PriorityQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -49,14 +50,12 @@ public class PlayScreen implements Screen {
     private B2WorldCreator creator;
 
     private Knight player;
-    //private Goomba goomba;
-    //private Orc orc;
+
     private Array<Item> items;
+    private Array<Item> itemsToRemove;
     private LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
     private Music music;
-
-    public static BulletManager bulletManager;
 
     public PlayScreen(GameWorld gameWorld){
 
@@ -78,13 +77,8 @@ public class PlayScreen implements Screen {
         b2dr = new Box2DDebugRenderer();
 
         creator = new B2WorldCreator(this);
-
         player = new Knight(this);
-        //goomba = new Goomba(this, .32f, .32f);
-        //orc = new Orc(this, .40f, .32f);
-        world.setContactListener(new WorldContactListener());
-
-        bulletManager = new BulletManager(this);
+        world.setContactListener(new WorldContactListener(this));
 
         music = AudioManager.manager.get(AudioManager.backgroundMusic, Music.class);
         music.setVolume(music.getVolume() - 0.7f);
@@ -92,6 +86,7 @@ public class PlayScreen implements Screen {
         music.play();
 
         items = new Array<Item>();
+        itemsToRemove = new Array<Item>();
         itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
     }
 
@@ -112,16 +107,18 @@ public class PlayScreen implements Screen {
 
     //Input manager
     public void handleInput(float dt){
-        if (player.isMovable()) {
+        if (player.getState() != Knight.State.DEAD) {
             //test
             if (Gdx.input.isKeyJustPressed(Input.Keys.W) && !player.isJumping()) {
                 player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.D) && player.b2body.getLinearVelocity().x <= 2) {
-                player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.A) && player.b2body.getLinearVelocity().x >= -2) {
-                player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+            if (player.getState() != Knight.State.ATTACKING3) {
+                if (Gdx.input.isKeyPressed(Input.Keys.D) && player.b2body.getLinearVelocity().x <= 2) {
+                    player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+                }
+                if (Gdx.input.isKeyPressed(Input.Keys.A) && player.b2body.getLinearVelocity().x >= -2) {
+                    player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+                }
             }
 
             //attacking code
@@ -132,8 +129,7 @@ public class PlayScreen implements Screen {
                 player.attack2CallBack();
             }
             else if (Gdx.input.isKeyJustPressed(Input.Keys.L)){
-                player.attack3CallBack();
-            }
+                player.attack3CallBack();}
         }
     }
 
@@ -145,7 +141,6 @@ public class PlayScreen implements Screen {
         world.step(1/60f, 6, 2);
 
         player.update(dt);
-        bulletManager.update(dt);
 
         for (Enemy enemy : creator.getGroundEnemies()){
             enemy.update(dt);
@@ -195,7 +190,6 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        bulletManager.draw(game.batch);
         for (Enemy enemy : creator.getGroundEnemies()){
             enemy.draw(game.batch);
         }
@@ -257,7 +251,6 @@ public class PlayScreen implements Screen {
         world.dispose();
         b2dr.dispose();
         hud.dispose();
-        bulletManager.dispose();
     }
 
     public Knight getPlayer() {

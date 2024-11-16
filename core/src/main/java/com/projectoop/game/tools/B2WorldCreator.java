@@ -48,25 +48,26 @@ public class B2WorldCreator {
         for (MapObject object : map.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)){
             new Pilar(screen, object);
         }
-        //create all orcs
-//        orcs = new Array<>();
-//        for (MapObject object : map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)){
-//            Rectangle rect = ((RectangleMapObject)object).getRectangle();
-//            orcs.add(new Orc(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
-//        }
+        //list of enemies
         groundEnemies = new Array<>();
+        //create all skeleton
         for (MapObject object : map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject)object).getRectangle();
-            groundEnemies.add(new FlyEnemy(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
+            groundEnemies.add(new Skeleton(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
         }
         //create all goblins
         for (MapObject object : map.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject)object).getRectangle();
             groundEnemies.add(new Goblin(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
         }
+        //create all flyenemies;
+        for (MapObject object : map.getLayers().get(14).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject)object).getRectangle();
+            groundEnemies.add(new FlyEnemy(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
+        }
         //create all chests
         chests = new Array<>();
-        for (MapObject object : map.getLayers().get(14).getObjects().getByType(RectangleMapObject.class)){
+        for (MapObject object : map.getLayers().get(15).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject)object).getRectangle();
             chests.add(new Chest(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
         }

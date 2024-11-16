@@ -25,7 +25,6 @@ public abstract class Bullet extends Sprite {
         this.world = screen.getWorld();
         setPosition(x + 15 * direction/ GameWorld.PPM, y);
         this.direction = direction;
-        velocity = new Vector2(2.5f * direction, 0);
         stateTime = 0;
         prepareAnimation();
         defineBullet();

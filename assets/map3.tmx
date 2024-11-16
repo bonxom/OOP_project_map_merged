@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="160" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="18" nextobjectid="147">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="160" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="165">
  <tileset firstgid="1" source="TileConvert/Castle -Background  Layer 2.tsx"/>
  <tileset firstgid="7057" source="TileConvert/Night.tsx"/>
  <tileset firstgid="7266" source="TileConvert/Dark Tree.tsx"/>
@@ -103,12 +103,13 @@
   <object id="84" x="352" y="416" width="16" height="32"/>
   <object id="86" x="16" y="416" width="16" height="32"/>
   <object id="88" x="544" y="368" width="16" height="32"/>
-  <object id="89" x="752" y="368" width="16" height="32"/>
   <object id="92" x="992" y="416" width="16" height="32"/>
-  <object id="94" x="1648" y="320" width="11.3333" height="32"/>
   <object id="96" x="2192" y="320" width="16" height="32"/>
-  <object id="97" x="2528" y="320" width="16" height="32"/>
   <object id="115" x="1136" y="416" width="16" height="32"/>
+  <object id="160" x="1296" y="160" width="16" height="240"/>
+  <object id="162" x="1648" y="160" width="16" height="192"/>
+  <object id="163" x="2480" y="160" width="16" height="192"/>
+  <object id="164" x="752" y="160" width="16" height="240"/>
  </objectgroup>
  <objectgroup id="15" name="Orcs">
   <object id="102" x="144" y="432" width="16" height="16"/>
@@ -119,6 +120,10 @@
  <objectgroup id="17" name="Goblin">
   <object id="144" x="2032" y="336" width="16" height="16"/>
   <object id="145" x="640" y="384" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup id="18" name="FlyEnemy">
+  <object id="148" x="2096" y="288" width="16" height="16"/>
+  <object id="149" x="1040" y="352" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="16" name="Chest">
   <object id="125" x="480" y="432" width="16" height="16"/>

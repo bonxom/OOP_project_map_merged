@@ -38,8 +38,6 @@ public abstract class GroundEnemy extends Enemy{
     protected Sound dieSound;
 
     protected boolean playSoundAttack;
-
-    protected boolean lastDirectionIsRight;
     protected float addYtoAnim;
 
     public GroundEnemy(PlayScreen screen, float x, float y, float addY, float scale) {
@@ -60,7 +58,6 @@ public abstract class GroundEnemy extends Enemy{
         playSoundAttack = false;
     }
 
-    protected abstract void prepareAnimation();
     protected void prepareAudio(){
         attackSound = AudioManager.manager.get(AudioManager.orgAttackAudio, Sound.class);
         dieSound = AudioManager.manager.get(AudioManager.orgDieAudio, Sound.class);
@@ -78,12 +75,12 @@ public abstract class GroundEnemy extends Enemy{
 //        CircleShape shape = new CircleShape();
 //        shape.setRadius(9/GameWorld.PPM);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(9 / GameWorld.PPM, 9 / GameWorld.PPM);
+        shape.setAsBox(9 / GameWorld.PPM, 15 / GameWorld.PPM);
         //type bit
         fdef.filter.categoryBits = GameWorld.ENEMY_BIT;
         //Collision bit list
         fdef.filter.maskBits = GameWorld.GROUND_BIT |
-            GameWorld.TRAP_BIT | GameWorld.ENEMY_BIT | GameWorld.CHEST_BIT |
+            GameWorld.TRAP_BIT | GameWorld.CHEST_BIT |
             GameWorld.PILAR_BIT | GameWorld.KNIGHT_BIT | GameWorld.ARROW_BIT;
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
@@ -141,11 +138,10 @@ public abstract class GroundEnemy extends Enemy{
                 //System.out.println("attack");
                 break;
             case WALKING:
+                //System.out.println("walk");
             default:
                 frame = walkAnimation.getKeyFrame(stateTime, true);
-                //System.out.println("walk");
 
-                break;
         }
 
         if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !frame.isFlipX()){
@@ -175,7 +171,6 @@ public abstract class GroundEnemy extends Enemy{
         if (isHurt){
             isHurt = false;
             isHurting = true;
-            lastDirectionIsRight = runningRight;
             this.velocity = new Vector2(0, 0);
             return State.HURTING;
         }
@@ -186,14 +181,13 @@ public abstract class GroundEnemy extends Enemy{
             }
             else {
                 isHurting = false;
-                this.velocity = lastDirectionIsRight ? new Vector2(1, 0) : new Vector2(-1, 0);
+                this.velocity = runningRight ? new Vector2(1, 0) : new Vector2(-1, 0);
             }
         }
         //attack code
         if (isAttack){
             isAttacking = true;
             isAttack = false;
-            lastDirectionIsRight = runningRight;
             this.velocity = new Vector2(0, 0);
             return State.ATTACKING;
         }
@@ -204,7 +198,7 @@ public abstract class GroundEnemy extends Enemy{
             }
             else {
                 isAttacking = false;
-                this.velocity = lastDirectionIsRight ? new Vector2(1, 0) : new Vector2(-1, 0);
+                this.velocity = runningRight ? new Vector2(1, 0) : new Vector2(-1, 0);
                 //playSound1 = false;
             }
         }
