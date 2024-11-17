@@ -49,9 +49,8 @@ public class Knight extends Sprite {
     private Sound knightDieSound;
 
     private float stateTimer;
-    private float lastTimeShoot;
     private float timeCount;
-    private final float COOL_DOWN = 2;
+    private final float COOL_DOWN = 1;
 
     private boolean isRunningRight;
     private boolean isHurt;
@@ -62,7 +61,6 @@ public class Knight extends Sprite {
     private boolean isDie;
     private boolean isJumping;
     private boolean endGame;
-    private boolean shoot;
 
     private boolean playSound1;
     private boolean playSound2;
@@ -75,7 +73,6 @@ public class Knight extends Sprite {
         previousState = State.STANDING;
 
         stateTimer = 0;
-        lastTimeShoot = 0;
         timeCount = 2;
         isRunningRight = true;
 
@@ -91,7 +88,6 @@ public class Knight extends Sprite {
         isHurting = false;
         isJumping = false;
         endGame = false;
-        shoot = false;
     }
 
     private void prepareAnimation(){
@@ -221,7 +217,6 @@ public class Knight extends Sprite {
     public void attack3CallBack(){
         if (timeCount > COOL_DOWN) {
             isAttacking3 = true;
-            shoot = false;
             timeCount = 0;
         }
     }

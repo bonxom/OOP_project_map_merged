@@ -7,12 +7,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
-import com.projectoop.game.sprites.Knight;
+import com.projectoop.game.scences.EnemyHealthBar;
 import com.projectoop.game.tools.AudioManager;
 
 public abstract class GroundEnemy extends Enemy{
@@ -38,6 +37,9 @@ public abstract class GroundEnemy extends Enemy{
     protected Sound dieSound;
 
     protected boolean playSoundAttack;
+    protected EnemyHealthBar healthBar;
+    protected float maxHealth = 100;
+    protected float currentHealth;
     protected float addYtoAnim;
 
     public GroundEnemy(PlayScreen screen, float x, float y, float addY, float scale) {
@@ -56,6 +58,8 @@ public abstract class GroundEnemy extends Enemy{
         isHurting = false;
         isDie = false;
         playSoundAttack = false;
+        currentHealth = maxHealth;
+        healthBar = new EnemyHealthBar(this, maxHealth);
     }
 
     protected void prepareAudio(){
@@ -75,7 +79,7 @@ public abstract class GroundEnemy extends Enemy{
 //        CircleShape shape = new CircleShape();
 //        shape.setRadius(9/GameWorld.PPM);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(9 / GameWorld.PPM, 15 / GameWorld.PPM);
+        shape.setAsBox(9 / GameWorld.PPM, 20 / GameWorld.PPM);
         //type bit
         fdef.filter.categoryBits = GameWorld.ENEMY_BIT;
         //Collision bit list
@@ -227,6 +231,7 @@ public abstract class GroundEnemy extends Enemy{
     public void draw (Batch batch){
         if (!destroyed || stateTime < 1){
             super.draw(batch);
+            healthBar.draw(batch);
         }
     }
 
