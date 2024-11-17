@@ -34,8 +34,8 @@ public class FlyEnemy extends GroundEnemy{//test th, code sau
 
         b2body = world.createBody(bdef);
         FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        shape.setRadius(10/GameWorld.PPM);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(9/GameWorld.PPM, 9/GameWorld.PPM);
         //type bit
         fdef.filter.categoryBits = GameWorld.ENEMY_BIT;
         //Collision bit list

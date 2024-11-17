@@ -3,6 +3,7 @@ package com.projectoop.game.scences;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.projectoop.game.GameWorld;
+import com.projectoop.game.sprites.enemy.FlyEnemy;
 import com.projectoop.game.sprites.enemy.GroundEnemy;
 
 public class EnemyHealthBar {
@@ -20,7 +21,7 @@ public class EnemyHealthBar {
 
 
         bgTexture = new Texture("HealthBar/bg.png");
-        redTexture = new Texture("HealthBar/green.png");
+        redTexture = new Texture("HealthBar/red.png");
     }
 
     public void update(float health) {
@@ -37,6 +38,10 @@ public class EnemyHealthBar {
 //        float barY = groundEnemy.getY() + groundEnemy.getHeight() / 2 + barHeight+ 20/ GameWorld.PPM;
         float barX = groundEnemy.b2body.getPosition().x - barWidth/2;
         float barY = groundEnemy.b2body.getPosition().y;
+        if (groundEnemy instanceof FlyEnemy)
+            barY += 13/GameWorld.PPM;
+        else
+            barY += 25/GameWorld.PPM;
 // tu xet vi tri
 
 

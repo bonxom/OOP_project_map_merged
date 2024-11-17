@@ -175,7 +175,7 @@ public abstract class GroundEnemy extends Enemy{
         if (isHurt){
             isHurt = false;
             isHurting = true;
-            this.velocity = new Vector2(0, 0);
+            this.velocity.x = 0;
             return State.HURTING;
         }
         if(isHurting) {//test
@@ -185,14 +185,14 @@ public abstract class GroundEnemy extends Enemy{
             }
             else {
                 isHurting = false;
-                this.velocity = runningRight ? new Vector2(1, 0) : new Vector2(-1, 0);
+                this.velocity.x = runningRight ? 1 : -1;
             }
         }
         //attack code
         if (isAttack){
             isAttacking = true;
             isAttack = false;
-            this.velocity = new Vector2(0, 0);
+            this.velocity.x = 0;
             return State.ATTACKING;
         }
         if (isAttacking){//test
@@ -202,7 +202,7 @@ public abstract class GroundEnemy extends Enemy{
             }
             else {
                 isAttacking = false;
-                this.velocity = runningRight ? new Vector2(1, 0) : new Vector2(-1, 0);
+                this.velocity.x = runningRight ? 1 : -1;
                 //playSound1 = false;
             }
         }
@@ -226,6 +226,7 @@ public abstract class GroundEnemy extends Enemy{
                 frame.getRegionHeight() / GameWorld.PPM * scaleY);
             setRegion(frame);
         }
+        System.out.println(velocity.x);
     }
 
     public void draw (Batch batch){

@@ -58,6 +58,7 @@ public class Knight extends Sprite {
     private boolean isAttacking1;
     private boolean isAttacking2;
     private boolean isAttacking3;
+    private boolean isAttack3;
     private boolean isDie;
     private boolean isJumping;
     private boolean endGame;
@@ -83,6 +84,7 @@ public class Knight extends Sprite {
         setBounds(0, 0, 16/GameWorld.PPM, 16/GameWorld.PPM);
 
         isAttacking1 = false; isAttacking2 = false; isAttacking3 = false;
+        isAttack3 = false;
         isDie = false;
         isHurt = false;
         isHurting = false;
@@ -216,7 +218,7 @@ public class Knight extends Sprite {
     }
     public void attack3CallBack(){
         if (timeCount > COOL_DOWN) {
-            isAttacking3 = true;
+            isAttack3 = true;
             timeCount = 0;
         }
     }
@@ -306,6 +308,11 @@ public class Knight extends Sprite {
         }
 
         //attack code
+        if (isAttack3){//avoid shooting without animation
+            isAttack3 = false;
+            isAttacking3 = true;
+            return State.ATTACKING3;
+        }
         if (isAttacking1){//test
             if (!knightAttack1.isAnimationFinished(stateTimer)){
                 return State.ATTACKING1;
