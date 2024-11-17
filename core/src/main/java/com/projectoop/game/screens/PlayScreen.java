@@ -21,6 +21,7 @@ import com.projectoop.game.scences.Hud;
 import com.projectoop.game.sprites.effectedObject.EffectedObject;
 import com.projectoop.game.sprites.enemy.Enemy;
 import com.projectoop.game.sprites.Knight;
+import com.projectoop.game.sprites.enemy.GroundEnemy;
 import com.projectoop.game.sprites.enemy.Orc;
 import com.projectoop.game.sprites.items.Item;
 import com.projectoop.game.sprites.items.ItemDef;
@@ -122,8 +123,11 @@ public class PlayScreen implements Screen {
                 }
 
                 if (Gdx.input.isKeyJustPressed(Input.Keys.O)){
+                    player.b2body.setTransform(player.b2body.getPosition().x, player.b2body.getPosition().y + 40/GameWorld.PPM,0);
                     Knight.scaleX = Knight.scaleY = 3;
                     Arrow.scaleX = Arrow.scaleY = 3;
+                    player.redefineKnight();
+                    GroundEnemy.attackRange = 70;
                 }
             }
 

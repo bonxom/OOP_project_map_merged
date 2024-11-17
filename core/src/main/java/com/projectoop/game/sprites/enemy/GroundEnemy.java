@@ -42,6 +42,8 @@ public abstract class GroundEnemy extends Enemy{
     protected float currentHealth;
     protected float addYtoAnim;
 
+    public static float attackRange;
+
     public GroundEnemy(PlayScreen screen, float x, float y, float addY, float scale) {
         super(screen, x, y);
         this.addYtoAnim = addY;
@@ -60,6 +62,8 @@ public abstract class GroundEnemy extends Enemy{
         playSoundAttack = false;
         currentHealth = maxHealth;
         healthBar = new EnemyHealthBar(this, maxHealth);
+
+        attackRange = 30;
     }
 
     protected void prepareAudio(){
@@ -107,12 +111,12 @@ public abstract class GroundEnemy extends Enemy{
         if (!screen.getPlayer().isAttack()) return false;
         //player on the left-side of enemy
         float check_dis = this.b2body.getPosition().x - screen.getPlayer().b2body.getPosition().x;
-        if (check_dis < 30/GameWorld.PPM && check_dis > 0){
+        if (check_dis < attackRange/GameWorld.PPM && check_dis > 0){
             //System.out.println("1");
             return true;
         }
         //right-side
-        else if (-check_dis < 30/GameWorld.PPM && -check_dis > 0){
+        else if (-check_dis < attackRange/GameWorld.PPM && -check_dis > 0){
             //System.out.println("2");
             return true;
         }

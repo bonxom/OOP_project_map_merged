@@ -209,6 +209,55 @@ public class Knight extends Sprite {
         b2body.createFixture(fdef).setUserData(this);
     }
 
+    public void redefineKnight(){
+        Vector2 position = b2body.getPosition();
+        world.destroyBody(b2body);
+
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(position);
+        bdef.type = BodyDef.BodyType.DynamicBody;
+
+        b2body = world.createBody(bdef);
+        FixtureDef fdef = new FixtureDef();
+        CircleShape shape = new CircleShape();
+        shape.setRadius(20/GameWorld.PPM);
+        fdef.filter.categoryBits = GameWorld.KNIGHT_BIT;
+        fdef.filter.maskBits =
+            GameWorld.GROUND_BIT | GameWorld.FIREBALL_BIT |
+                GameWorld.TRAP_BIT | GameWorld.CHEST_BIT |
+                GameWorld.ENEMY_BIT | GameWorld.ITEM_BIT;
+
+        fdef.shape = shape;
+        b2body.createFixture(fdef);
+
+        //make EdgeShape for checking foot-collision
+        EdgeShape foot = new EdgeShape();
+        foot.set(new Vector2(-20/GameWorld.PPM, -20/GameWorld.PPM),
+            new Vector2(20/GameWorld.PPM, -20/GameWorld.PPM));
+        fdef.filter.categoryBits = GameWorld.KNIGHT_FOOT_BIT;
+        fdef.shape = foot;
+        //fdef.isSensor = true;//foot is a sensor, sensor is an object but is not able to make physical collision
+        b2body.createFixture(fdef).setUserData(this);
+
+        //sword hit right sensor
+        EdgeShape swordRight = new EdgeShape();
+        swordRight.set(new Vector2(50/GameWorld.PPM, -20/GameWorld.PPM),
+            new Vector2(50/GameWorld.PPM, 20/GameWorld.PPM));
+        fdef.filter.categoryBits = GameWorld.KNIGHT_SWORD_RIGHT;
+        fdef.shape = swordRight;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData(this);
+
+        //sword hit left sensor
+        EdgeShape swordLeft = new EdgeShape();
+        swordLeft.set(new Vector2(-50/GameWorld.PPM, -20/GameWorld.PPM),
+            new Vector2(-50/GameWorld.PPM, 20/GameWorld.PPM));
+        fdef.filter.categoryBits = GameWorld.KNIGHT_SWORD_LEFT;
+        fdef.shape = swordLeft;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData(this);
+    }
+
     public boolean isAttack(){
         return (currentState == State.ATTACKING1 || currentState == State.ATTACKING2);
     }
