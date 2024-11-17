@@ -18,7 +18,7 @@ public class Skeleton extends GroundEnemy{
         atlasHurting = new TextureAtlas("E_Skeleton/Pack/Hurt.pack");
 
         walkAnimation = new Animation<TextureRegion>(0.3f, atlasWalking.getRegions());
-        attackAnimation = new Animation<TextureRegion>(0.3f, atlasAttacking.getRegions());
+        attackAnimation = new Animation<TextureRegion>(0.1f, atlasAttacking.getRegions());
         dieAnimation = new Animation<TextureRegion>(0.2f, atlasDieing.getRegions());
         hurtAnimation = new Animation<TextureRegion>(0.3f, atlasHurting.getRegions());
     }

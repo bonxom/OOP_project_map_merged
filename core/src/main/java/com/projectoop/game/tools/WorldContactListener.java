@@ -126,24 +126,41 @@ public class WorldContactListener implements ContactListener {
                 }
                 break;
             //knight and enemy
-            case GameWorld.KNIGHT_BIT | GameWorld.ENEMY_BIT:
-                if(fixA.getFilterData().categoryBits == GameWorld.ENEMY_BIT) {
-                    Gdx.app.log("Enemy hit", "");
-                    ((Enemy) fixA.getUserData()).attackingCallBack();
-                    //((Knight) fixB.getUserData()).hurtingCallBack();
-                }
-                else {
-                    Gdx.app.log("Enemy hit", "");
-                    ((Enemy) fixB.getUserData()).attackingCallBack();
-                    //((Knight) fixA.getUserData()).hurtingCallBack();
+//            case GameWorld.KNIGHT_BIT | GameWorld.ENEMY_BIT:
+//                if(fixA.getFilterData().categoryBits == GameWorld.ENEMY_BIT) {
+//                    Gdx.app.log("Enemy hit", "");
+//                    ((Enemy) fixA.getUserData()).attackingCallBack();
+//                }
+//                else {
+//                    Gdx.app.log("Enemy hit", "");
+//                    ((Enemy) fixB.getUserData()).attackingCallBack();
+//                    //((Knight) fixA.getUserData()).hurtingCallBack();
+//                }
+//                break;
+            // Sword sensor collisions
+            case GameWorld.KNIGHT_SWORD_RIGHT | GameWorld.ENEMY_BIT:
+                Enemy enemyRight = (Enemy) ((fixA.getFilterData().categoryBits == GameWorld.ENEMY_BIT) ? fixA.getUserData() : fixB.getUserData());
+                enemyRight.attackingCallBack();
+
+                if (enemyRight.velocity.x < 0){
+                    screen.getPlayer().hurtingCallBack();
                 }
                 break;
+
+            case GameWorld.KNIGHT_SWORD_LEFT | GameWorld.ENEMY_BIT:
+                Enemy enemyLeft = (Enemy) ((fixA.getFilterData().categoryBits == GameWorld.ENEMY_BIT) ? fixA.getUserData() : fixB.getUserData());
+                enemyLeft.attackingCallBack();
+                if (enemyLeft.velocity.x > 0){
+                    screen.getPlayer().hurtingCallBack();
+                }
+                break;
+
         }
     }
 
     @Override
     public void endContact(Contact contact) {
-        Gdx.app.log("End Contact", "");
+
     }
 
     @Override

@@ -25,6 +25,7 @@ import com.projectoop.game.sprites.enemy.Orc;
 import com.projectoop.game.sprites.items.Item;
 import com.projectoop.game.sprites.items.ItemDef;
 import com.projectoop.game.sprites.items.Potion;
+import com.projectoop.game.sprites.weapons.Arrow;
 import com.projectoop.game.sprites.weapons.BulletManager;
 import com.projectoop.game.tools.AudioManager;
 import com.projectoop.game.tools.B2WorldCreator;
@@ -107,9 +108,9 @@ public class PlayScreen implements Screen {
 
     //Input manager
     public void handleInput(float dt){
-        if (player.getState() != Knight.State.DEAD) {
+        if (player.getState() != Knight.State.DEAD && player.getState() != Knight.State.HURTING) {
             //test
-            if (Gdx.input.isKeyJustPressed(Input.Keys.W) && !player.isJumping()) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.W) && player.b2body.getLinearVelocity().y == 0) {
                 player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);
             }
             if (player.getState() != Knight.State.ATTACKING3) {
@@ -118,6 +119,11 @@ public class PlayScreen implements Screen {
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.A) && player.b2body.getLinearVelocity().x >= -2) {
                     player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+                }
+
+                if (Gdx.input.isKeyJustPressed(Input.Keys.O)){
+                    Knight.scaleX = Knight.scaleY = 3;
+                    Arrow.scaleX = Arrow.scaleY = 3;
                 }
             }
 
@@ -129,7 +135,8 @@ public class PlayScreen implements Screen {
                 player.attack2CallBack();
             }
             else if (Gdx.input.isKeyJustPressed(Input.Keys.L)){
-                player.attack3CallBack();}
+                player.attack3CallBack();
+            }
         }
     }
 

@@ -12,8 +12,8 @@ public class Arrow extends Bullet {
     private Texture texture;
     private TextureRegion frame;
 
-    private final float scaleX = 1.2f;
-    private final float scaleY = 1.2f;
+    public static float scaleX = 1.2f;
+    public static float scaleY = 1.2f;
 
     public Arrow(PlayScreen screen, float x, float y, int direction) {
         super(screen, x, y, direction);

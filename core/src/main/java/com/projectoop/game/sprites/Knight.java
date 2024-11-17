@@ -1,11 +1,14 @@
 package com.projectoop.game.sprites;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
+import com.projectoop.game.sprites.enemy.Enemy;
 import com.projectoop.game.sprites.weapons.BulletManager;
 import com.projectoop.game.tools.AudioManager;
 
@@ -17,8 +20,8 @@ public class Knight extends Sprite {
     public Body b2body;
     private BulletManager bulletManager;
 
-    private static float scaleX = 1.5f;
-    private static float scaleY = 1.5f;
+    public static float scaleX = 1.5f;
+    public static float scaleY = 1.5f;
 
     //test
     private static int deathCount = 3;
@@ -60,7 +63,6 @@ public class Knight extends Sprite {
     private boolean isAttacking3;
     private boolean isAttack3;
     private boolean isDie;
-    private boolean isJumping;
     private boolean endGame;
 
     private boolean playSound1;
@@ -88,7 +90,6 @@ public class Knight extends Sprite {
         isDie = false;
         isHurt = false;
         isHurting = false;
-        isJumping = false;
         endGame = false;
     }
 
@@ -109,7 +110,7 @@ public class Knight extends Sprite {
         knightAttack1 = new Animation<TextureRegion>(0.05f, atlasAttacking1.getRegions());
         knightAttack2 = new Animation<TextureRegion>(0.05f, atlasAttacking2.getRegions());
         knightAttack3 = new Animation<TextureRegion>(0.05f, atlasAttacking3.getRegions());
-        knightHurt = new Animation<TextureRegion>(0.1f, atlasBeingHurt.getRegions());
+        knightHurt = new Animation<TextureRegion>(0.05f, atlasBeingHurt.getRegions());
     }
 
     private void prepareAnimation1(){//anim của nguyễn bá
@@ -177,11 +178,40 @@ public class Knight extends Sprite {
                 new Vector2(2/GameWorld.PPM, -6/GameWorld.PPM));
         fdef.filter.categoryBits = GameWorld.KNIGHT_FOOT_BIT;
         fdef.shape = foot;
-        //fdef.isSensor = true;//foot is a sensor
+        //fdef.isSensor = true;//foot is a sensor, sensor is an object but is not able to make physical collision
+        b2body.createFixture(fdef).setUserData(this);
 
+//        //knight center sensor
+//        EdgeShape center = new EdgeShape();
+//        center.set(new Vector2(5/GameWorld.PPM, -5/GameWorld.PPM),
+//            new Vector2(5/GameWorld.PPM, -5/GameWorld.PPM));
+//        fdef.filter.categoryBits = GameWorld.KNIGHT_CENTER;
+//        fdef.shape = center;
+//        fdef.isSensor = true;
+//        b2body.createFixture(fdef).setUserData(this);
+
+        //sword hit right sensor
+        EdgeShape swordRight = new EdgeShape();
+        swordRight.set(new Vector2(20/GameWorld.PPM, -6/GameWorld.PPM),
+            new Vector2(20/GameWorld.PPM, 6/GameWorld.PPM));
+        fdef.filter.categoryBits = GameWorld.KNIGHT_SWORD_RIGHT;
+        fdef.shape = swordRight;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData(this);
+
+        //sword hit left sensor
+        EdgeShape swordLeft = new EdgeShape();
+        swordLeft.set(new Vector2(-20/GameWorld.PPM, -6/GameWorld.PPM),
+            new Vector2(-20/GameWorld.PPM, 6/GameWorld.PPM));
+        fdef.filter.categoryBits = GameWorld.KNIGHT_SWORD_LEFT;
+        fdef.shape = swordLeft;
+        fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData(this);
     }
 
+    public boolean isAttack(){
+        return (currentState == State.ATTACKING1 || currentState == State.ATTACKING2);
+    }
 
     public void hurtingCallBack(){
         isHurt = true;
@@ -206,8 +236,12 @@ public class Knight extends Sprite {
         System.out.println("Bufffffffffff");
     }
 
-    public boolean isJumping(){
-        return isJumping;
+    public boolean isHitRight(){
+        return (currentState == State.ATTACKING1 || currentState == State.ATTACKING2) && isRunningRight;
+    }
+
+    public boolean isHitLeft(){
+        return (currentState == State.ATTACKING1 || currentState == State.ATTACKING2) && !isRunningRight;
     }
 
     public void attack1CallBack(){
@@ -343,12 +377,10 @@ public class Knight extends Sprite {
             }
         }
         //movement code
-        isJumping = false;
         if (b2body.getLinearVelocity().y == 0 && previousState == State.JUMPING){
             b2body.setLinearVelocity(0, 0);//avoid sliding after jumping down
         }
         if (b2body.getLinearVelocity().y != 0){
-            isJumping = true;
             return State.JUMPING;
         }
         else if (b2body.getLinearVelocity().x != 0){

@@ -40,8 +40,9 @@ public class FlyEnemy extends GroundEnemy{//test th, code sau
         fdef.filter.categoryBits = GameWorld.ENEMY_BIT;
         //Collision bit list
         fdef.filter.maskBits = GameWorld.GROUND_BIT |
-            GameWorld.TRAP_BIT | GameWorld.ENEMY_BIT | GameWorld.CHEST_BIT |
-            GameWorld.PILAR_BIT | GameWorld.KNIGHT_BIT | GameWorld.ARROW_BIT;
+            GameWorld.TRAP_BIT | GameWorld.CHEST_BIT |
+            GameWorld.PILAR_BIT | GameWorld.ARROW_BIT |
+            GameWorld.KNIGHT_SWORD_LEFT | GameWorld.KNIGHT_SWORD_RIGHT;
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
     }
@@ -62,9 +63,9 @@ public class FlyEnemy extends GroundEnemy{//test th, code sau
     @Override
     public TextureRegion getFrame(float dt) {
         timeCount += dt;
-        System.out.println("TimeCount: " + timeCount);
+        //System.out.println("TimeCount: " + timeCount);
         if(timeCount > COOL_DOWN) {
-            System.out.println("dcmmm");
+            System.out.println("khac dom");
             int direction = (runningRight) ? 1 : -1;
             bulletManager.addBullet(b2body.getPosition().x, b2body.getPosition().y, direction, "FireBall");
             timeCount = 0;
