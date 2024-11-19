@@ -1,0 +1,131 @@
+
+Shoot.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Ghost1
+  rotate: false
+  xy: 1, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost14
+  rotate: false
+  xy: 1, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost3
+  rotate: false
+  xy: 1, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost7
+  rotate: false
+  xy: 1, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost10
+  rotate: false
+  xy: 67, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost11
+  rotate: false
+  xy: 133, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost12
+  rotate: false
+  xy: 199, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost13
+  rotate: false
+  xy: 265, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost15
+  rotate: false
+  xy: 331, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost16
+  rotate: false
+  xy: 397, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost17
+  rotate: false
+  xy: 463, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost18
+  rotate: false
+  xy: 529, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost2
+  rotate: false
+  xy: 595, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost4
+  rotate: false
+  xy: 661, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost5
+  rotate: false
+  xy: 727, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost6
+  rotate: false
+  xy: 793, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost8
+  rotate: false
+  xy: 859, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Ghost9
+  rotate: false
+  xy: 925, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
