@@ -9,6 +9,8 @@ import com.badlogic.gdx.utils.Array;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
 import com.projectoop.game.sprites.enemy.Enemy;
+import com.projectoop.game.sprites.enemy.GroundEnemy;
+import com.projectoop.game.sprites.weapons.Arrow;
 import com.projectoop.game.sprites.weapons.BulletManager;
 import com.projectoop.game.tools.AudioManager;
 
@@ -22,6 +24,8 @@ public class Knight extends Sprite {
 
     public static float scaleX = 1.5f;
     public static float scaleY = 1.5f;
+
+    private Vector2 startPosition;
 
     //test
     private static int deathCount = 3;
@@ -54,6 +58,8 @@ public class Knight extends Sprite {
     private float stateTimer;
     private float timeCount;
     private final float COOL_DOWN = 1;
+    private float timeCountBig;
+    private final float BIG_TIMER = 5;
 
     private boolean isRunningRight;
     private boolean isHurt;
@@ -64,6 +70,7 @@ public class Knight extends Sprite {
     private boolean isAttack3;
     private boolean isDie;
     private boolean endGame;
+    private boolean isBig;
 
     private boolean playSound1;
     private boolean playSound2;
@@ -75,8 +82,11 @@ public class Knight extends Sprite {
         currentState = State.STANDING;
         previousState = State.STANDING;
 
+        startPosition = new Vector2(32/GameWorld.PPM, 100/GameWorld.PPM);
+
         stateTimer = 0;
         timeCount = 2;
+        timeCountBig = 0;
         isRunningRight = true;
 
         prepareAnimation();
@@ -91,6 +101,7 @@ public class Knight extends Sprite {
         isHurt = false;
         isHurting = false;
         endGame = false;
+        isBig = false;
     }
 
     private void prepareAnimation(){
@@ -147,7 +158,7 @@ public class Knight extends Sprite {
 
     public void defineKnight(){
         BodyDef bdef = new BodyDef();
-        bdef.position.set(32/GameWorld.PPM, 100/GameWorld.PPM);
+        bdef.position.set(startPosition);
         bdef.type = BodyDef.BodyType.DynamicBody;
 
         b2body = world.createBody(bdef);
@@ -256,6 +267,25 @@ public class Knight extends Sprite {
         fdef.shape = swordLeft;
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData(this);
+    }
+
+    public void bigMode(){
+        isBig = true;
+        b2body.setTransform(b2body.getPosition().x, b2body.getPosition().y + 40/GameWorld.PPM,0);
+        Knight.scaleX = Knight.scaleY = 3;
+        Arrow.scaleX = Arrow.scaleY = 3;
+        redefineKnight();
+        GroundEnemy.attackRange = 70;
+    }
+
+    public void endBigMode(){
+        isBig = false;
+        Knight.scaleX = Knight.scaleY = 1.5f;
+        Arrow.scaleX = Arrow.scaleY = 1.2f;
+        startPosition = b2body.getPosition();
+        world.destroyBody(b2body);
+        defineKnight();
+        GroundEnemy.attackRange = 30;
     }
 
     public boolean isAttack(){
@@ -439,6 +469,11 @@ public class Knight extends Sprite {
     }
 
     public void update(float dt){
+        if (isBig) timeCountBig += dt;
+        if (timeCountBig > BIG_TIMER){
+            endBigMode();
+            timeCountBig = 0;
+        }
         setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight()/2);
         TextureRegion frame = getFrame(dt);
 

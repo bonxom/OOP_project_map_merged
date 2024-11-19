@@ -121,13 +121,9 @@ public class PlayScreen implements Screen {
                 if (Gdx.input.isKeyPressed(Input.Keys.A) && player.b2body.getLinearVelocity().x >= -2) {
                     player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
                 }
-
+                //test
                 if (Gdx.input.isKeyJustPressed(Input.Keys.O)){
-                    player.b2body.setTransform(player.b2body.getPosition().x, player.b2body.getPosition().y + 40/GameWorld.PPM,0);
-                    Knight.scaleX = Knight.scaleY = 3;
-                    Arrow.scaleX = Arrow.scaleY = 3;
-                    player.redefineKnight();
-                    GroundEnemy.attackRange = 70;
+                    player.bigMode();
                 }
             }
 
