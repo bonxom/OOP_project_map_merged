@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.scences.Hud;
+import com.projectoop.game.scences.PlayerHealthBar;
 import com.projectoop.game.sprites.effectedObject.EffectedObject;
 import com.projectoop.game.sprites.enemy.Enemy;
 import com.projectoop.game.sprites.Knight;
@@ -37,11 +39,12 @@ import java.util.PriorityQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class PlayScreen implements Screen {
-    private GameWorld game;
+    public GameWorld game;
 
     private OrthographicCamera gameCam;
     private Viewport gamePort;//resize screen
     private Hud hud;
+    protected PlayerHealthBar healthbar; // test
 
     private TmxMapLoader mapLoader;
     private TiledMap map;
@@ -49,7 +52,7 @@ public class PlayScreen implements Screen {
 
     private World world;
     private Box2DDebugRenderer b2dr;
-    private B2WorldCreator creator;
+    public B2WorldCreator creator;
 
     private Knight player;
 
@@ -68,6 +71,7 @@ public class PlayScreen implements Screen {
         //gamePort = new ScreenViewport(gameCam); //broaden scale, unchange PNG ratio
         gamePort = new FitViewport(GameWorld.V_WIDTH / GameWorld.PPM, GameWorld.V_HEIGHT / GameWorld.PPM, gameCam);// broaden scale in any direction, unchange PNG ratio
         hud = new Hud(gameWorld.batch);
+        healthbar = new PlayerHealthBar(this);
 
 
         mapLoader = new TmxMapLoader();
@@ -208,6 +212,7 @@ public class PlayScreen implements Screen {
         for (Item item : items){
             item.draw(game.batch);
         }
+        healthbar.draw(delta);
         game.batch.end();
 
         //draw head of display
@@ -263,5 +268,17 @@ public class PlayScreen implements Screen {
 
     public Knight getPlayer() {
         return player;
+    }
+
+    public SpriteBatch getBatch() {
+        return game.batch;
+    } // test
+
+    public Viewport getGamePort() {
+        return gamePort;
+    }
+
+    public OrthographicCamera getGameCam() {
+        return gameCam;
     }
 }

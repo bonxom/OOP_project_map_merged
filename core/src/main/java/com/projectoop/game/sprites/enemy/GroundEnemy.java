@@ -60,6 +60,9 @@ public abstract class GroundEnemy extends Enemy{
         isHurting = false;
         isDie = false;
         playSoundAttack = false;
+        isDieing = false;
+        inRangeAttack = false;
+
         currentHealth = maxHealth;
         healthBar = new EnemyHealthBar(this, maxHealth);
 
@@ -107,22 +110,22 @@ public abstract class GroundEnemy extends Enemy{
     }
 
     //KNIGHT_BIT | ENEMY_BIT
-    public boolean isInRangeAttack(){
-        if (!screen.getPlayer().isAttack()) return false;
-        //player on the left-side of enemy
-        float check_dis = this.b2body.getPosition().x - screen.getPlayer().b2body.getPosition().x;
-        if (check_dis < attackRange/GameWorld.PPM && check_dis > 0){
-            //System.out.println("1");
-            return true;
-        }
-        //right-side
-        else if (-check_dis < attackRange/GameWorld.PPM && -check_dis > 0){
-            //System.out.println("2");
-            return true;
-        }
-        //System.out.println("non");
-        return false;
-    }
+//    public boolean isInRangeAttack(){
+//        if (!screen.getPlayer().isAttack()) return false;
+//        //player on the left-side of enemy
+//        float check_dis = this.b2body.getPosition().x - screen.getPlayer().b2body.getPosition().x;
+//        if (check_dis < attackRange/GameWorld.PPM && check_dis > 0){
+//            //System.out.println("1");
+//            return true;
+//        }
+//        //right-side
+//        else if (-check_dis < attackRange/GameWorld.PPM && -check_dis > 0){
+//            //System.out.println("2");
+//            return true;
+//        }
+//        //System.out.println("non");
+//        return false;
+//    }
 
     @Override
     public void destroy() {
@@ -142,6 +145,14 @@ public abstract class GroundEnemy extends Enemy{
         hurtKnockBack();
         hurtSound.play();
         isHurt = true;
+
+        //take dame
+        currentHealth -= screen.getPlayer().getDamage();
+        if (currentHealth < 0) currentHealth = 0;
+        healthBar.update(currentHealth);
+        if (currentHealth <= 0){
+            isDie = true;
+        }
     }
 
     public TextureRegion getFrame(float dt){
@@ -184,7 +195,13 @@ public abstract class GroundEnemy extends Enemy{
 
     public State getState(){
         //die and hurt code
-        if (isDie){//test
+        if (isDie){
+            isDie = false;
+            isDieing = true;
+            this.velocity.x = 0;
+            return State.DEAD;
+        }
+        if (isDieing){//test
             if (dieAnimation.isAnimationFinished(stateTime)) {
                 destroy();
             }
@@ -192,8 +209,7 @@ public abstract class GroundEnemy extends Enemy{
             return State.DEAD;
         }
 
-        if (isHurt || isInRangeAttack()){
-            hurtKnockBack();// bug cmnr
+        if (isHurt){
             isHurt = false;
             isHurting = true;
             this.velocity.x = 0;
@@ -237,6 +253,7 @@ public abstract class GroundEnemy extends Enemy{
         if (setToDestroy && !destroyed){
             world.destroyBody(b2body);
             destroyed = true;
+            screen.creator.getGroundEnemies().removeValue(this, true);
             stateTime = 0;
         }
         else if (!destroyed){

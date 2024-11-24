@@ -19,13 +19,19 @@ public abstract class Enemy extends Sprite {
     protected boolean isAttacking;
     protected boolean isHurt;
     protected boolean isDie;
+    protected boolean isDieing;
     protected boolean isHurting;
     protected boolean isAttack;
+    public boolean inRangeAttack;
 
     protected World world;
     protected PlayScreen screen;
     public Body b2body;
     public Vector2 velocity;
+
+    public boolean isUsable(){
+        return !(isDie && isDieing && destroyed && setToDestroy);
+    }
 
     public Enemy(PlayScreen screen, float x, float y){
         this.world = screen.getWorld();

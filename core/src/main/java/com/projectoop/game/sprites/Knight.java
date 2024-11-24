@@ -1,6 +1,5 @@
 package com.projectoop.game.sprites;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
@@ -18,14 +17,17 @@ public class Knight extends Sprite {
     public enum State {HURTING, ATTACKING1, ATTACKING2, ATTACKING3, DEAD, JUMPING, STANDING, RUNNING};
     public State currentState;
     public State previousState;
+    private PlayScreen screen;
     private World world;
     public Body b2body;
     private BulletManager bulletManager;
+    public Array<Enemy> monsterInRange;
 
     public static float scaleX = 1.5f;
     public static float scaleY = 1.5f;
 
     private Vector2 startPosition;
+    private int damage;
 
     //test
     private static int deathCount = 3;
@@ -56,10 +58,15 @@ public class Knight extends Sprite {
     private Sound knightDieSound;
 
     private float stateTimer;
-    private float timeCount;
-    private final float COOL_DOWN = 1;
+    private float timeCountShoot;
+    private float timeCountAttack;
+    private final float SHOOTING_COOL_DOWN = 1;
+    private final float ATTACKING_COOL_DOWN = 0.5f;
     private float timeCountBig;
     private final float BIG_TIMER = 5;
+
+    private int Health;
+    private int HealthMax;
 
     private boolean isRunningRight;
     private boolean isHurt;
@@ -76,18 +83,23 @@ public class Knight extends Sprite {
     private boolean playSound2;
 
     public Knight(PlayScreen screen){
-
+        this.screen = screen;
         this.world = screen.getWorld();
         bulletManager = new BulletManager(screen);
         currentState = State.STANDING;
         previousState = State.STANDING;
+        monsterInRange = new Array<>();
 
         startPosition = new Vector2(32/GameWorld.PPM, 100/GameWorld.PPM);
 
         stateTimer = 0;
-        timeCount = 2;
+        timeCountShoot = 2;
+        timeCountAttack = 1;
         timeCountBig = 0;
         isRunningRight = true;
+
+        Health = 100;
+        HealthMax = 100;
 
         prepareAnimation();
         prepareSound();
@@ -157,6 +169,8 @@ public class Knight extends Sprite {
     }
 
     public void defineKnight(){
+        damage = 20;
+
         BodyDef bdef = new BodyDef();
         bdef.position.set(startPosition);
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -221,6 +235,8 @@ public class Knight extends Sprite {
     }
 
     public void redefineKnight(){
+        damage = 50;
+
         Vector2 position = b2body.getPosition();
         world.destroyBody(b2body);
 
@@ -305,6 +321,10 @@ public class Knight extends Sprite {
         return stateTimer;
     }
 
+    public int getDamage(){
+        return damage;
+    }
+
     public void setDie(){
         deathCount--;
         isDie = true;
@@ -315,29 +335,37 @@ public class Knight extends Sprite {
         System.out.println("Bufffffffffff");
     }
 
-    public boolean isHitRight(){
-        return (currentState == State.ATTACKING1 || currentState == State.ATTACKING2) && isRunningRight;
-    }
-
-    public boolean isHitLeft(){
-        return (currentState == State.ATTACKING1 || currentState == State.ATTACKING2) && !isRunningRight;
-    }
-
     public void attack1CallBack(){
-        isAttacking1 = true;
+        if (timeCountAttack > ATTACKING_COOL_DOWN){
+            isAttacking1 = true;
+            timeCountAttack = 0;
+            for (Enemy enemy : screen.creator.getGroundEnemies())
+                if (enemy.inRangeAttack && enemy.isUsable()) {
+                    enemy.hurtingCallBack();
+                }
+        }
     }
     public void attack2CallBack(){
-        isAttacking2 = true;
+        if (timeCountAttack > ATTACKING_COOL_DOWN){
+            isAttacking2 = true;
+            timeCountAttack = 0;
+            for (Enemy enemy : screen.creator.getGroundEnemies())
+                if (enemy.inRangeAttack && enemy.isUsable()) {
+                    enemy.hurtingCallBack();
+                }
+        }
     }
     public void attack3CallBack(){
-        if (timeCount > COOL_DOWN) {
+        if (timeCountShoot > SHOOTING_COOL_DOWN) {
             isAttack3 = true;
-            timeCount = 0;
+            timeCountShoot = 0;
         }
     }
 
     public TextureRegion getFrame(float dt){
-        timeCount += dt;
+        timeCountShoot += dt;
+        timeCountAttack += dt;
+
         currentState = getState();
         TextureRegion region;
         switch (currentState){
@@ -468,12 +496,21 @@ public class Knight extends Sprite {
         else return State.STANDING;
     }
 
+    public int getHealth() {
+        return Health;
+    }
+
+    public int getHealthMax() {
+        return HealthMax;
+    }
+
     public void update(float dt){
         if (isBig) timeCountBig += dt;
         if (timeCountBig > BIG_TIMER){
             endBigMode();
             timeCountBig = 0;
         }
+
         setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight()/2);
         TextureRegion frame = getFrame(dt);
 
