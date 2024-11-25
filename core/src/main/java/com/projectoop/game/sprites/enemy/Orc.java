@@ -18,7 +18,7 @@ import com.projectoop.game.tools.AudioManager;
 public class Orc extends GroundEnemy{
 
     public Orc(PlayScreen screen, float x, float y) {
-        super(screen, x, y, 0.3f, 2);
+        super(screen, x, y, 0.3f, 2, 10);
     }
 
     @Override

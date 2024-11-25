@@ -1,6 +1,5 @@
 package com.projectoop.game.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -8,7 +7,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -19,23 +17,19 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.scences.Hud;
+import com.projectoop.game.scences.PlayerEnergyBar;
 import com.projectoop.game.scences.PlayerHealthBar;
 import com.projectoop.game.sprites.effectedObject.EffectedObject;
 import com.projectoop.game.sprites.enemy.Enemy;
 import com.projectoop.game.sprites.Knight;
 import com.projectoop.game.sprites.enemy.GroundEnemy;
-import com.projectoop.game.sprites.enemy.Orc;
 import com.projectoop.game.sprites.items.Item;
 import com.projectoop.game.sprites.items.ItemDef;
 import com.projectoop.game.sprites.items.Potion;
-import com.projectoop.game.sprites.weapons.Arrow;
-import com.projectoop.game.sprites.weapons.BulletManager;
 import com.projectoop.game.tools.AudioManager;
 import com.projectoop.game.tools.B2WorldCreator;
 import com.projectoop.game.tools.WorldContactListener;
 
-import java.awt.desktop.SystemSleepEvent;
-import java.util.PriorityQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class PlayScreen implements Screen {
@@ -43,8 +37,9 @@ public class PlayScreen implements Screen {
 
     private OrthographicCamera gameCam;
     private Viewport gamePort;//resize screen
-    private Hud hud;
-    protected PlayerHealthBar healthbar; // test
+    //private Hud hud;
+    protected PlayerHealthBar healthBar; // test
+    protected PlayerEnergyBar energyBar;
 
     private TmxMapLoader mapLoader;
     private TiledMap map;
@@ -70,8 +65,9 @@ public class PlayScreen implements Screen {
         //gamePort = new StretchViewport(GameWorld.V_WIDTH, GameWorld.V_HEIGHT, gameCam); // freely broaden in any direction, change the PNG ratio
         //gamePort = new ScreenViewport(gameCam); //broaden scale, unchange PNG ratio
         gamePort = new FitViewport(GameWorld.V_WIDTH / GameWorld.PPM, GameWorld.V_HEIGHT / GameWorld.PPM, gameCam);// broaden scale in any direction, unchange PNG ratio
-        hud = new Hud(gameWorld.batch);
-        healthbar = new PlayerHealthBar(this);
+        //hud = new Hud(gameWorld.batch);
+        healthBar = new PlayerHealthBar(this);
+        energyBar = new PlayerEnergyBar(this);
 
 
         mapLoader = new TmxMapLoader();
@@ -144,7 +140,7 @@ public class PlayScreen implements Screen {
         }
     }
 
-    public void update(float dt){//dt = data time
+    public void update(float dt){//dt = delta time
         handleInput(dt);
         handleSpawningItems();
 
@@ -154,6 +150,9 @@ public class PlayScreen implements Screen {
         player.update(dt);
 
         for (Enemy enemy : creator.getGroundEnemies()){
+            if (enemy.inRangeAttack && player.isAttack() && enemy.getCurrentState() != GroundEnemy.State.HURTING) {
+                enemy.hurtingCallBack();
+            }
             enemy.update(dt);
             if (enemy.getX() < player.getX() + (GameWorld.V_WIDTH/2 + 4 * 16)/GameWorld.PPM){
                 enemy.b2body.setActive(true);//optimize to avoid lagging
@@ -172,7 +171,7 @@ public class PlayScreen implements Screen {
         }
         items.removeAll(itemsToRemove, true);
 
-        hud.update(dt);
+        //hud.update(dt);
 
         //attack gamecam to x coordinate of player
         gameCam.position.x = player.b2body.getPosition().x;
@@ -212,12 +211,13 @@ public class PlayScreen implements Screen {
         for (Item item : items){
             item.draw(game.batch);
         }
-        healthbar.draw(delta);
+        healthBar.draw(delta);
+        energyBar.draw(delta);
         game.batch.end();
 
         //draw head of display
-        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);//select camera position
-        hud.stage.draw();
+        //game.batch.setProjectionMatrix(hud.stage.getCamera().combined);//select camera position
+        //hud.stage.draw();
 
         if (gameOver()) {
             game.setScreen(new GameOverScreen(game));
@@ -263,7 +263,7 @@ public class PlayScreen implements Screen {
         renderer.dispose();
         world.dispose();
         b2dr.dispose();
-        hud.dispose();
+        //hud.dispose();
     }
 
     public Knight getPlayer() {

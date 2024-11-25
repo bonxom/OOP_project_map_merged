@@ -8,7 +8,7 @@ import com.projectoop.game.screens.PlayScreen;
 public class Goblin extends GroundEnemy{
 
     public Goblin(PlayScreen screen, float x, float y) {
-        super(screen, x, y, 7, 1.2f);
+        super(screen, x, y, 7, 1.2f, 10);
     }
 
     @Override

@@ -89,24 +89,15 @@ public class WorldContactListener implements ContactListener {
             //fireball collision
             case GameWorld.KNIGHT_BIT | GameWorld.FIREBALL_BIT://test
                 //Gdx.app.log("Arrow", "Enemy");
-                if(fixA.getFilterData().categoryBits == GameWorld.FIREBALL_BIT) {
-                    Gdx.app.log("Enemy hit", "");
-                    ((FireBall)(fixA.getUserData())).destroy();
-                    screen.getPlayer().hurtingCallBack();
-                    //((Knight)(fixB.getUserData())).hurtingCallBack();
-                }
-                else {
-                    Gdx.app.log("Enemy hit", "");
-                    ((FireBall)(fixB.getUserData())).destroy();
-                    screen.getPlayer().hurtingCallBack();
-                    //((Knight)(fixA.getUserData())).hurtingCallBack();
-                }
+                FireBall fireBall = (FireBall) ((fixA.getFilterData().categoryBits == GameWorld.FIREBALL_BIT) ? fixA.getUserData() : fixB.getUserData());
+                fireBall.destroy();
+                screen.getPlayer().hurtingCallBack(fireBall.damage);
                 break;
             case GameWorld.GROUND_BIT | GameWorld.FIREBALL_BIT:
             case GameWorld.CHEST_BIT | GameWorld.FIREBALL_BIT:
                 //Gdx.app.log("Arrow", "Object");
-                FireBall fireBall = (FireBall) ((fixA.getFilterData().categoryBits == GameWorld.FIREBALL_BIT) ? fixA.getUserData() : fixB.getUserData());
-                fireBall.destroy();
+                FireBall fireBall1 = (FireBall) ((fixA.getFilterData().categoryBits == GameWorld.FIREBALL_BIT) ? fixA.getUserData() : fixB.getUserData());
+                fireBall1.destroy();
                 break;
             //chest collision
             case GameWorld.CHEST_BIT | GameWorld.KNIGHT_BIT:
@@ -143,7 +134,7 @@ public class WorldContactListener implements ContactListener {
 
                 if (enemyRight.velocity.x < 0){
                     enemyRight.attackingCallBack();
-                    screen.getPlayer().hurtingCallBack();
+                    screen.getPlayer().hurtingCallBack(enemyRight.getDame());
                 }
                 //screen.getPlayer().monsterInRange.add(enemyRight);
                 //enemyRight.hurtingCallBack();
@@ -155,7 +146,7 @@ public class WorldContactListener implements ContactListener {
 
                 if (enemyLeft.velocity.x > 0){
                     enemyLeft.attackingCallBack();
-                    screen.getPlayer().hurtingCallBack();
+                    screen.getPlayer().hurtingCallBack(enemyLeft.getDame());
                 }
                 //screen.getPlayer().monsterInRange.add(enemyLeft);
                 //enemyLeft.hurtingCallBack();

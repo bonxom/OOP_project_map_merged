@@ -44,10 +44,11 @@ public abstract class GroundEnemy extends Enemy{
 
     public static float attackRange;
 
-    public GroundEnemy(PlayScreen screen, float x, float y, float addY, float scale) {
+    public GroundEnemy(PlayScreen screen, float x, float y, float addY, float scale, int damage) {
         super(screen, x, y);
         this.addYtoAnim = addY;
         this.scaleX = this.scaleY = scale;
+        this.damage = damage;
 
         currentState = State.WALKING;
         previousState = State.WALKING;
@@ -138,6 +139,10 @@ public abstract class GroundEnemy extends Enemy{
         isAttack = true;
         //System.out.println("Chem chem chem");
         //screen.getPlayer().hurtingCallBack();
+    }
+
+    public State getCurrentState(){
+      return currentState;
     }
 
     @Override
@@ -253,7 +258,7 @@ public abstract class GroundEnemy extends Enemy{
         if (setToDestroy && !destroyed){
             world.destroyBody(b2body);
             destroyed = true;
-            screen.creator.getGroundEnemies().removeValue(this, true);
+            //screen.creator.getGroundEnemies().removeValue(this, true);
             stateTime = 0;
         }
         else if (!destroyed){

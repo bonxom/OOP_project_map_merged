@@ -22,7 +22,10 @@ public abstract class Enemy extends Sprite {
     protected boolean isDieing;
     protected boolean isHurting;
     protected boolean isAttack;
+
     public boolean inRangeAttack;
+
+    protected int damage;
 
     protected World world;
     protected PlayScreen screen;
@@ -53,6 +56,7 @@ public abstract class Enemy extends Sprite {
     public abstract void destroy();
     public abstract void attackingCallBack();
     public abstract void hurtingCallBack();
+    public abstract GroundEnemy.State getCurrentState();
 
     public void reverseVelocity(boolean x, boolean y){
         if (x){
@@ -61,5 +65,9 @@ public abstract class Enemy extends Sprite {
         if (y){
             velocity.y = -velocity.y;
         }
+    }
+
+    public int getDame(){
+        return damage;
     }
 }

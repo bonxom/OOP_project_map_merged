@@ -19,7 +19,7 @@ public class FlyEnemy extends GroundEnemy{//test th, code sau
     private float lastTimeShoot;
     private BulletManager bulletManager;
     public FlyEnemy(PlayScreen screen, float x, float y) {
-        super(screen, x, y, 0, 1);
+        super(screen, x, y, 0, 1, 10);
         lastTimeShoot = 0;
         timeCount = 2;
         bulletManager = new BulletManager(screen);
