@@ -21,7 +21,6 @@ public class Knight extends Sprite {
     private World world;
     public Body b2body;
     private BulletManager bulletManager;
-    public Array<Enemy> monsterInRange;
 
     public static float scaleX = 1.5f;
     public static float scaleY = 1.5f;
@@ -90,7 +89,6 @@ public class Knight extends Sprite {
         bulletManager = new BulletManager(screen);
         currentState = State.STANDING;
         previousState = State.STANDING;
-        monsterInRange = new Array<>();
 
         startPosition = new Vector2(32/GameWorld.PPM, 100/GameWorld.PPM);
 
@@ -221,7 +219,7 @@ public class Knight extends Sprite {
         //sword hit right sensor
         EdgeShape swordRight = new EdgeShape();
         swordRight.set(new Vector2(20/GameWorld.PPM, -6/GameWorld.PPM),
-            new Vector2(20/GameWorld.PPM, 6/GameWorld.PPM));
+            new Vector2(20/GameWorld.PPM, 10/GameWorld.PPM));
         fdef.filter.categoryBits = GameWorld.KNIGHT_SWORD_RIGHT;
         fdef.shape = swordRight;
         fdef.isSensor = true;
@@ -230,7 +228,7 @@ public class Knight extends Sprite {
         //sword hit left sensor
         EdgeShape swordLeft = new EdgeShape();
         swordLeft.set(new Vector2(-20/GameWorld.PPM, -6/GameWorld.PPM),
-            new Vector2(-20/GameWorld.PPM, 6/GameWorld.PPM));
+            new Vector2(-20/GameWorld.PPM, 10/GameWorld.PPM));
         fdef.filter.categoryBits = GameWorld.KNIGHT_SWORD_LEFT;
         fdef.shape = swordLeft;
         fdef.isSensor = true;
@@ -278,10 +276,24 @@ public class Knight extends Sprite {
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData(this);
 
+        swordRight.set(new Vector2(25/GameWorld.PPM, -20/GameWorld.PPM),
+            new Vector2(25/GameWorld.PPM, 20/GameWorld.PPM));
+        fdef.filter.categoryBits = GameWorld.KNIGHT_SWORD_RIGHT;
+        fdef.shape = swordRight;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData(this);
+
         //sword hit left sensor
         EdgeShape swordLeft = new EdgeShape();
         swordLeft.set(new Vector2(-50/GameWorld.PPM, -20/GameWorld.PPM),
             new Vector2(-50/GameWorld.PPM, 20/GameWorld.PPM));
+        fdef.filter.categoryBits = GameWorld.KNIGHT_SWORD_LEFT;
+        fdef.shape = swordLeft;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData(this);
+
+        swordLeft.set(new Vector2(-25/GameWorld.PPM, -20/GameWorld.PPM),
+            new Vector2(-25/GameWorld.PPM, 20/GameWorld.PPM));
         fdef.filter.categoryBits = GameWorld.KNIGHT_SWORD_LEFT;
         fdef.shape = swordLeft;
         fdef.isSensor = true;
@@ -384,7 +396,7 @@ public class Knight extends Sprite {
         timeCountAttack += dt;
         if (untilCount < UNTIL_COOL_DOWN && !isBig) untilCount += dt;
         if (untilCount > UNTIL_COOL_DOWN && !isBig) untilCount = UNTIL_COOL_DOWN;
-        System.out.println("untilCount: " + untilCount);
+        System.out.println("utilCount: " + untilCount);
 
         currentState = getState();
         TextureRegion region;

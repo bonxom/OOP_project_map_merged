@@ -151,9 +151,9 @@
         },
         "map3.tmx": {
             "scale": 1.5,
-            "selectedLayer": 0,
+            "selectedLayer": 10,
             "viewCenter": {
-                "x": 1862,
+                "x": 314.66666666666663,
                 "y": 224.99999999999997
             }
         }
@@ -166,33 +166,30 @@
     "map.tileWidth": 16,
     "map.width": 160,
     "openFiles": [
-        "TileConvert/dirt.tsx",
-        "TileConvert/Trap_Spike.tsx",
-        "TileConvert/death_sign.tsx",
         "TileConvert/sign.tsx",
-        "TileConvert/Night.tsx",
         "TileConvert/Far Forest.tsx",
         "TileConvert/Dark Tree.tsx",
         "TileConvert/Castle -Background  Layer 2.tsx",
         "TileConvert/tl5.tsx",
         "TileConvert/tl6.tsx",
         "TileConvert/lava.tsx",
-        "map3.tmx"
+        "map3.tmx",
+        "TileConvert/Night.tsx"
     ],
     "project": "Map3.tiled-project",
     "recentFiles": [
-        "TileConvert/dirt.tsx",
-        "TileConvert/Trap_Spike.tsx",
-        "TileConvert/death_sign.tsx",
         "TileConvert/sign.tsx",
-        "TileConvert/Night.tsx",
         "TileConvert/Far Forest.tsx",
         "TileConvert/Dark Tree.tsx",
         "TileConvert/Castle -Background  Layer 2.tsx",
         "TileConvert/tl5.tsx",
         "TileConvert/tl6.tsx",
         "TileConvert/lava.tsx",
-        "map3.tmx"
+        "TileConvert/Night.tsx",
+        "map3.tmx",
+        "TileConvert/death_sign.tsx",
+        "TileConvert/Trap_Spike.tsx",
+        "TileConvert/dirt.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.margin": 2,

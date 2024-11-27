@@ -40,7 +40,7 @@
  </layer>
  <layer id="5" name="Dirt" width="160" height="32">
   <data encoding="base64" compression="zlib">
-   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
+   eJztlldPFFEYhjdG7Ea9U2dDYv0Jtivble3K9rOUFQEboBFFQUCw966xYa+xgV0xFlTsz4Q58XiYnWFgZmcdvid5MrvnO23nvDu7qZQgCIIgCIIgCIIgCIIgCIIgCEKyKLJSqQyuwmJcjSVYanWtBemblJpX/7j35lfrzhi93exjvo9iH5uxCrfgVqzGbbjdpRakb1JqXv3j3ptfTbUXZVFlQs+D/brYRT2jSjNTuvqYjNbXHLMX9+F+PIAH8RAedqkF6ZuUmlf/uPfmV9Pb9bzZtuJTfIbPtes1vI5X8Kr2vgzX4Fpch+txA5ZjBVbiRtxk/Zs/PW8Zq2v+zuMFvIiX8DI2O+ubtSB9k1Lz6h/33vxqbu12Xs3sfcMO56razD41WIs7sA7rsQF3YiM24S7cbXVmNduzWs2jrg/wIT7Cx/gEW5z1zVqQvkmpefWPe29+Nbd2u/8X/Gr9zdzwdCo1LN15NXOn8nsEj+IxPI4n8CSewtN4Bs/iOWe8eu765fA9fsCP+Anb8bOzR7Nmfp4X+BJf4Wt8g2+xDd95zOO1RhQ1r776OXzHH0Y/r7Fh79u8v8+McWbdb06zvc3pP4ScDdUyZ8+nnpXmPVHr6b/FN/Am3sLbeAfv4j2874xXuc32n0HlWccvT+bnCZugOenpmHzF/Cwdlne9J5jZU/OpbGerq3t71+Xeqmuzy/hs/xlUnuNAf8YHQX0PohrT0331FHW23SGsvekZ7k8+CnBA2r1drw/EQenOOcyMqWuLSzb9nmlREOS+RjWP23ldtP699ga/PLQ67WHdi6BkO1+3TLVb7u3qN+On1b05Prs8//Q5fuFvey4nx/3Skd8GT8I8myi/T2GingeCkI0ostzb3IX938Bvvrj+m9msKEylVmIRZnAVFheGv05cv025pC98xrApIWulWIZrcC2uiyB/+cb/8huedDaQtXKswErciJv6QP6E/GAzWavCLbgVq3Gb5E/IETVkrRZ3YB3WY4PkT8gRjWStCXfhbtyDeyV/Qo7YT9YO4EE8hIfxiORPyCMGk8cCHOA4Doc6GbXbR+BIHOs4Kob8TmHNqTgNp+MM+Q4lhtGcpaVlzH49qfBvbYxTG+M4KYazn8mas3A2zsG5kr/EoDJmZs9mPK8naNmz6+kYzn4ea87HBbgQF0n+EoPK2EQne5ONsx1tPPvMei5YzJpLcCkuw+WSv7zjD7TnCco=
   </data>
  </layer>
  <layer id="6" name="Trap" width="160" height="32">
@@ -79,8 +79,8 @@
   <object id="46" x="1296" y="416" width="16" height="32"/>
   <object id="66" x="1520" y="368" width="64" height="64"/>
   <object id="67" x="1536" y="432" width="48" height="32"/>
-  <object id="98" x="0" y="160" height="288"/>
-  <object id="99" x="2560" y="160" height="192"/>
+  <object id="98" x="2" y="160" width="1.42109e-14" height="288"/>
+  <object id="99" x="2558" y="160" height="192"/>
  </objectgroup>
  <objectgroup id="11" name="Trap">
   <object id="40" x="368" y="464" width="32" height="48"/>
@@ -101,18 +101,18 @@
  </objectgroup>
  <objectgroup id="14" name="Pilar">
   <object id="84" x="352" y="416" width="16" height="32"/>
-  <object id="86" x="16" y="416" width="16" height="32"/>
+  <object id="86" x="5.333" y="415.333" width="16" height="32"/>
   <object id="88" x="544" y="368" width="16" height="32"/>
   <object id="92" x="992" y="416" width="16" height="32"/>
   <object id="96" x="2192" y="320" width="16" height="32"/>
   <object id="115" x="1136" y="416" width="16" height="32"/>
   <object id="160" x="1296" y="160" width="16" height="240"/>
   <object id="162" x="1648" y="160" width="16" height="192"/>
-  <object id="163" x="2480" y="160" width="16" height="192"/>
+  <object id="163" x="2540" y="160" width="16" height="192"/>
   <object id="164" x="752" y="160" width="16" height="240"/>
  </objectgroup>
  <objectgroup id="15" name="Orcs">
-  <object id="102" x="144" y="432" width="16" height="16"/>
+  <object id="102" x="210" y="432" width="16" height="16"/>
   <object id="104" x="1056" y="432" width="16" height="16"/>
   <object id="105" x="1824" y="336" width="16" height="16"/>
   <object id="107" x="2352" y="336" width="16" height="16"/>

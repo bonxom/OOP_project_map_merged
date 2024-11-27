@@ -174,7 +174,10 @@ public class PlayScreen implements Screen {
         //hud.update(dt);
 
         //attack gamecam to x coordinate of player
-        gameCam.position.x = player.b2body.getPosition().x;
+        if (player.b2body.getPosition().x >= gamePort.getWorldWidth() /2 &&
+            player.b2body.getPosition().x <= 160 * 16 / GameWorld.PPM - gamePort.getWorldWidth() / 2) {
+            gameCam.position.x = player.b2body.getPosition().x;
+        }
         //gameCam.position.y = player.b2body.getPosition().y + GameWorld.V_HEIGHT/4/GameWorld.PPM;
 
         //update with correct coordinate
