@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # OOP_Project
 
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
@@ -31,3 +32,7 @@ Useful Gradle tasks and flags:
 
 Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
 For example, `core:clean` removes `build` folder only from the `core` project.
+=======
+# OOP_project_map_merged
+Merge map OOP project
+>>>>>>> 2cd4523556210fa973e95b75ee9005a39c38d8ff
