@@ -4,10 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
+import com.projectoop.game.screens.ThirdMapScreen;
 import com.projectoop.game.sprites.Knight;
 import com.projectoop.game.sprites.effectedObject.Chest;
+import com.projectoop.game.sprites.effectedObject.Chest1;
 import com.projectoop.game.sprites.enemy.Enemy;
-import com.projectoop.game.sprites.enemy.Orc;
 import com.projectoop.game.sprites.items.Item;
 import com.projectoop.game.sprites.trap.InteractiveTileObject;
 import com.projectoop.game.sprites.weapons.Arrow;
@@ -81,6 +82,7 @@ public class WorldContactListener implements ContactListener {
                 }
                 break;
             case GameWorld.GROUND_BIT | GameWorld.ARROW_BIT:
+            case GameWorld.CHEST1_BIT | GameWorld.ARROW_BIT:
             case GameWorld.CHEST_BIT | GameWorld.ARROW_BIT:
                 //Gdx.app.log("Arrow", "Object");
                 Arrow arrow1 = (Arrow) ((fixA.getFilterData().categoryBits == GameWorld.ARROW_BIT) ? fixA.getUserData() : fixB.getUserData());
@@ -95,6 +97,7 @@ public class WorldContactListener implements ContactListener {
                 break;
             case GameWorld.GROUND_BIT | GameWorld.FIREBALL_BIT:
             case GameWorld.CHEST_BIT | GameWorld.FIREBALL_BIT:
+            case GameWorld.CHEST1_BIT | GameWorld.FIREBALL_BIT:
                 //Gdx.app.log("Arrow", "Object");
                 FireBall fireBall1 = (FireBall) ((fixA.getFilterData().categoryBits == GameWorld.FIREBALL_BIT) ? fixA.getUserData() : fixB.getUserData());
                 fireBall1.destroy();
@@ -104,6 +107,10 @@ public class WorldContactListener implements ContactListener {
                 //Gdx.app.log("Knight", "Open Chest");
                 Chest chest = (Chest)((fixA.getFilterData().categoryBits == GameWorld.CHEST_BIT) ? fixA.getUserData() : fixB.getUserData());
                 chest.usingCallBack();
+                break;
+            case GameWorld.CHEST1_BIT | GameWorld.KNIGHT_BIT:
+                Chest1 chest1 = (Chest1)((fixA.getFilterData().categoryBits == GameWorld.CHEST1_BIT) ? fixA.getUserData() : fixB.getUserData());
+                chest1.usingCallBack();
                 break;
             case GameWorld.ITEM_BIT | GameWorld.KNIGHT_BIT:
                 //Gdx.app.log("Knight", "Buff");

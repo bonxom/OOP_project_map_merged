@@ -1,14 +1,11 @@
 package com.projectoop.game.sprites.enemy;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.projectoop.game.screens.PlayScreen;
-import com.projectoop.game.sprites.effectedObject.EffectedObject;
+import com.projectoop.game.screens.ThirdMapScreen;
 
 public abstract class Enemy extends Sprite {
 

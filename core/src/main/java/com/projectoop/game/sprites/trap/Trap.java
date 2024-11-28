@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.MapObject;
 
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
+import com.projectoop.game.screens.ThirdMapScreen;
 import com.projectoop.game.sprites.Knight;
 
 

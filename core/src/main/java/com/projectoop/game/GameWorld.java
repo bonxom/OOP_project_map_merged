@@ -2,7 +2,8 @@ package com.projectoop.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.projectoop.game.screens.PlayScreen;
+import com.projectoop.game.screens.SecondMapScreen;
+import com.projectoop.game.screens.ThirdMapScreen;
 import com.projectoop.game.tools.AudioManager;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -32,7 +33,7 @@ public class GameWorld extends Game {
     public void create() {
         AudioManager.setUp();
         batch = new SpriteBatch();
-        setScreen(new PlayScreen(this));
+        setScreen(new ThirdMapScreen(this));
     }
 
     @Override

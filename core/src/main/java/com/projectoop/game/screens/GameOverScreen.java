@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.projectoop.game.GameWorld;
-import com.projectoop.game.sprites.Knight;
 
 public class GameOverScreen implements Screen {
     private Viewport viewport;
@@ -50,7 +49,7 @@ public class GameOverScreen implements Screen {
     @Override
     public void render(float delta) {
         if(Gdx.input.justTouched()) {
-            game.setScreen(new PlayScreen((GameWorld) game));
+            game.setScreen(new ThirdMapScreen((GameWorld) game));
             dispose();
         }
         Gdx.gl.glClearColor(0, 0, 0, 1);

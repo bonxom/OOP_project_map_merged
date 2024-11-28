@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.projectoop.game.screens.PlayScreen;
+import com.projectoop.game.screens.ThirdMapScreen;
 
 public class Skeleton extends GroundEnemy{
     public Skeleton(PlayScreen screen, float x, float y) {

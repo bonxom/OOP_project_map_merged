@@ -2,9 +2,9 @@ package com.projectoop.game.scences;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
+import com.projectoop.game.screens.ThirdMapScreen;
 
 public class PlayerEnergyBar {
     private Texture heroEnergyBar,heroEnergy;

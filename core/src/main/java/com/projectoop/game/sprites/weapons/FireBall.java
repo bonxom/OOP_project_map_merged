@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
+import com.projectoop.game.screens.ThirdMapScreen;
 
 public class FireBall extends Bullet{
     private final float scaleX = 1.2f;
@@ -42,7 +43,8 @@ public class FireBall extends Bullet{
         shape.setRadius(15/ GameWorld.PPM);
         FixtureDef fdef = new FixtureDef();
         fdef.filter.categoryBits = GameWorld.FIREBALL_BIT;
-        fdef.filter.maskBits = GameWorld.GROUND_BIT | GameWorld.KNIGHT_BIT |
+        fdef.filter.maskBits =
+            GameWorld.GROUND_BIT | GameWorld.KNIGHT_BIT | GameWorld.CHEST1_BIT |
             GameWorld.CHEST_BIT | GameWorld.ITEM_BIT | GameWorld.TRAP_BIT;
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);

@@ -4,10 +4,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.Array;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
-import com.projectoop.game.sprites.enemy.Enemy;
+import com.projectoop.game.screens.ThirdMapScreen;
 import com.projectoop.game.sprites.enemy.GroundEnemy;
 import com.projectoop.game.sprites.weapons.Arrow;
 import com.projectoop.game.sprites.weapons.BulletManager;
@@ -183,7 +182,7 @@ public class Knight extends Sprite {
         fdef.filter.categoryBits = GameWorld.KNIGHT_BIT;
         fdef.filter.maskBits =
             GameWorld.GROUND_BIT | GameWorld.FIREBALL_BIT |
-            GameWorld.TRAP_BIT | GameWorld.CHEST_BIT |
+            GameWorld.TRAP_BIT | GameWorld.CHEST_BIT | GameWorld.CHEST1_BIT |
             GameWorld.ENEMY_BIT | GameWorld.ITEM_BIT;
 
         fdef.shape = shape;
@@ -252,7 +251,7 @@ public class Knight extends Sprite {
         fdef.filter.categoryBits = GameWorld.KNIGHT_BIT;
         fdef.filter.maskBits =
             GameWorld.GROUND_BIT | GameWorld.FIREBALL_BIT |
-                GameWorld.TRAP_BIT | GameWorld.CHEST_BIT |
+                GameWorld.TRAP_BIT | GameWorld.CHEST_BIT | GameWorld.CHEST1_BIT |
                 GameWorld.ENEMY_BIT | GameWorld.ITEM_BIT;
 
         fdef.shape = shape;
@@ -361,7 +360,7 @@ public class Knight extends Sprite {
     }
 
     public void buff(){
-        System.out.println("Bufffffffffff");
+        untilCount = UNTIL_COOL_DOWN;
     }
 
     public void attack1CallBack(){

@@ -1,12 +1,12 @@
 package com.projectoop.game.sprites.weapons;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.projectoop.game.GameWorld;
 import com.projectoop.game.screens.PlayScreen;
+import com.projectoop.game.screens.ThirdMapScreen;
 
 public class Arrow extends Bullet {
     private Texture texture;
@@ -36,7 +36,7 @@ public class Arrow extends Bullet {
         FixtureDef fdef = new FixtureDef();
         fdef.filter.categoryBits = GameWorld.ARROW_BIT;
         fdef.filter.maskBits = GameWorld.GROUND_BIT | GameWorld.ENEMY_BIT |
-            GameWorld.CHEST_BIT | GameWorld.ITEM_BIT;
+            GameWorld.CHEST_BIT | GameWorld.CHEST1_BIT | GameWorld.ITEM_BIT;
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
     }

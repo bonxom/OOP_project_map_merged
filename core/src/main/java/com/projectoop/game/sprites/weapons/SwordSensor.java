@@ -4,10 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.projectoop.game.GameWorld;
-import com.projectoop.game.screens.PlayScreen;
 
 public class SwordSensor extends Sprite {
     public World world;
