@@ -12,13 +12,13 @@ import com.projectoop.game.screens.PlayScreen;
 import com.projectoop.game.sprites.Knight;
 import com.projectoop.game.tools.AudioManager;
 
-public class Potion extends Item{
+public class Potion1 extends Item{
     private Texture texture;
     private TextureRegion frame;
 
     private Sound potionCollectSound;
 
-    public Potion(PlayScreen screen, float x, float y) {
+    public Potion1(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         toDestroy = false;
         destroyed = false;
@@ -43,8 +43,8 @@ public class Potion extends Item{
         fdef.filter.categoryBits = GameWorld.ITEM_BIT;
         //collision bit list
         fdef.filter.maskBits = GameWorld.GROUND_BIT |
-            GameWorld.TRAP_BIT | GameWorld.ENEMY_BIT | GameWorld.CHEST_BIT |
-            GameWorld.PILAR_BIT | GameWorld.KNIGHT_BIT | GameWorld.ARROW_BIT;
+            GameWorld.TRAP_BIT | GameWorld.ENEMY_BIT | GameWorld.CHEST1_BIT |
+            GameWorld.KNIGHT_BIT | GameWorld.ARROW_BIT|GameWorld.CHEST_BIT;
 
         fdef.shape = shape;
         body.createFixture(fdef).setUserData(this);
@@ -52,7 +52,7 @@ public class Potion extends Item{
 
     @Override
     protected void prepareAnimation() {
-        texture = new Texture("Props/Castle_Tileset_Potions-HP.png");
+        texture = new Texture("Props/poison potion.png");
         frame = new TextureRegion(texture);
         setRegion(frame);
     }
@@ -62,7 +62,8 @@ public class Potion extends Item{
         destroy();
         potionCollectSound.play();
         //buff player (code later)
-        screen.getPlayer().buffHealth(20);
+        screen.getPlayer().buff();
+
     }
 
     @Override
@@ -82,3 +83,5 @@ public class Potion extends Item{
         }
     }
 }
+
+

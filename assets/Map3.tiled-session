@@ -3,11 +3,100 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "map3.tmx",
+    "activeFile": "level1.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "D:/Coder/OOP-Finish-master/assets/Mytileset.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/Sample.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/TileConvert/Castle -Background  Layer 2.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/TileConvert/Dark Tree.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/TileConvert/Far Forest.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/TileConvert/Night.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/TileConvert/Trap_Spike.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/TileConvert/death_sign.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/TileConvert/dirt.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/TileConvert/lava.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/TileConvert/tl2.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/TileConvert/tl3.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/TileConvert/tl4.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/TileConvert/tl5.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/TileConvert/tl6.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/groundindustrial.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/industrialgraphic.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/level1.tmx": {
+            "scale": 0.29613281249999995,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1921.4351668645304,
+                "y": 102.99432792507582
+            }
+        },
+        "D:/Coder/OOP-Finish-master/assets/level1.tmx#tileset_gutter": {
+            "scaleInDock": 1
+        },
+        "D:/Coder/OOP-Finish-master/assets/level2.tmx": {
+            "expandedObjectLayers": [
+                4,
+                7,
+                10,
+                11,
+                5,
+                3
+            ],
+            "scale": 2,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 444.5,
+                "y": 106.25
+            }
+        },
+        "D:/Coder/OOP-Finish-master/assets/map3.tmx": {
+            "scale": 0.44419921875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1280.9567779096863,
+                "y": 255.51598293980567
+            }
+        },
+        "D:/Coder/OOP-Finish-master/assets/tilemap_packed.tsx": {
+            "scaleInDock": 1
+        },
         "D:/Coder/oop-master/assets/map1.tmx": {
             "scale": 2.030625,
             "selectedLayer": 0,
@@ -149,12 +238,23 @@
         "TiledSet/sign.tsx": {
             "scaleInDock": 1
         },
+        "level1.tmx": {
+            "scale": 0.29613281249999995,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1921.4351668645304,
+                "y": 102.99432792507582
+            }
+        },
+        "level1.tmx#tileset_gutter": {
+            "scaleInDock": 1
+        },
         "map3.tmx": {
             "scale": 1.5,
             "selectedLayer": 10,
             "viewCenter": {
-                "x": 314.66666666666663,
-                "y": 224.99999999999997
+                "x": 1275.3333333333333,
+                "y": 491.66666666666663
             }
         }
     },
@@ -174,7 +274,8 @@
         "TileConvert/tl6.tsx",
         "TileConvert/lava.tsx",
         "map3.tmx",
-        "TileConvert/Night.tsx"
+        "D:/Coder/OOP-Finish-master/assets/level2.tmx",
+        "level1.tmx"
     ],
     "project": "Map3.tiled-project",
     "recentFiles": [
@@ -185,11 +286,11 @@
         "TileConvert/tl5.tsx",
         "TileConvert/tl6.tsx",
         "TileConvert/lava.tsx",
-        "TileConvert/Night.tsx",
         "map3.tmx",
-        "TileConvert/death_sign.tsx",
-        "TileConvert/Trap_Spike.tsx",
-        "TileConvert/dirt.tsx"
+        "D:/Coder/OOP-Finish-master/assets/level2.tmx",
+        "level1.tmx",
+        "D:/Coder/OOP-Finish-master/assets/level1.tmx",
+        "TileConvert/Night.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.margin": 2,

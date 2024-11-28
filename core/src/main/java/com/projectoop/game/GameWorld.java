@@ -23,6 +23,7 @@ public class GameWorld extends Game {
     public static final short ARROW_BIT = 512;
     public static final short CHEST_BIT = 1024;
     public static final short ITEM_BIT = 2048;
+    public static final short CHEST1_BIT = 4096;
 
     public SpriteBatch batch;//container hold all images or texture for rendering
 

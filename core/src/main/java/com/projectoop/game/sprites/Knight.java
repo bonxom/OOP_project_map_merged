@@ -461,6 +461,7 @@ public class Knight extends Sprite {
             if (deathCount <= 0) endGame = true;
             else {
                 b2body.setTransform(32 / GameWorld.PPM, 100 / GameWorld.PPM, 0);
+                screen.getGameCam().position.set( screen.getGamePort().getWorldWidth() /2, screen.getGamePort().getWorldHeight() /2, 0);
                 isDie = false;
                 health = healthMax;
             }
@@ -531,6 +532,10 @@ public class Knight extends Sprite {
 
     public int getHealth() {
         return health;
+    }
+
+    public void buffHealth(int add){
+        health += add;
     }
 
     public int getHealthMax() {

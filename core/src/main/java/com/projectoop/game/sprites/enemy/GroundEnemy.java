@@ -147,16 +147,18 @@ public abstract class GroundEnemy extends Enemy{
 
     @Override
     public void hurtingCallBack(){
-        hurtKnockBack();
-        hurtSound.play();
-        isHurt = true;
+        if (!destroyed) {
+            hurtKnockBack();
+            hurtSound.play();
+            isHurt = true;
 
-        //take dame
-        currentHealth -= screen.getPlayer().getDamage();
-        if (currentHealth < 0) currentHealth = 0;
-        healthBar.update(currentHealth);
-        if (currentHealth <= 0){
-            isDie = true;
+            //take dame
+            currentHealth -= screen.getPlayer().getDamage();
+            if (currentHealth < 0) currentHealth = 0;
+            healthBar.update(currentHealth);
+            if (currentHealth <= 0) {
+                isDie = true;
+            }
         }
     }
 
@@ -256,7 +258,7 @@ public abstract class GroundEnemy extends Enemy{
     public void update(float dt){
         stateTime += dt;
         if (setToDestroy && !destroyed){
-            world.destroyBody(b2body);
+            //world.destroyBody(b2body);
             destroyed = true;
             //screen.creator.getGroundEnemies().removeValue(this, true);
             stateTime = 0;
