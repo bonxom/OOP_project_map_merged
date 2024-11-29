@@ -2,6 +2,7 @@ package com.projectoop.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.projectoop.game.screens.FourthMapScreen;
 import com.projectoop.game.screens.SecondMapScreen;
 import com.projectoop.game.screens.ThirdMapScreen;
 import com.projectoop.game.tools.AudioManager;
@@ -25,6 +26,7 @@ public class GameWorld extends Game {
     public static final short CHEST_BIT = 1024;
     public static final short ITEM_BIT = 2048;
     public static final short CHEST1_BIT = 4096;
+    public static final short BOSSBALL_BIT = 8192;
 
     public SpriteBatch batch;//container hold all images or texture for rendering
 
@@ -33,7 +35,7 @@ public class GameWorld extends Game {
     public void create() {
         AudioManager.setUp();
         batch = new SpriteBatch();
-        setScreen(new ThirdMapScreen(this));
+        setScreen(new FourthMapScreen(this));
     }
 
     @Override

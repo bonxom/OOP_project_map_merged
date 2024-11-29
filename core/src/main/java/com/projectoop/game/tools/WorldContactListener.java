@@ -12,6 +12,7 @@ import com.projectoop.game.sprites.enemy.Enemy;
 import com.projectoop.game.sprites.items.Item;
 import com.projectoop.game.sprites.trap.InteractiveTileObject;
 import com.projectoop.game.sprites.weapons.Arrow;
+import com.projectoop.game.sprites.weapons.BossBall;
 import com.projectoop.game.sprites.weapons.FireBall;
 
 public class WorldContactListener implements ContactListener {
@@ -102,6 +103,21 @@ public class WorldContactListener implements ContactListener {
                 FireBall fireBall1 = (FireBall) ((fixA.getFilterData().categoryBits == GameWorld.FIREBALL_BIT) ? fixA.getUserData() : fixB.getUserData());
                 fireBall1.destroy();
                 break;
+            //bossball collision
+            case GameWorld.KNIGHT_BIT | GameWorld.BOSSBALL_BIT://test
+                //Gdx.app.log("Arrow", "Enemy");
+                BossBall bossBall = (BossBall) ((fixA.getFilterData().categoryBits == GameWorld.BOSSBALL_BIT) ? fixA.getUserData() : fixB.getUserData());
+                bossBall.destroy();
+                screen.getPlayer().hurtingCallBack(bossBall.damage);
+                break;
+            case GameWorld.GROUND_BIT | GameWorld.BOSSBALL_BIT:
+            case GameWorld.CHEST_BIT | GameWorld.BOSSBALL_BIT:
+            case GameWorld.CHEST1_BIT | GameWorld.BOSSBALL_BIT:
+                //Gdx.app.log("Arrow", "Object");
+                BossBall bossBall1 = (BossBall) ((fixA.getFilterData().categoryBits == GameWorld.FIREBALL_BIT) ? fixA.getUserData() : fixB.getUserData());
+                bossBall1.destroy();
+                break;
+
             //chest collision
             case GameWorld.CHEST_BIT | GameWorld.KNIGHT_BIT:
                 //Gdx.app.log("Knight", "Open Chest");

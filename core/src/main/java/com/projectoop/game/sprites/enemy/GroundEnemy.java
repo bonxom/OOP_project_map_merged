@@ -262,6 +262,7 @@ public abstract class GroundEnemy extends Enemy{
             //world.destroyBody(b2body);
             destroyed = true;
             //screen.creator.getGroundEnemies().removeValue(this, true);
+            b2body.setTransform(new Vector2(0, -10), 0);
             stateTime = 0;
         }
         else if (!destroyed){
@@ -283,8 +284,13 @@ public abstract class GroundEnemy extends Enemy{
         }
     }
 
+
     @Override
     public void hitOnHead() {
 
+    }
+    public abstract void dispose();
+    public void setVelocity(Vector2 velocity) {
+        this.velocity = velocity;
     }
 }

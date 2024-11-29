@@ -1,0 +1,75 @@
+
+Death.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Bringer-of-Death_Death
+  rotate: false
+  xy: 1, 1
+  size: 70, 93
+  orig: 70, 93
+  offset: 0, 0
+  index: 1
+Bringer-of-Death_Death
+  rotate: false
+  xy: 73, 1
+  size: 70, 93
+  orig: 70, 93
+  offset: 0, 0
+  index: 10
+Bringer-of-Death_Death
+  rotate: false
+  xy: 145, 1
+  size: 70, 93
+  orig: 70, 93
+  offset: 0, 0
+  index: 2
+Bringer-of-Death_Death
+  rotate: false
+  xy: 217, 1
+  size: 70, 93
+  orig: 70, 93
+  offset: 0, 0
+  index: 3
+Bringer-of-Death_Death
+  rotate: false
+  xy: 289, 1
+  size: 70, 93
+  orig: 70, 93
+  offset: 0, 0
+  index: 4
+Bringer-of-Death_Death
+  rotate: false
+  xy: 361, 1
+  size: 70, 93
+  orig: 70, 93
+  offset: 0, 0
+  index: 5
+Bringer-of-Death_Death
+  rotate: false
+  xy: 433, 1
+  size: 70, 93
+  orig: 70, 93
+  offset: 0, 0
+  index: 6
+Bringer-of-Death_Death
+  rotate: false
+  xy: 505, 1
+  size: 70, 93
+  orig: 70, 93
+  offset: 0, 0
+  index: 7
+Bringer-of-Death_Death
+  rotate: false
+  xy: 577, 1
+  size: 70, 93
+  orig: 70, 93
+  offset: 0, 0
+  index: 8
+Bringer-of-Death_Death
+  rotate: false
+  xy: 649, 1
+  size: 70, 93
+  orig: 70, 93
+  offset: 0, 0
+  index: 9

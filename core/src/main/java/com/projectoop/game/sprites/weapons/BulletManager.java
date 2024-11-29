@@ -29,6 +29,9 @@ public class BulletManager {
             case "FireBall":
                 bullet = new FireBall(screen, x, y, direction);
                 break;
+            case "BossBall":
+                bullet = new BossBall(screen, x, y, direction);
+                break;
             default:
                 bullet = null;
                 break;

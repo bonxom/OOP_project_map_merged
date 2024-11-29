@@ -24,4 +24,9 @@ public class Goblin extends GroundEnemy{
         dieAnimation = new Animation<TextureRegion>(0.2f, atlasDieing.getRegions());
         hurtAnimation = new Animation<TextureRegion>(0.3f, atlasHurting.getRegions());
     }
+
+    @Override
+    public void dispose() {
+
+    }
 }

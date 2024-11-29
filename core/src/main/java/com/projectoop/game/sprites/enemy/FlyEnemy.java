@@ -83,4 +83,9 @@ public class FlyEnemy extends GroundEnemy{//test th, code sau
         super.draw(batch);
         bulletManager.draw(batch);
     }
+
+    @Override
+    public void dispose() {
+
+    }
 }
