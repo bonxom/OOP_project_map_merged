@@ -49,11 +49,16 @@ public abstract class PlayScreen implements Screen {
     protected LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
     protected Music music;
+    public boolean passThisRound;
+    public int kill;
 
     public PlayScreen(GameWorld gameWorld){
         this.game = gameWorld;
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(GameWorld.V_WIDTH / GameWorld.PPM, GameWorld.V_HEIGHT / GameWorld.PPM, gameCam);// broaden scale in any direction, unchange PNG ratio
+
+        passThisRound = false;
+        kill = 0;
     }
 
     //Input manager

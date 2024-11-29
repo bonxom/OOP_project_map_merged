@@ -51,7 +51,7 @@ public class SecondMapScreen extends PlayScreen {
         world.setContactListener(new WorldContactListener(this));
 
         music = AudioManager.manager.get(AudioManager.backgroundMusic, Music.class);
-        music.setVolume(music.getVolume() - 0.7f);
+        music.setVolume(music.getVolume());
         music.setLooping(true);
         music.play();
 
@@ -131,10 +131,7 @@ public class SecondMapScreen extends PlayScreen {
             player.b2body.getPosition().x <= 160 * 16 / GameWorld.PPM - gamePort.getWorldWidth() / 2) {
             gameCam.position.x = player.b2body.getPosition().x;
         }
-//        if (player.b2body.getPosition().x >= gamePort.getWorldWidth() /2 &&
-//            player.b2body.getPosition().x <= 160 * 16 / GameWorld.PPM - gamePort.getWorldWidth() / 2) {
-//            gameCam.position.x = player.b2body.getPosition().x;
-//        }
+
         //gameCam.position.y = player.b2body.getPosition().y + GameWorld.V_HEIGHT/4/GameWorld.PPM;
 
         //update with correct coordinate
@@ -180,6 +177,11 @@ public class SecondMapScreen extends PlayScreen {
 
         if (gameOver()) {
             game.setScreen(new GameOverScreen(game));
+            dispose();
+        }
+
+        if (passThisRound){
+            game.setScreen(new ThirdMapScreen(game));
             dispose();
         }
     }

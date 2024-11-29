@@ -48,7 +48,7 @@ public class ThirdMapScreen extends PlayScreen {
         world.setContactListener(new WorldContactListener(this));
 
         music = AudioManager.manager.get(AudioManager.backgroundMusic, Music.class);
-        music.setVolume(music.getVolume() - 0.7f);
+        music.setVolume(music.getVolume());
         music.setLooping(true);
         music.play();
 

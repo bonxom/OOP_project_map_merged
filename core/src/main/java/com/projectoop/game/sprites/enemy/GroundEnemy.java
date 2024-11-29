@@ -261,6 +261,7 @@ public abstract class GroundEnemy extends Enemy{
         if (setToDestroy && !destroyed){
             //world.destroyBody(b2body);
             destroyed = true;
+            screen.kill++;
             //screen.creator.getGroundEnemies().removeValue(this, true);
             b2body.setTransform(new Vector2(0, -10), 0);
             stateTime = 0;

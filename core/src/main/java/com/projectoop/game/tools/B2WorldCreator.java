@@ -7,14 +7,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.projectoop.game.GameWorld;
-import com.projectoop.game.screens.FourthMapScreen;
-import com.projectoop.game.screens.PlayScreen;
-import com.projectoop.game.screens.SecondMapScreen;
-import com.projectoop.game.screens.ThirdMapScreen;
+import com.projectoop.game.screens.*;
 import com.projectoop.game.sprites.effectedObject.Chest1;
 import com.projectoop.game.sprites.enemy.*;
 import com.projectoop.game.sprites.effectedObject.Chest;
 import com.projectoop.game.sprites.trap.Pilar;
+import com.projectoop.game.sprites.trap.Portal;
 import com.projectoop.game.sprites.trap.Trap;
 
 public class B2WorldCreator {
@@ -22,6 +20,7 @@ public class B2WorldCreator {
     private Boss boss;
     private Array<Chest> chests;
     private Array<Chest1> chest1s;
+    public Portal portal2;
 
     public B2WorldCreator(PlayScreen screen){
         World world = screen.getWorld();
@@ -135,6 +134,10 @@ public class B2WorldCreator {
             for (MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)){
                 Rectangle rect = ((RectangleMapObject)object).getRectangle();
                 chest1s.add(new Chest1(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
+            }
+
+            for (MapObject object : map.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)){
+                portal2 = new Portal(screen, object);
             }
         }
 

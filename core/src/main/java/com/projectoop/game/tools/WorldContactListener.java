@@ -11,6 +11,7 @@ import com.projectoop.game.sprites.effectedObject.Chest1;
 import com.projectoop.game.sprites.enemy.Enemy;
 import com.projectoop.game.sprites.items.Item;
 import com.projectoop.game.sprites.trap.InteractiveTileObject;
+import com.projectoop.game.sprites.trap.Portal;
 import com.projectoop.game.sprites.weapons.Arrow;
 import com.projectoop.game.sprites.weapons.BossBall;
 import com.projectoop.game.sprites.weapons.FireBall;
@@ -24,7 +25,7 @@ public class WorldContactListener implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-        Gdx.app.log("Begin Contact", "");
+        //Gdx.app.log("Begin Contact", "");
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
 
@@ -54,6 +55,11 @@ public class WorldContactListener implements ContactListener {
 
         switch (cDef){
             //trap collision
+            case GameWorld.KNIGHT_BIT | GameWorld.PORTAL_BIT:
+                Gdx.app.log("knight", "portal");
+                Portal portal = (Portal) ((fixA.getFilterData().categoryBits == GameWorld.PORTAL_BIT) ? fixA.getUserData() : fixB.getUserData());
+                portal.passThisRound();
+                break;
             case GameWorld.KNIGHT_FOOT_BIT | GameWorld.TRAP_BIT:
                 if (fixA.getFilterData().categoryBits == GameWorld.KNIGHT_FOOT_BIT){
                     ((InteractiveTileObject) fixB.getUserData()).onFootHit((Knight) fixA.getUserData());
@@ -180,7 +186,7 @@ public class WorldContactListener implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
-        Gdx.app.log("End Contact", "");
+        //Gdx.app.log("End Contact", "");
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
 

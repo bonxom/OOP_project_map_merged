@@ -252,7 +252,7 @@ public class Knight extends Sprite {
         fdef.filter.maskBits =
             GameWorld.GROUND_BIT | GameWorld.FIREBALL_BIT |
                 GameWorld.TRAP_BIT | GameWorld.CHEST_BIT | GameWorld.CHEST1_BIT |
-                GameWorld.ENEMY_BIT | GameWorld.ITEM_BIT;
+                GameWorld.ENEMY_BIT | GameWorld.ITEM_BIT | GameWorld.PORTAL_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
@@ -395,7 +395,7 @@ public class Knight extends Sprite {
         timeCountAttack += dt;
         if (untilCount < UNTIL_COOL_DOWN && !isBig) untilCount += dt;
         if (untilCount > UNTIL_COOL_DOWN && !isBig) untilCount = UNTIL_COOL_DOWN;
-        System.out.println("utilCount: " + untilCount);
+        //System.out.println("utilCount: " + untilCount);
 
         currentState = getState();
         TextureRegion region;

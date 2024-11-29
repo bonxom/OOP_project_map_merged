@@ -26,8 +26,6 @@ public abstract class EffectedObject extends Sprite {
 
     public EffectedObject(PlayScreen screen, float x, float y){
         this.world = screen.getWorld();
-        this.screen = screen;
-        currentState = State.NOTUSE;
         currentState = State.NOTUSE;
         setPosition(x, y + 8/ GameWorld.PPM);
         defineObject();

@@ -27,6 +27,7 @@ public class GameWorld extends Game {
     public static final short ITEM_BIT = 2048;
     public static final short CHEST1_BIT = 4096;
     public static final short BOSSBALL_BIT = 8192;
+    public static final short PORTAL_BIT = 16384;
 
     public SpriteBatch batch;//container hold all images or texture for rendering
 
@@ -35,7 +36,7 @@ public class GameWorld extends Game {
     public void create() {
         AudioManager.setUp();
         batch = new SpriteBatch();
-        setScreen(new FourthMapScreen(this));
+        setScreen(new SecondMapScreen(this));
     }
 
     @Override
