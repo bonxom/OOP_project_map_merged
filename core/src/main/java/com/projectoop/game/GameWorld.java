@@ -36,7 +36,7 @@ public class GameWorld extends Game {
     public void create() {
         AudioManager.setUp();
         batch = new SpriteBatch();
-        setScreen(new FourthMapScreen(this));
+        setScreen(new SecondMapScreen(this));
     }
 
     @Override
