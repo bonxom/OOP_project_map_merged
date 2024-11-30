@@ -9,7 +9,7 @@ import com.projectoop.game.screens.ThirdMapScreen;
 public class Orc extends GroundEnemy{
 
     public Orc(PlayScreen screen, float x, float y) {
-        super(screen, x, y, 0, 2, 10);
+        super(screen, x, y, -2, 2, 10);
     }
 
     @Override

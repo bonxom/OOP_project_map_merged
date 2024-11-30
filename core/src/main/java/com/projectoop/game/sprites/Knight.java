@@ -28,7 +28,7 @@ public class Knight extends Sprite {
     private int damage;
 
     //test
-    private static int deathCount = 3;
+    public static int deathCount = 3;
 
     private TextureAtlas atlasRunning;
     private TextureAtlas atlasJumping;
