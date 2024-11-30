@@ -77,7 +77,7 @@ public class Knight extends Sprite {
     private boolean isAttack3;
     private boolean isDie;
     private boolean endGame;
-    private boolean isBig;
+    public boolean isBig;
 
     private boolean playSound1;
     private boolean playSound2;
@@ -183,19 +183,10 @@ public class Knight extends Sprite {
         fdef.filter.maskBits =
             GameWorld.GROUND_BIT | GameWorld.FIREBALL_BIT |
             GameWorld.TRAP_BIT | GameWorld.CHEST_BIT | GameWorld.CHEST1_BIT |
-            GameWorld.ENEMY_BIT | GameWorld.ITEM_BIT;
+            GameWorld.ENEMY_BIT | GameWorld.ITEM_BIT | GameWorld.PORTAL_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
-
-        //make EdgeShape for checking head-collision
-//        EdgeShape head = new EdgeShape();
-//        head.set(new Vector2(-2/GameWorld.PPM, 6/GameWorld.PPM),
-//                new Vector2(2/GameWorld.PPM, 6/GameWorld.PPM));
-//        fdef.shape = head;
-//        fdef.isSensor = true;//head is a sensor
-//
-//        b2body.createFixture(fdef).setUserData("head");
 
         //make EdgeShape for checking foot-collision
         EdgeShape foot = new EdgeShape();
@@ -205,15 +196,6 @@ public class Knight extends Sprite {
         fdef.shape = foot;
         //fdef.isSensor = true;//foot is a sensor, sensor is an object but is not able to make physical collision
         b2body.createFixture(fdef).setUserData(this);
-
-//        //knight center sensor
-//        EdgeShape center = new EdgeShape();
-//        center.set(new Vector2(5/GameWorld.PPM, -5/GameWorld.PPM),
-//            new Vector2(5/GameWorld.PPM, -5/GameWorld.PPM));
-//        fdef.filter.categoryBits = GameWorld.KNIGHT_CENTER;
-//        fdef.shape = center;
-//        fdef.isSensor = true;
-//        b2body.createFixture(fdef).setUserData(this);
 
         //sword hit right sensor
         EdgeShape swordRight = new EdgeShape();
@@ -250,7 +232,7 @@ public class Knight extends Sprite {
         shape.setRadius(20/GameWorld.PPM);
         fdef.filter.categoryBits = GameWorld.KNIGHT_BIT;
         fdef.filter.maskBits =
-            GameWorld.GROUND_BIT | GameWorld.FIREBALL_BIT |
+            GameWorld.GROUND_BIT | GameWorld.FIREBALL_BIT | GameWorld.BOSSBALL_BIT |
                 GameWorld.TRAP_BIT | GameWorld.CHEST_BIT | GameWorld.CHEST1_BIT |
                 GameWorld.ENEMY_BIT | GameWorld.ITEM_BIT | GameWorld.PORTAL_BIT;
 

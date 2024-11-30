@@ -48,7 +48,7 @@ public class FourthMapScreen extends PlayScreen{
         world.setContactListener(new WorldContactListener(this));
 
         music = AudioManager.manager.get(AudioManager.backgroundMusic, Music.class);
-        music.setVolume(music.getVolume() - 0.7f);
+        music.setVolume(music.getVolume());
         music.setLooping(true);
         music.play();
 
@@ -114,8 +114,8 @@ public class FourthMapScreen extends PlayScreen{
 
         player.update(dt);
 
-        for (GroundEnemy enemy : creator.getGroundEnemies()){
-            if (enemy.inRangeAttack && player.isAttack() && enemy.getCurrentState() != GroundEnemy.State.HURTING) {
+        for (Enemy enemy : creator.getGroundEnemies()){
+            if (enemy.inRangeAttack && player.isAttack() && enemy.getCurrentState() != Enemy.State.HURTING) {
                 enemy.hurtingCallBack();
             }
             enemy.update(dt);
@@ -124,14 +124,14 @@ public class FourthMapScreen extends PlayScreen{
             }
         }
 
-        //boss update
-        if (creator.getBoss().inRangeAttack && player.isAttack() ) {
-            creator.getBoss().hurtingCallBack();
-        }
-        creator.getBoss().update(dt);
-        if (creator.getBoss().getX() < player.getX() + (GameWorld.V_WIDTH / 2 + 4 * 16) / GameWorld.PPM) {
-            creator.getBoss().b2body.setActive(true);//optimize to avoid lagging
-        }
+//        //boss update
+//        if (creator.getBoss().inRangeAttack && player.isAttack() ) {
+//            creator.getBoss().hurtingCallBack();
+//        }
+//        creator.getBoss().update(dt);
+//        if (creator.getBoss().getX() < player.getX() + (GameWorld.V_WIDTH / 2 + 4 * 16) / GameWorld.PPM) {
+//            creator.getBoss().b2body.setActive(true);//optimize to avoid lagging
+//        }
 
         for (EffectedObject eobj : creator.getChests()){
             eobj.update(dt);
@@ -190,7 +190,7 @@ public class FourthMapScreen extends PlayScreen{
         for (Enemy enemy : creator.getGroundEnemies()){
             enemy.draw(game.batch);
         }
-        creator.getBoss().draw(game.batch);
+//        creator.getBoss().draw(game.batch);
 //        for (Enemy enemy : creator.getFlyEnemies()){
 //            enemy.draw(game.batch);
 //        }

@@ -9,6 +9,10 @@ import com.projectoop.game.screens.PlayScreen;
 import com.projectoop.game.screens.ThirdMapScreen;
 
 public abstract class Enemy extends Sprite {
+    public enum State {HURTING, ATTACKING, DEAD, WALKING};
+
+    protected State currentState;
+    protected State previousState;
 
     protected float stateTime;
     protected boolean setToDestroy;
@@ -54,7 +58,9 @@ public abstract class Enemy extends Sprite {
     public abstract void destroy();
     public abstract void attackingCallBack();
     public abstract void hurtingCallBack();
-    public abstract GroundEnemy.State getCurrentState();
+    public State getCurrentState() {
+        return currentState;
+    }
 
     public void reverseVelocity(boolean x, boolean y){
         if (x){

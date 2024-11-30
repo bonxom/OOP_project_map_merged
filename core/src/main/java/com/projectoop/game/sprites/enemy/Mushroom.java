@@ -8,7 +8,7 @@ import com.projectoop.game.screens.ThirdMapScreen;
 
 public class Mushroom extends GroundEnemy{
     public Mushroom(PlayScreen screen, float x, float y) {
-        super(screen, x, y, 14, 1.2f, 10);
+        super(screen, x, y, 8, 1.2f, 10);
     }
 
     @Override

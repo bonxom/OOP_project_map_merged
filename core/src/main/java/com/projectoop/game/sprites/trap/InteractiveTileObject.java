@@ -49,6 +49,7 @@ public abstract class InteractiveTileObject {
 
     //public abstract void onHeadHit();
     public abstract void onFootHit(Knight knight);
+    public abstract void passThisRound(Knight knight);
 
     public void setCategoryFilter(short filterBit){
         Filter filter = new Filter();

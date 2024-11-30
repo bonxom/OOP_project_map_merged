@@ -55,10 +55,14 @@ public class WorldContactListener implements ContactListener {
 
         switch (cDef){
             //trap collision
-            case GameWorld.KNIGHT_BIT | GameWorld.PORTAL_BIT:
+            case GameWorld.KNIGHT_SWORD_RIGHT | GameWorld.PORTAL_BIT:
                 Gdx.app.log("knight", "portal");
-                Portal portal = (Portal) ((fixA.getFilterData().categoryBits == GameWorld.PORTAL_BIT) ? fixA.getUserData() : fixB.getUserData());
-                portal.passThisRound();
+                if (fixA.getFilterData().categoryBits == GameWorld.KNIGHT_SWORD_RIGHT){
+                    ((InteractiveTileObject) fixB.getUserData()).passThisRound((Knight) fixA.getUserData());
+                }
+                else{
+                    ((InteractiveTileObject) fixA.getUserData()).passThisRound((Knight) fixB.getUserData());
+                }
                 break;
             case GameWorld.KNIGHT_FOOT_BIT | GameWorld.TRAP_BIT:
                 if (fixA.getFilterData().categoryBits == GameWorld.KNIGHT_FOOT_BIT){

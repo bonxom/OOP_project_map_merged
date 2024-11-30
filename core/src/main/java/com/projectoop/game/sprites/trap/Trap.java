@@ -22,4 +22,9 @@ public class Trap extends InteractiveTileObject {
         //AudioManager.manager.get(AudioManager.knightDieAudio, Sound.class).play();
         screen.getPlayer().setDie();
     }
+
+    @Override
+    public void passThisRound(Knight knight) {
+
+    }
 }

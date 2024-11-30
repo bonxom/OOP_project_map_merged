@@ -16,11 +16,11 @@ import com.projectoop.game.sprites.trap.Portal;
 import com.projectoop.game.sprites.trap.Trap;
 
 public class B2WorldCreator {
-    private Array<GroundEnemy> groundEnemies;
-    private Boss boss;
+    private Array<Enemy> groundEnemies;
     private Array<Chest> chests;
     private Array<Chest1> chest1s;
     public Portal portal2;
+    public Portal portal3;
 
     public B2WorldCreator(PlayScreen screen){
         World world = screen.getWorld();
@@ -60,7 +60,7 @@ public class B2WorldCreator {
             //create all skeleton
             for (MapObject object : map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)) {
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
-                groundEnemies.add(new Skeleton(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
+                groundEnemies.add(new Mushroom(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
             }
             //create all goblins
             for (MapObject object : map.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)) {
@@ -77,6 +77,10 @@ public class B2WorldCreator {
             for (MapObject object : map.getLayers().get(15).getObjects().getByType(RectangleMapObject.class)) {
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
                 chests.add(new Chest(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
+            }
+
+            for (MapObject object : map.getLayers().get(16).getObjects().getByType(RectangleMapObject.class)) {
+                portal3 = new Portal(screen, object);
             }
         }
 
@@ -196,28 +200,20 @@ public class B2WorldCreator {
                 Rectangle rect = ((RectangleMapObject)object).getRectangle();
                 chest1s.add(new Chest1(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
             }
-//        flyEnemies = new Array<>();
-//        for (MapObject object : map.getLayers().get(16).getObjects().getByType(RectangleMapObject.class)){
-//            Rectangle rect = ((RectangleMapObject)object).getRectangle();
-//            flyEnemies.add(new FlyingEye(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
-//        }
+
 
             for (MapObject object : map.getLayers().get(16).getObjects().getByType(RectangleMapObject.class)){
                 Rectangle rect = ((RectangleMapObject)object).getRectangle();
                 //  groundEnemies.add(new Orc(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM));
-                boss = new Boss(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM,35,1.5f,15);
+                groundEnemies.add(new Boss(screen, rect.getX() / GameWorld.PPM, rect.y / GameWorld.PPM,35,1.5f,15));
             }
         }
     }
 
 
 
-    public Array<GroundEnemy> getGroundEnemies() {
+    public Array<Enemy> getGroundEnemies() {
         return groundEnemies;
-    }
-
-    public Boss getBoss(){
-        return boss;
     }
 
     public Array<Chest> getChests(){

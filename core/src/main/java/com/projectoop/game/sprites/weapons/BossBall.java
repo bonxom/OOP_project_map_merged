@@ -22,7 +22,7 @@ public class BossBall extends Bullet{
     private Animation<TextureRegion> shootingAnim;
     public BossBall(PlayScreen screen, float x, float y, int direction) {
         super(screen, x, y, direction);
-        this.velocity = new Vector2(2*direction , -0.5f);
+        this.velocity = new Vector2(2*direction , -0.2f);
     }
     @Override
     protected void prepareAnimation() {
@@ -32,7 +32,7 @@ public class BossBall extends Bullet{
                 atlasShooting = new TextureAtlas("E_FlyingEye/Pack/FireBall.pack");
                 break;
             default:
-                atlasShooting = new TextureAtlas("Ghost/Pack/Shoot.pack");
+                atlasShooting = new TextureAtlas("Demon/Demon.pack");
                 break;
         }
         // atlasShooting = new TextureAtlas("E_FlyingEye/Pack/FireBall.pack");

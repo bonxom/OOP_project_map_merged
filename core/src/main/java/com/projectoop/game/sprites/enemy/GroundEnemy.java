@@ -16,9 +16,7 @@ import com.projectoop.game.scences.EnemyHealthBar;
 import com.projectoop.game.tools.AudioManager;
 
 public abstract class GroundEnemy extends Enemy{
-    public enum State {HURTING, ATTACKING, DEAD, WALKING};
-    protected State currentState;
-    protected State previousState;
+
 
     protected float scaleX;
     protected float scaleY;
@@ -140,10 +138,6 @@ public abstract class GroundEnemy extends Enemy{
         isAttack = true;
         //System.out.println("Chem chem chem");
         //screen.getPlayer().hurtingCallBack();
-    }
-
-    public State getCurrentState(){
-      return currentState;
     }
 
     @Override

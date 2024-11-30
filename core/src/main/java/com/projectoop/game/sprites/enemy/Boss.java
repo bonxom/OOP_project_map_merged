@@ -17,9 +17,6 @@ import com.projectoop.game.sprites.weapons.BulletManager;
 import com.projectoop.game.tools.AudioManager;
 
 public class Boss extends Enemy{
-    public enum State {HURTING, ATTACKING, DEAD, WALKING};
-    protected State currentState;
-    protected State previousState;
 
     protected float scaleX;
     protected float scaleY;
@@ -46,7 +43,7 @@ public class Boss extends Enemy{
     protected boolean lastDirectionIsRight;
     protected float addYtoAnim;
 
-    private final float COOL_DOWN = 5;
+    private final float COOL_DOWN = 3;
     private float timeCount;
     private float lastTimeShoot;
     private BulletManager bulletManager;
@@ -174,16 +171,11 @@ public class Boss extends Enemy{
         }
     }
 
-    @Override
-    public GroundEnemy.State getCurrentState() {
-        return null;
-    }
-
     public TextureRegion getFrame(float dt){
         timeCount += dt;
         System.out.println("TimeCount: " + timeCount);
         if(timeCount > COOL_DOWN) {
-            System.out.println("dcmmm");
+            //System.out.println("dcmmm");
             int direction = (runningRight) ? 1 : -1;
 
             bulletManager.addBullet(b2body.getPosition().x, b2body.getPosition().y+15/GameWorld.PPM, direction, "BossBall");
@@ -195,8 +187,10 @@ public class Boss extends Enemy{
                 case 1:
                     bossManager.addEnemy(b2body.getPosition().x, b2body.getPosition().y, "Orc");
                     break;
-                default:
+                case 2:
                     bossManager.addEnemy(b2body.getPosition().x, b2body.getPosition().y, "Goblin");
+                    break;
+                default:
                     break;
             }
 
@@ -266,7 +260,7 @@ public class Boss extends Enemy{
         }
         if(isHurting) {//test
             if(!hurtAnimation.isAnimationFinished(stateTime)) {
-                System.out.println("hihihihihihihh");
+                //System.out.println("hihihihihihihh");
                 return State.HURTING;
             }
             else {
@@ -283,7 +277,7 @@ public class Boss extends Enemy{
         }
         if (isAttacking){//test
             if (!attackAnimation.isAnimationFinished(stateTime)){
-                System.out.println("attacking");
+                //System.out.println("attacking");
                 return State.ATTACKING;
             }
             else {
@@ -324,7 +318,6 @@ public class Boss extends Enemy{
         }
         System.out.println(velocity.x);
         bulletManager.update(dt);
-        bossManager.update(dt);
     }
 
 
@@ -334,7 +327,6 @@ public class Boss extends Enemy{
             healthBar.draw(batch);
         }
         bulletManager.draw(batch);
-        bossManager.draw(batch);
 
     }
     //    public void takeDamage(float damage) {
@@ -346,4 +338,5 @@ public class Boss extends Enemy{
     public void hitOnHead() {
         //    takeDamage(50);
     }
+
 }

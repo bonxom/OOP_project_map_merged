@@ -83,7 +83,7 @@ public class ThirdMapScreen extends PlayScreen {
         player.update(dt);
 
         for (Enemy enemy : creator.getGroundEnemies()){
-            if (enemy.inRangeAttack && player.isAttack() && enemy.getCurrentState() != GroundEnemy.State.HURTING) {
+            if (enemy.inRangeAttack && player.isAttack() && enemy.getCurrentState() != Enemy.State.HURTING) {
                 enemy.hurtingCallBack();
             }
             enemy.update(dt);
@@ -157,6 +157,10 @@ public class ThirdMapScreen extends PlayScreen {
 
         if (gameOver()) {
             game.setScreen(new GameOverScreen(game));
+            dispose();
+        }
+        if (passThisRound){
+            game.setScreen(new FourthMapScreen(game));
             dispose();
         }
     }

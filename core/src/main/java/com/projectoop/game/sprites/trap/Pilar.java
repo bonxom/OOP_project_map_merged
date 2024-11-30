@@ -16,4 +16,9 @@ public class Pilar extends InteractiveTileObject {
     @Override
     public void onFootHit(Knight knight) {
     }
+
+    @Override
+    public void passThisRound(Knight knight) {
+
+    }
 }
